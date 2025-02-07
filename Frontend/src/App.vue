@@ -1,9 +1,13 @@
 <script setup lang="ts">
+import AppNav from './components/app/AppNav.vue';
 
 </script>
 
 <template>
-  <h1 class="text-primary">Hello, kezdődik a projekt!</h1>
+  <AppNav/>
+  <div class="container">
+    <h1>Hello!</h1>
+  </div>
 </template>
 
 <style scoped>
