@@ -1,0 +1,35 @@
+@property --charade {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #282834;
+}
+
+@property --ebony-clay {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #26283b;
+}
+
+@property --bermuda {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #cdf0dc;
+}
+
+@property --barley {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #b9925c;
+}
+
+@property --oslo-gray {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #86918d;
+}
+
+@property --mercury {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #e5e5e5;
+}
