@@ -6,21 +6,7 @@ import { createPinia } from 'pinia'
 
 import App from './App.vue'
 import router from './router'
-import { createI18n } from 'vue-i18n'
-
-const i18n = createI18n({
-    legacy: false,
-    locale: 'hu',
-    fallbackLocale: 'hu',
-    messages: {
-        'hu': {
-            greeting: "Szervusz"
-        },
-        'en': {
-            greeting: "Hi there"
-        }
-    }
-});
+import i18n from './translations'
 
 const app = createApp(App);
 
