@@ -1,4 +1,4 @@
-import type { UserModel } from "@/models/UserModel";
+import type ILoggedInUser from "@/models/LoggedInUser";
 import {defineStore} from "pinia";
 
 export const useUserStore = defineStore('userStore', {
@@ -7,7 +7,7 @@ export const useUserStore = defineStore('userStore', {
             loggedIn: false,
             message: ''
         },
-        user: <UserModel>{
+        user: <ILoggedInUser>{
 
         }
     })
