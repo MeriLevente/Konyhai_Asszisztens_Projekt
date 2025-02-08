@@ -25,13 +25,18 @@
 </template>
 
 <script setup lang="ts">
-    import { computed } from 'vue';
+    import { computed, ref } from 'vue';
     import { storeToRefs } from 'pinia';
     import { useUserStore } from '@/stores/userstore';
     import { useAppStore } from '@/stores/appstore';
+    import { useI18n } from 'vue-i18n';
+    const { locale } = useI18n({useScope: 'global'}); //nyelv megváltoztatása
 
     const { status } = storeToRefs(useUserStore());
     const { app_language } = storeToRefs(useAppStore());
+
+    let lang = ref(app_language.value.lang!);
+    locale.value = lang.value;
 
     const menuItems = computed(()=>{
       return [
@@ -77,8 +82,9 @@
       if(app_language.value.lang == "hu"){
         localStorage.setItem("language", "en");
       }
-      else
+      else{
         localStorage.setItem("language", "hu");
+      }
     };
 </script>
 
