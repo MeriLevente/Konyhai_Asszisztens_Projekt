@@ -1,0 +1,1 @@
+// a védett url hívásakor megnézi, hogy jogusultak vagyunk-e (szerep megfelel-e)

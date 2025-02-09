@@ -1,11 +1,20 @@
 <script setup lang="ts">
-    import type IFormData from '@/models/FormData';
+    import type IUser from '@/models/User';
+    import { useUserStore } from '@/stores/userstore';
+    import { storeToRefs } from 'pinia';
     import { ref } from 'vue';
     import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
+    const { status } = storeToRefs(useUserStore())
     const { t } = useI18n();
+    const { login, register } = useUserStore();
     const props = defineProps(["method", "role"]);
 
-    const formData = ref<IFormData>({
+    let confirm_password = ref<string>();
+
+    const router = useRouter()
+
+    const formData = ref<IUser>({
         email: "",
         password: "",
         role: props.role
@@ -13,7 +22,19 @@
 
     const submitForm = () : void => {
         // userStore-ba register vagy login függvény és a logot töröld
-        console.log(formData.value);
+        if(confirm_password.value && confirm_password.value != formData.value.password){
+            status.value.message = t("confirm_pass_incorrect");
+        } else {
+            if(props.method == "Regisztrálás" || props.method == "Register"){
+                register(formData.value).then(()=>{
+                    router.push("/")
+                });
+            } else {
+                login(formData.value).then(()=>{
+                    router.push("/")
+                });;
+            };
+        }
     };
 </script>
 
@@ -39,7 +60,7 @@
                     <label for="password">{{t("password_form")}}</label>
                 </div>
                 <div class="form-floating mb-3" v-if="method == 'Regisztrálás' || method == 'Register'">
-                    <input type="password" class="form-control" id="confirmpass" v-model="formData.confirm_password" required>
+                    <input type="password" class="form-control" id="confirmpass" v-model="confirm_password" required>
                     <label for="confirmpass">{{t("confirm_password_form")}}</label>
                 </div>
                 <RouterLink to="/register" v-if="method != 'Regisztrálás' && method != 'Register'" class="my-2">{{ t("go_register") }}</RouterLink>
@@ -47,7 +68,7 @@
                     <button id="submit" type="submit" class="btn btn-primary w-100 p-2 my-3">{{ method }}</button>
                 </div>
             </form>
-            <!-- <div v-if="status.message" class="alert alert-danger text-center mt-5">{{ status.message }}</div> -->
+            <div v-if="status.message" class="alert alert-danger text-center mt-5">{{ status.message }}</div>
         </div>
     </div>
 </template>
