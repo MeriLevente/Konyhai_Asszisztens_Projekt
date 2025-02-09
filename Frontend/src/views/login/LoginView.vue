@@ -6,12 +6,20 @@
 </script>
 
 <template>
-    <div class="container my-5 align-center">
-        <LoginForm :method="method" :role="'user'"/>
+    <div class="content-box my-5">
+        <div class="container">
+            <LoginForm :method="method" :role="'user'"/>
+        </div>
     </div>
 </template>
 
 <style lang="css">
+    .content-box {
+        height: 75vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
     .container{
         background-color: var(--mercury);
         border: 3px solid var(--ebony-clay);
