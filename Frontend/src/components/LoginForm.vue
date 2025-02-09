@@ -4,13 +4,15 @@
     import { storeToRefs } from 'pinia';
     import { ref } from 'vue';
     import { useI18n } from 'vue-i18n';
-import { useRouter } from 'vue-router';
+    import { useRouter } from 'vue-router';
     const { status } = storeToRefs(useUserStore())
     const { t } = useI18n();
     const { login, register } = useUserStore();
     const props = defineProps(["method", "role"]);
 
     let confirm_password = ref<string>();
+    let see_password = ref<boolean>(false);
+    let see_conf_password = ref<boolean>(false);
 
     const router = useRouter()
 
@@ -36,6 +38,23 @@ import { useRouter } from 'vue-router';
             };
         }
     };
+
+    const toggleShowPassword = (inputField: string) : void => {
+        if(inputField == "password"){
+            if(see_password.value){
+                see_password.value = false;
+            } else {
+                see_password.value = true;
+            }
+        } else {
+            if(see_conf_password.value){
+                see_conf_password.value = false;
+            } else {
+                see_conf_password.value = true;
+            }
+        }
+    };
+
 </script>
 
 <template>
@@ -56,11 +75,13 @@ import { useRouter } from 'vue-router';
                     <label for="email">Email</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="password" class="form-control" id="password" v-model="formData.password" required>
+                    <input :type="see_password ? 'text' : 'password'" class="form-control" id="password" v-model="formData.password" required style="z-index: 0">
+                    <span class="toggle-password" v-on:click="toggleShowPassword('password')"><i :class="see_password ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill'"></i></span>
                     <label for="password">{{t("password_form")}}</label>
                 </div>
                 <div class="form-floating mb-3" v-if="method == 'Regisztrálás' || method == 'Register'">
-                    <input type="password" class="form-control" id="confirmpass" v-model="confirm_password" required>
+                    <input :type="see_conf_password ? 'text' : 'password'" class="form-control" id="confirmpass" v-model="confirm_password" required>
+                    <span class="toggle-password" v-on:click="toggleShowPassword('confirm_password')"><i :class="see_conf_password ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill'"></i></span>
                     <label for="confirmpass">{{t("confirm_password_form")}}</label>
                 </div>
                 <RouterLink to="/register" v-if="method != 'Regisztrálás' && method != 'Register'" class="my-2">{{ t("go_register") }}</RouterLink>
@@ -78,5 +99,20 @@ import { useRouter } from 'vue-router';
         background-color: var(--ebony-clay);
         color: var(--mercury);
         font-weight: bold;
+    }
+
+    .toggle-password {
+        z-index: 1;
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        cursor: pointer;
+        width: 20px;
+        height: 20px;
+    }
+
+    i {
+        font-size: 15px;
     }
 </style>

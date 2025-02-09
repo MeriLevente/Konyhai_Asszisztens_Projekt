@@ -6,8 +6,10 @@
 </script>
 
 <template>
-    <div class="container my-5">
-        <LoginForm :method="method" :role="'admin'"/>
+    <div class="content-box my-5">
+        <div class="container">
+            <LoginForm :method="method" :role="'admin'"/>
+        </div> 
     </div>
 </template>
 
