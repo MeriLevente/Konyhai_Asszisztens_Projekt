@@ -13,7 +13,7 @@
     </div>
 </template>
 
-<style lang="css">
+<style lang="css" scoped>
     .content-box {
         height: 75vh;
         display: flex;

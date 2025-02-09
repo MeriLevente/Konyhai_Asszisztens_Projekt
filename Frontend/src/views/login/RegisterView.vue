@@ -13,6 +13,16 @@
     </div>
 </template>
 
-<style lang="css">
-
+<style lang="css" scoped>
+    .content-box {
+        height: 75vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .container{
+        background-color: var(--mercury);
+        border: 3px solid var(--ebony-clay);
+        border-radius: 5px;
+    }
 </style>
