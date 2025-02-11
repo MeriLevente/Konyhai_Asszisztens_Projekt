@@ -24,6 +24,10 @@ const i18n = createI18n({
 
             //AdminView
             admin_h1: "Adminisztráció",
+            edit_type: "Recept típusok",
+            admin_reg: "Admin regisztráció",
+            edit_recipes: "Receptek",
+            edit_items: "Élelmiszerek"
         },
         'en': {
             //HomeView
@@ -44,6 +48,10 @@ const i18n = createI18n({
 
             //AdminView
             admin_h1: "Administration",
+            edit_type: "Recipe types",
+            admin_reg: "Admin registration",
+            edit_recipes: "Recipes",
+            edit_items: "Items"
         }
     }
 });
