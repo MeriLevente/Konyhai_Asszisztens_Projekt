@@ -6,7 +6,7 @@ export const useAppStore = defineStore('appStore', {
             mode: "light"
         },
         app_language : {
-            lang: localStorage.getItem("language")
+            lang: localStorage.getItem("language") ?? "hu"
         }
     })
 });
