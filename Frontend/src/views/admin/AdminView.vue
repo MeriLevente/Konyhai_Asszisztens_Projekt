@@ -18,7 +18,7 @@
         <div class="row row-content my-5 d-flex justify-content-center">
             <div class="col-11 col-sm-5 p-2 admin-box-blue m-1" v-on:click="navigateToPage('/add-type')">
                 <p class="text-center display-5 link-box-blue">{{ t("edit_type") }}</p>
-                <i class="bi bi-journal-text d-flex justify-content-center link-box-blue"></i>
+                <i class="bi bi-egg d-flex justify-content-center link-box-blue"></i>
             </div>
             <div class="col-11 col-sm-5 admin-box-white m-1" v-on:click="navigateToPage('/edit-items')">
                 <p class="text-center p-2 display-5 link-box-white">{{ t("edit_items") }}</p>
