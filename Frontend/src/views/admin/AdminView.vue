@@ -16,17 +16,21 @@
             <h1 class="display-3 text-center">{{t('admin_h1')}}</h1>
         </div>
         <div class="row row-content my-5 d-flex justify-content-center">
-            <div class="col-11 col-sm-5 admin-box-blue m-1" v-on:click="navigateToPage('/add-type')">
-                <p class="link-box-blue">Add type</p>
+            <div class="col-11 col-sm-5 p-2 admin-box-blue m-1" v-on:click="navigateToPage('/add-type')">
+                <p class="text-center display-5 link-box-blue">{{ t("edit_type") }}</p>
+                <i class="bi bi-egg d-flex justify-content-center link-box-blue"></i>
             </div>
             <div class="col-11 col-sm-5 admin-box-white m-1" v-on:click="navigateToPage('/edit-items')">
-                <p class="link-box-white">Edit item</p>
+                <p class="text-center p-2 display-5 link-box-white">{{ t("edit_items") }}</p>
+                <i class="bi bi-apple d-flex justify-content-center link-box-white"></i>
             </div>
-            <div class="col-11 col-sm-5 admin-box-white m-1" v-on:click="navigateToPage('/edit-recipes')">
-                <p class="link-box-white">Edit recipe</p>
+            <div class="col-11 col-sm-5 p-2 admin-box-white m-1" v-on:click="navigateToPage('/edit-recipes')">
+                <p class="text-center display-5 link-box-white">{{ t("edit_recipes") }}</p>
+                <i class="bi bi-journals d-flex justify-content-center link-box-white"></i>
             </div>
-            <div class="col-11 col-sm-5 admin-box-blue m-1" v-on:click="navigateToPage('/register-admin')">
-                <p class="link-box-blue">Register admin</p>
+            <div class="col-11 col-sm-5 p-2 admin-box-blue m-1" v-on:click="navigateToPage('/register-admin')">
+                <p class="text-center display-5 link-box-blue">{{ t("admin_reg") }}</p>
+                <i class="bi bi-person-add d-flex justify-content-center link-box-blue"></i>
             </div>
         </div>
     </div>
@@ -59,9 +63,17 @@
         color: var(--mercury);
     }
 
+    i.link-box-blue {
+        font-size: 8.5vh;
+    }
+
     .link-box-white{
         text-decoration: none;
         font-size: 5vh;
         color: var(--ebony-clay);
+    }
+
+    i.link-box-white {
+        font-size: 8.5vh;
     }
 </style>
