@@ -1,7 +1,14 @@
 <script setup lang="ts">
+    import type IType from '@/models/Type';
+    import { ref } from 'vue';
     import { useI18n } from 'vue-i18n';
     const { t } = useI18n();
 
+    let itemtypes = ref<IType[]>();
+
+    const loadTypes = () => {
+        
+    }
 </script>
 
 <template>
@@ -20,12 +27,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- <tr v-for="(type,index) in itemtypes">
-                        <td :class="index % 2 == 0 ? 'grayTd' : ''">{{ type.id }}</td>
-                        <td :class="index % 2 == 0 ? 'grayTd' : ''">{{ type.nameHU }}</td>
-                        <td :class="index % 2 == 0 ? 'grayTd' : ''">{{ type.nameEN }}</td>
-                        <td :class="index % 2 == 0 ? 'grayTd' : ''">{{ type.image }}</td>
-                    </tr> -->
+                    <tr v-for="(type,index) in itemtypes" :class="index % 2 == 0 ? 'grayTr' : ''">
+                        <td>{{ type.id }}</td>
+                        <td>{{ type.nameHU }}</td>
+                        <td>{{ type.nameEN }}</td>
+                        <td>{{ type.image }}</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -38,7 +45,7 @@
         color: var(--mercury);
     }
 
-    .grayTd{
+    .grayTr{
         background-color: var(--oslo-gray);
     }
 </style>
