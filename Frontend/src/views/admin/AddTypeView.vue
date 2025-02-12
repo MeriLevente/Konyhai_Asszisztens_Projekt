@@ -1,14 +1,18 @@
 <script setup lang="ts">
     import type IType from '@/models/Type';
-    import { ref } from 'vue';
+    import { useAdminStore } from '@/stores/adminstore';
+    import { storeToRefs } from 'pinia';
+    import { computed } from 'vue';
     import { useI18n } from 'vue-i18n';
     const { t } = useI18n();
+    const { types } = storeToRefs(useAdminStore());
 
-    let itemtypes = ref<IType[]>();
+    const store = useAdminStore();
 
-    const loadTypes = () => {
-        
-    }
+    const itemtypes = computed((): IType[] => {
+        console.log(store.storeTypes)
+        return store.storeTypes
+    });
 </script>
 
 <template>
@@ -27,7 +31,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(type,index) in itemtypes" :class="index % 2 == 0 ? 'grayTr' : ''">
+                    <tr v-for="(type,index) in itemtypes" :key="index" :class="index % 2 == 0 ? 'grayTr' : ''">
                         <td>{{ type.id }}</td>
                         <td>{{ type.nameHU }}</td>
                         <td>{{ type.nameEN }}</td>
