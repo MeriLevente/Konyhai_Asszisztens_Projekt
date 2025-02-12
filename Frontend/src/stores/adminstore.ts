@@ -1,19 +1,15 @@
 import type IType from "@/models/Type";
 import { defineStore } from "pinia";
 
-export const useAdminStore = defineStore('userStore', {
+export const useAdminStore = defineStore('adminStore', {
     state: () => ({
         types: <IType[]> [{
             
         }],
-        types_empty: {
-            isEmpty: false
-        }
     }),
     getters: {
         storeTypes(): IType[] {
-            this.types.push({id: 1, nameHU: "Zöldségek", nameEN: "Vegetables", image: ""});
-            return this.types
+            return this.types = [{id: 1, nameHU: "Zöldségek", nameEN: "Vegetables", image: ""},{id: 2, nameHU: "Gyümölcsök", nameEN: "Fruits", image: ""}]
         }
     }
 });

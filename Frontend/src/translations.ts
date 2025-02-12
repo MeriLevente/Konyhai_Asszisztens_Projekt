@@ -28,6 +28,7 @@ const i18n = createI18n({
             admin_reg: "Admin regisztráció",
             edit_recipes: "Receptek",
             edit_items: "Élelmiszerek",
+            add_new: "Új felvétele",
 
             //Edit types
             name: "Név",
@@ -56,6 +57,7 @@ const i18n = createI18n({
             admin_reg: "Admin registration",
             edit_recipes: "Recipes",
             edit_items: "Items",
+            add_new: "Add new",
 
             //Edit types
             name: "Name",
