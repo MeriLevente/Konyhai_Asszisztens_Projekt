@@ -1,8 +1,9 @@
 <script setup lang="ts">
+    import TypeModal from '@/components/TypeModal.vue';
     import type IType from '@/models/Type';
     import { useAdminStore } from '@/stores/adminstore';
     import { storeToRefs } from 'pinia';
-    import { computed } from 'vue';
+    import { computed, ref } from 'vue';
     import { useI18n } from 'vue-i18n';
     const { t } = useI18n();
     const { types } = storeToRefs(useAdminStore());
@@ -12,13 +13,38 @@
         return store.storeTypes
     });
 
+    let data = ref<IType | null>();
+
+    const addType = () => {
+        data.value = {
+            nameHU: "",
+            nameEN: "",
+            image: ""
+        }
+    };
+
     const editType = (selected: IType) => {
-        console.log(selected);
+        data.value = {
+            nameHU: selected.nameHU,
+            nameEN: selected.nameEN,
+            image: selected.image
+        }
     };
 
     const deleteType = (selected: IType) => {
         console.log(selected);
+    };
+
+    const saveData = (type: any) => {
+        // storeban lévő saveType vagy edittype => serviceben
+        //console.log(type.value.nameHU);
+        data.value = null;
+    };
+
+    const closeModal = () => {
+        data.value = null;
     }
+
 </script>
 
 <template>
@@ -27,19 +53,20 @@
             <h1 class="display-3 text-center">{{t('edit_type')}}</h1>
         </div>
         <div class="row my-2">
+            
             <div class="col-12">
-                <table class="table" v-if="itemtypes.length > 0">
+                <table class="table table-hover" v-if="itemtypes.length > 0">
                 <thead>
                     <tr>
-                        <th>
-                            <span class="btn btn-success">
+                        <th style="width: 10%;">
+                            <span class="btn btn-success" v-on:click="addType">
                                 {{ t("add_new") }}
                             </span>
                         </th>
-                        <th class="text-center">Id</th>
-                        <th class="text-center">{{ t("name") }} (hu)</th>
-                        <th class="text-center">{{ t("name") }} (en)</th>
-                        <th class="text-center">{{ t("image") }}</th>
+                        <th class="text-center" style="width: 1%;">Id</th>
+                        <th class="text-center" style="width: 20%;">{{ t("name") }} (hu)</th>
+                        <th class="text-center" style="width: 25%;">{{ t("name") }} (en)</th>
+                        <th style="width: 20%;">{{ t("image") }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -51,10 +78,11 @@
                         <td class="text-center">{{ type.id }}</td>
                         <td class="text-center">{{ type.nameHU }}</td>
                         <td class="text-center">{{ type.nameEN }}</td>
-                        <td class="text-center">{{ type.image }}</td>
+                        <td><img class="tdImage" v-bind:src="type.image" alt="Img"></td>
                     </tr>
                 </tbody>
             </table>
+            <TypeModal :data="data" v-if="data" v-on:save-data="saveData" v-on:close-modal="closeModal"/>
             </div>
         </div>
     </div>
@@ -66,7 +94,16 @@
         color: var(--mercury);
     }
 
+    table {
+        border: var(--ebony-clay) 1px solid
+    }
+
     .grayTr{
         background-color: red;
+    }
+    .tdImage {
+        width: 8vh;
+        height: 5vh;
+        border: var(--ebony-clay) 1px solid;
     }
 </style>
