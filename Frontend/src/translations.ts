@@ -8,6 +8,8 @@ const i18n = createI18n({
         'hu': {
             //HomeView
             greeting: "Szervusz",
+            save: "Mentés",
+            cancel: "Mégse",
 
             //NotFoundView
             notfound_h1: "Hoppá! Valami hiba történt!",
@@ -29,6 +31,7 @@ const i18n = createI18n({
             edit_recipes: "Receptek",
             edit_items: "Élelmiszerek",
             add_new: "Új felvétele",
+            close: "Bezár",
 
             //Edit types
             name: "Név",
@@ -37,6 +40,8 @@ const i18n = createI18n({
         'en': {
             //HomeView
             greeting: "Hi there",
+            save: "Save",
+            cancel: "Cancel",
 
             //NotFoundView
             notfound_h1: "Oops! Something went wrong!",
@@ -58,6 +63,7 @@ const i18n = createI18n({
             edit_recipes: "Recipes",
             edit_items: "Items",
             add_new: "Add new",
+            close: "Close",
 
             //Edit types
             name: "Name",

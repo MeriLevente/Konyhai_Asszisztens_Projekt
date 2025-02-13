@@ -1,5 +1,5 @@
 export default interface IType{
-    id: number
+    id?: number
     nameHU: string
     nameEN: string,
     image: string
