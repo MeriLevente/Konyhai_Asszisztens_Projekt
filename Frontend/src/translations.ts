@@ -36,6 +36,10 @@ const i18n = createI18n({
             //Edit types
             name: "Név",
             image: "Kép",
+
+            //Edit items
+            unit: "Mértékegység",
+            type: "Típus",
         },
         'en': {
             //HomeView
@@ -68,6 +72,10 @@ const i18n = createI18n({
             //Edit types
             name: "Name",
             image: "Image",
+
+            //Edit items
+            unit: "Unit",
+            type: "Type",
         }
     }
 });

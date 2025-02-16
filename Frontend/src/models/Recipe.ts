@@ -1,5 +1,5 @@
 export default interface IRecipe {
-    id: number
+    id?: number
     nameHU: string
     nameEN: string
     descriptionHU: string
