@@ -2,11 +2,9 @@
     import TypeModal from '@/components/TypeModal.vue';
     import type IType from '@/models/Type';
     import { useAdminStore } from '@/stores/adminstore';
-    import { storeToRefs } from 'pinia';
     import { computed, ref } from 'vue';
     import { useI18n } from 'vue-i18n';
     const { t } = useI18n();
-    const { types } = storeToRefs(useAdminStore());
     const store = useAdminStore();
 
     const itemtypes = computed((): IType[] => {
@@ -37,7 +35,7 @@
 
     const saveData = (type: any) => {
         // storeban lévő saveType vagy edittype => serviceben
-        //console.log(type.value.nameHU);
+        console.log(type.value);
         data.value = null;
     };
 
@@ -70,15 +68,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(type,index) in itemtypes" :key="index" :class="index % 2 == 0 ? 'grayTr' : ''">
+                    <tr v-for="(type,index) in itemtypes" :key="index">
                         <td>
                             <span class="btn btn-primary p-2 m-1"  v-on:click="editType(type)"><i class="bi bi-pencil"></i></span>
                             <span class="btn btn-danger p-2" v-on:click="deleteType(type)"><i class="bi bi-trash"></i></span>
                         </td>
-                        <td class="text-center">{{ type.id }}</td>
-                        <td class="text-center">{{ type.nameHU }}</td>
-                        <td class="text-center">{{ type.nameEN }}</td>
-                        <td><img class="tdImage" v-bind:src="type.image" alt="Img"></td>
+                        <td class="text-center pt-3">{{ type.id }}</td>
+                        <td class="text-center pt-3">{{ type.nameHU }}</td>
+                        <td class="text-center pt-3">{{ type.nameEN }}</td>
+                        <td><img class="tdImage" v-bind:src="type.image"></img></td>
                     </tr>
                 </tbody>
             </table>
@@ -88,7 +86,7 @@
     </div>
 </template>
 
-<style lang="css" scoped>
+<style lang="css">
     th{
         background-color: var(--ebony-clay);
         color: var(--mercury);
@@ -98,12 +96,8 @@
         border: var(--ebony-clay) 1px solid
     }
 
-    .grayTr{
-        background-color: red;
-    }
     .tdImage {
         width: 8vh;
         height: 5vh;
-        border: var(--ebony-clay) 1px solid;
     }
 </style>
