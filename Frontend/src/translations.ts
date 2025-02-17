@@ -45,7 +45,10 @@ const i18n = createI18n({
             //Edit recipes
             difficulty: "Nehézség",
             time: "Elk. idő (perc)",
-            recipe_editor: "Recept írás"
+            recipe_editor: "Recept írás",
+            steps: "Lépések",
+            input_step: "Lépés felvétele/módosítása",
+            input_step_rules: "Max. 4 lépés, legyen egyszerű!"
         },
         'en': {
             //HomeView
@@ -87,7 +90,10 @@ const i18n = createI18n({
             //Edit recipes
             difficulty: "Difficulty",
             time: "Prep. time (min)",
-            recipe_editor: "Recipe Editor"
+            recipe_editor: "Recipe Editor",
+            steps: "Steps",
+            input_step: "Add/modify step",
+            input_step_rules: "Max. 4 steps, make it simple!"
         }
     }
 });
