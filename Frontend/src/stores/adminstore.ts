@@ -1,4 +1,5 @@
 import type Item from "@/models/Item";
+import type IRecipe from "@/models/Recipe";
 import type IType from "@/models/Type";
 import { defineStore } from "pinia";
 
@@ -8,6 +9,7 @@ export const useAdminStore = defineStore('adminStore', {
             
         }],
         type_error: "", //hiba a típus formnál vagy törlésnél
+
         items: <Item[]> [{
             
         }],
@@ -16,7 +18,11 @@ export const useAdminStore = defineStore('adminStore', {
             "g",
             "ml"
         ],
-        items_error: "" //hiba az élelmiszer formnál vagy törlésnél
+        items_error: "", //hiba az élelmiszer formnál vagy törlésnél
+
+        recipes: <IRecipe[]> [
+
+        ]
     }),
     getters: {
         storeTypes(): IType[] { //majd a backendről kérdezem le, typeService-ben lévő metódus, a képeket majd mi tároljuk majd
@@ -38,6 +44,9 @@ export const useAdminStore = defineStore('adminStore', {
                 {id: 27, nameHU: "Csirke", nameEN: "Chicken",  typeId: 5, unit: "g" , image: "https://pngfre.com/wp-content/uploads/chicken-poster.png"},
                 {id: 34, nameHU: "Étolaj", nameEN: "Oil",  typeId: 6, unit: "ml" , image: "https://static.vecteezy.com/system/resources/thumbnails/024/851/117/small_2x/a-bottle-of-palm-kernel-cooking-oil-on-a-transparent-background-png.png"}
             ]
+        },
+        storeRecipes(): IRecipe[]{
+            return this.recipes = []
         }
     }
 });

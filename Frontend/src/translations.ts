@@ -40,6 +40,10 @@ const i18n = createI18n({
             //Edit items
             unit: "Mértékegység",
             type: "Típus",
+
+            //Edit recipes
+            difficulty: "Nehézség",
+            time: "Elk. idő (perc)",
         },
         'en': {
             //HomeView
@@ -76,6 +80,10 @@ const i18n = createI18n({
             //Edit items
             unit: "Unit",
             type: "Type",
+
+            //Edit recipes
+            difficulty: "Difficulty",
+            time: "Prep. time (min)",
         }
     }
 });

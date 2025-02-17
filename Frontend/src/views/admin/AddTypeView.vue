@@ -50,8 +50,7 @@
         <div class="row">
             <h1 class="display-3 text-center">{{t('edit_type')}}</h1>
         </div>
-        <div class="row my-2">
-            
+        <div class="row my-2">  
             <div class="col-12">
                 <table class="table table-hover" v-if="itemtypes.length > 0">
                 <thead>
