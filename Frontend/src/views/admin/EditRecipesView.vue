@@ -1,10 +1,12 @@
 <script setup lang="ts">
-    import type IRecipe from '@/models/Recipe';
+    import RecipeEditor from '@/components/RecipeEditor.vue';
+import type IRecipe from '@/models/Recipe';
     import { useAdminStore } from '@/stores/adminstore';
     import { computed, ref } from 'vue';
     import { useI18n } from 'vue-i18n';
     const { t } = useI18n();
     const store = useAdminStore();
+    let openEditor = ref(false);
 
     const recipes = computed((): IRecipe[] => {
         return store.storeRecipes
@@ -22,7 +24,8 @@
             difficulty: 0,
             time: 0,
             image: ""
-        }
+        };
+        openEditor.value = true;
     };
 
     const editRecipe = (selected: IRecipe) => {
@@ -35,7 +38,8 @@
             difficulty: selected.difficulty,
             time: selected.time,
             image: selected.image
-        }
+        };
+        openEditor.value = true;
     };
 
     const deleteRecipe = (selected: IRecipe) => {
@@ -47,30 +51,43 @@
         console.log(type.value);
         data.value = null;
     };
+
+    const closeEditor = () => {
+        openEditor.value = false;
+        data.value = null;
+    };
 </script>
 
 <template>
-    <div class="container my-5 justify-center">
+    <div class="container my-5 justify-center" v-if="openEditor == false">
         <div class="row">
             <h1 class="display-3 text-center">{{t('edit_recipes')}}</h1>
         </div>
         <div class="row my-2">  
             <div class="col-12">
+                <div v-if="recipes.length == 0" class="d-flex justify-content-center">
+                    <p style="font-weight: bold;color: red;">{{ t("no_data") }}</p>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <span v-if="recipes.length == 0" class="btn btn-success" v-on:click="addRecipe">
+                        {{ t("add_new") }}
+                    </span>
+                </div>
                 <table class="table table-hover" v-if="recipes.length > 0">
                 <thead>
                     <tr>
-                        <th style="width: 10%;">
-                            <span class="btn btn-success" v-on:click="addRecipe">
+                        <th style="width: 8%;">
+                            <span class="btn add-btn" v-on:click="addRecipe">
                                 {{ t("add_new") }}
                             </span>
                         </th>
                         <th class="text-center" style="width: 1%;">Id</th>
-                        <th class="text-center" style="width: 25%;">{{ t("name") }} (hu)</th>
-                        <th class="text-center" style="width: 25%;">{{ t("name") }} (en)</th>
-                        <th class="text-center" style="width: 15%;">{{ t("type") }}</th>
-                        <th class="text-center" style="width: 8%;">{{ t("difficulty") }}</th>
-                        <th class="text-center" style="width: 8%;">{{ t("time") }}</th>
-                        <th style="width: 20%;">{{ t("image") }}</th>
+                        <th class="text-center" style="width: 10%;">{{ t("name") }} (hu)</th>
+                        <th class="text-center" style="width: 10%;">{{ t("name") }} (en)</th>
+                        <th class="text-center" style="width: 5%;">{{ t("type") }}</th>
+                        <th class="text-center" style="width: 1%;">{{ t("difficulty") }}</th>
+                        <th class="text-center" style="width: 5%;">{{ t("time") }}</th>
+                        <th style="width: 10%;">{{ t("image") }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -92,8 +109,30 @@
             </div>
         </div>
     </div>
+    <RecipeEditor :recipe="data" v-on:editor-closed="closeEditor" v-if="openEditor == true"/>
 </template>
 
-<style lang="css">
+<style lang="css" scoped>
+    th{
+        background-color: var(--ebony-clay);
+        color: var(--mercury);
+    }
 
+    table {
+        border: var(--ebony-clay) 1px solid;
+    }
+
+    .tdImage {
+        width: 8vh;
+        height: 5vh;
+    }
+
+    .add-btn{
+        background: var(--bermuda);
+    }
+
+    .add-btn:hover{
+        background: var(--bermuda);
+        color: black;
+    }
 </style>

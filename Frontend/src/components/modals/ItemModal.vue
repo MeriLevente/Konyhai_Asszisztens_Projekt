@@ -1,7 +1,7 @@
 <script setup lang="ts">
-    import type Item from '@/models/Item';
-    import { useAdminStore } from '@/stores/adminstore';
-import { useAppStore } from '@/stores/appstore';
+    import type Item from '../../models/Item';
+    import { useAdminStore } from '../../stores/adminstore';
+    import { useAppStore } from '../../stores/appstore'
     import { storeToRefs } from 'pinia';
     import { ref } from 'vue';
     import { useI18n } from 'vue-i18n';

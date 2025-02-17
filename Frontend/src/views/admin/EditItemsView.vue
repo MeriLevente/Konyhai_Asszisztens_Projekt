@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import ItemModal from '@/components/ItemModal.vue';
+    import ItemModal from '@/components/modals/ItemModal.vue';
     import type Item from '@/models/Item';
     import type IType from '@/models/Type';
     import { useAdminStore } from '@/stores/adminstore';
@@ -62,6 +62,14 @@
         <div class="row my-2">
             
             <div class="col-12">
+                <div v-if="items.length == 0" class="d-flex justify-content-center">
+                    <p style="font-weight: bold;color: red;">{{ t("no_data") }}</p>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <span v-if="items.length == 0" class="btn btn-success" v-on:click="addItem">
+                        {{ t("add_new") }}
+                    </span>
+                </div>
                 <table class="table table-hover" v-if="items.length > 0">
                 <thead>
                     <tr>
@@ -100,6 +108,18 @@
     </div>
 </template>
 
-<style lang="css">
+<style lang="css" scoped>
+     th{
+        background-color: var(--ebony-clay);
+        color: var(--mercury);
+    }
 
+    table {
+        border: var(--ebony-clay) 1px solid
+    }
+
+    .tdImage {
+        width: 8vh;
+        height: 5vh;
+    }
 </style>

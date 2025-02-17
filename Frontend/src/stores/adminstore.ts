@@ -46,7 +46,9 @@ export const useAdminStore = defineStore('adminStore', {
             ]
         },
         storeRecipes(): IRecipe[]{
-            return this.recipes = []
+            return this.recipes = [
+                {id: 1, nameHU: "Bolognai tészta", nameEN: "Bolognese pasta", descriptionHU: "1.A zöldségeket apró darabokra vágjuk és egy serpenyőbe rakjuk főni 60 percre.#2. Hozzárakjuk a paradicsomot, amit leturmixolunk először és fűszerezzük.#3. A tésztát forralt vízben elkészítjük.#4. A tésztára öntünk a szószból, és sajttal tálaljuk.", descriptionEN: "1. Cut the vegetables into small pieces and put them in a pan to cook for 60 minutes.#2. Add the tomatoes, which we first blend and season.#3. Prepare the dough in boiled water.#4. Pour the sauce over the pasta and serve with cheese.", type: "ITA", difficulty: 5, time: 80, image: "https://staticcookist.akamaized.net/wp-content/uploads/sites/22/2021/06/THUMB-LINK-2020-2.jpg?im=AspectCrop=(16,9);Resize,width=742;"}
+            ]
         }
     }
 });
