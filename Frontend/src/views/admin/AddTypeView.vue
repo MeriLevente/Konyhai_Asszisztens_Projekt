@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import TypeModal from '@/components/TypeModal.vue';
+    import TypeModal from '@/components/modals/TypeModal.vue';
     import type IType from '@/models/Type';
     import { useAdminStore } from '@/stores/adminstore';
     import { computed, ref } from 'vue';
@@ -50,9 +50,16 @@
         <div class="row">
             <h1 class="display-3 text-center">{{t('edit_type')}}</h1>
         </div>
-        <div class="row my-2">
-            
+        <div class="row my-2">  
             <div class="col-12">
+                <div v-if="itemtypes.length == 0" class="d-flex justify-content-center">
+                    <p style="font-weight: bold;color: red;">{{ t("no_data") }}</p>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <span v-if="itemtypes.length == 0" class="btn btn-success" v-on:click="addType">
+                        {{ t("add_new") }}
+                    </span>
+                </div>
                 <table class="table table-hover" v-if="itemtypes.length > 0">
                 <thead>
                     <tr>
@@ -86,7 +93,7 @@
     </div>
 </template>
 
-<style lang="css">
+<style lang="css" scoped>
     th{
         background-color: var(--ebony-clay);
         color: var(--mercury);

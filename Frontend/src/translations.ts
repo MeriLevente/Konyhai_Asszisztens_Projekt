@@ -32,6 +32,7 @@ const i18n = createI18n({
             edit_items: "Élelmiszerek",
             add_new: "Új felvétele",
             close: "Bezár",
+            no_data: "Nincsenek még adatok!",
 
             //Edit types
             name: "Név",
@@ -40,6 +41,11 @@ const i18n = createI18n({
             //Edit items
             unit: "Mértékegység",
             type: "Típus",
+
+            //Edit recipes
+            difficulty: "Nehézség",
+            time: "Elk. idő (perc)",
+            recipe_editor: "Recept írás"
         },
         'en': {
             //HomeView
@@ -68,6 +74,7 @@ const i18n = createI18n({
             edit_items: "Items",
             add_new: "Add new",
             close: "Close",
+            no_data: "No data found yet!",
 
             //Edit types
             name: "Name",
@@ -76,6 +83,11 @@ const i18n = createI18n({
             //Edit items
             unit: "Unit",
             type: "Type",
+
+            //Edit recipes
+            difficulty: "Difficulty",
+            time: "Prep. time (min)",
+            recipe_editor: "Recipe Editor"
         }
     }
 });
