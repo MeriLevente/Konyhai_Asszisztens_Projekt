@@ -11,8 +11,9 @@
     const { app_language } = storeToRefs(useAppStore());
 
     let windowWidth = ref(window.innerWidth);
-    let descHU = ref<string[]>(props.recipe.descriptionHU.split("#"))
-    let descEN = ref<string[]>(props.recipe.descriptionEN.split("#"))
+    const selectedStep = ref();
+    const descHU = ref<string[]>(props.recipe.descriptionHU.split("#"))
+    const descEN = ref<string[]>(props.recipe.descriptionEN.split("#"))
 
     const closeEditor = () => {
         emit("editorClosed");
@@ -48,6 +49,25 @@
                 <div class="col-12 col-md-6">
                     <h5>{{ t("input_step") }}</h5>
                     <p>{{ t("input_step_rules") }}</p>
+                    
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="step" class="form-label">{{ t("language") }}</label>
+                            <select name="language" id="lang" class="form-control">
+                                <option value="hu">Magyar</option>
+                                <option value="en">English</option>
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <label for="step" class="form-label">{{ t("step") }}</label>
+                            <select name="step" id="step" class="form-control" v-model="selectedStep">
+                                <option value="1" selected>1</option>
+                                <option value="1">2</option>
+                                <option value="1">3</option>
+                                <option value="1">4</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-12 col-md-6">
                     <h5>{{ t("steps") }}</h5>
