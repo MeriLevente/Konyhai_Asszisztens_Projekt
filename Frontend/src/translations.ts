@@ -50,7 +50,9 @@ const i18n = createI18n({
             input_step: "Lépés felvétele/módosítása",
             input_step_rules: "Max. 4 lépés, legyen egyszerű!",
             step: "Lépés",
-            language: "Nyelv"
+            language: "Nyelv",
+            hu: "Magyar",
+            en: "Angol"
         },
         'en': {
             //HomeView
@@ -97,7 +99,9 @@ const i18n = createI18n({
             input_step: "Add/modify step",
             input_step_rules: "Max. 4 steps, make it simple!",
             step: "Step",
-            language: "Language"
+            language: "Language",
+            hu: "Hungarian",
+            en: "English"
         }
     }
 });

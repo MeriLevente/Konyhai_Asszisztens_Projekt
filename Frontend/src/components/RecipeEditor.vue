@@ -13,24 +13,33 @@
     const selectedStep = ref("1");
     const selectedLanguage = ref("hu");
 
-    const descHU = computed(():string[] => {return props.recipe.descriptionHU.split("#")});
-    const descEN = ref<string[]>(props.recipe.descriptionEN.split("#"));
+    let descHU = ref<string[]>(props.recipe.descriptionHU == "" ? [] : props.recipe.descriptionHU.split("#"));
+    let descEN = ref<string[]>(props.recipe.descriptionEN == "" ? [] : props.recipe.descriptionEN.split("#"));
 
-    let stepInput = computed(()=> {
-            return selectedLanguage.value == 'hu' ? descHU.value[Number(selectedStep.value)-1] : descEN.value[Number(selectedStep.value)-1]
-        }   
-    );
+    // let stepInputEditing = computed(() => {
+    //         return selectedLanguage.value == 'hu' ? descHU.value[Number(selectedStep.value)-1] : descEN.value[Number(selectedStep.value)-1];
+    //     }   
+    // );
+
+    let stepInput = ref<string>();
 
     const closeEditor = () => {
         emit("editorClosed");
     };
 
-    const saveStep = (): void => {
-        if(stepInput.value.length > 0){
+    let saveStep = (): void => {
+        if(stepInput.value != "" ){
+            const stepIndex: number = Number(selectedStep.value)-1;
+            console.log(`stepindex: ${stepIndex}`)
+            console.log(`selected: ${selectedStep.value}`)
             if(selectedLanguage.value == "hu")
-                descHU.value[Number(selectedStep.value)-1] = stepInput.value
+                descHU.value[stepIndex] = stepInput.value!
             if(selectedLanguage.value == "en")
-                descEN.value[Number(selectedStep.value)-1] = stepInput.value
+                descEN.value[stepIndex] = stepInput.value!
+            if(stepIndex != 3){
+                selectedStep.value = `${stepIndex+2}`
+            }
+            stepInput.value = "";
         }
     };
 </script>
@@ -70,17 +79,16 @@
                             <div class="col-6">
                                 <label for="step" class="form-label">{{ t("language") }}</label>
                                 <select name="language" id="lang" class="form-control" v-model="selectedLanguage">
-                                    <option value="hu">Magyar</option>
-                                    <option value="en">English</option>
+                                    <option value="hu">{{ t("hu") }}</option>
+                                    <option value="en">{{ t("en") }}</option>
                                 </select>
                             </div>
                             <div class="col-4">
                                 <label for="step" class="form-label">{{ t("step") }}</label>
                                 <select name="step" id="step" class="form-control" v-model="selectedStep">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
+                                    <option v-if="descHU.length == 0" value="1">1</option>
+                                    <option v-if="selectedLanguage == 'hu'" v-for="stepNmb in descHU.length" :value="stepNmb">{{ stepNmb }}</option>
+                                    <option v-if="selectedLanguage == 'en'" v-for="stepNmb in descEN.length" :value="stepNmb">{{ stepNmb }}</option>
                                 </select>
                             </div>
                         </div>
@@ -103,8 +111,9 @@
                 </div>
                 <div class="col-12 col-md-6">
                     <h5>{{ t("steps") }}</h5>
-                    <p v-if="descHU.length > 0 && selectedLanguage == 'hu'" v-for="(step, index) in descHU">{{ `${index+1}. ${step}` }}</p>
-                    <p v-if="descEN.length > 0 && selectedLanguage == 'en'" v-for="(step, index) in descEN">{{ `${index+1}. ${step}` }}</p>
+                    <p>-- {{ selectedLanguage == 'hu' ? t("hu") : t("en") }} --</p>
+                    <p v-if="descHU[0] != '' && selectedLanguage == 'hu'" v-for="(step, index) in descHU">{{ `${index+1}. ${step}` }}</p>
+                    <p v-if="descEN[0] != '' && selectedLanguage == 'en'" v-for="(step, index) in descEN">{{ `${index+1}. ${step}` }}</p>
                 </div>
             </div>
             <div class="row m-3">
@@ -121,7 +130,7 @@
 
 <style lang="css" scoped>
     .content-box {
-        height: 75vh;
+        
         display: flex;
         justify-content: center;
         align-items: center;
@@ -134,5 +143,9 @@
     .stepInputDiv{
         border: 0.5px solid gray;
         border-radius: 5px;
+    }
+    textarea{
+        height: 12vh;
+        resize: none;
     }
 </style>
