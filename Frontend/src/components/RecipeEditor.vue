@@ -6,7 +6,7 @@
     import { useAppStore } from '@/stores/appstore';
     const { t } = useI18n();
     const props = defineProps(["recipe"]);
-    const emit = defineEmits(["editorClosed"]);
+    const emit = defineEmits(["editorClosed", "saveData"]);
     const { recipe_types } = storeToRefs(useAdminStore());
     const { app_language } = storeToRefs(useAppStore());
 
@@ -15,12 +15,6 @@
 
     let descHU = ref<string[]>(props.recipe.descriptionHU == "" ? [] : props.recipe.descriptionHU.split("#"));
     let descEN = ref<string[]>(props.recipe.descriptionEN == "" ? [] : props.recipe.descriptionEN.split("#"));
-
-    // let stepInputEditing = computed(() => {
-    //         return selectedLanguage.value == 'hu' ? descHU.value[Number(selectedStep.value)-1] : descEN.value[Number(selectedStep.value)-1];
-    //     }   
-    // );
-
     let stepInput = ref<string>();
 
     const closeEditor = () => {
@@ -30,10 +24,9 @@
     let saveStep = (): void => {
         if(stepInput.value != "" ){
             const stepIndex: number = Number(selectedStep.value)-1;
-            console.log(`stepindex: ${stepIndex}`)
-            console.log(`selected: ${selectedStep.value}`)
-            if(selectedLanguage.value == "hu")
+            if(selectedLanguage.value == "hu"){
                 descHU.value[stepIndex] = stepInput.value!
+            }  
             if(selectedLanguage.value == "en")
                 descEN.value[stepIndex] = stepInput.value!
             if(stepIndex != 3){
@@ -42,11 +35,19 @@
             stepInput.value = "";
         }
     };
+
+    const submitRecipe = (): void => {
+        props.recipe.descriptionHU = descHU.value.join("#");
+        props.recipe.descriptionEN = descEN.value.join("#");
+        emit("saveData", props.recipe);
+        emit("editorClosed");
+    };
 </script>
 
 <template>
-    <div class="content-box my-5">
+    <div class="content-box my-5 mx-3">
         <div class="container">
+        <form @submit.prevent="submitRecipe()">
             <h1 class="text-center">{{ t("recipe_editor") }}</h1>
             <div class="row mb-2">
                 <div class="col-12 col-md-6">
@@ -63,7 +64,7 @@
                     <label for="time" class="form-label">{{ t("time") }}</label>
                     <input type="number" class="form-control m-1" id="time" v-model="recipe.time" required min="1" max="1000">
                     <label for="type" class="form-label">{{ t("type") }}</label>
-                    <select name="type" id="type" class="form-control m-1" required>
+                    <select name="type" id="type" class="form-control m-1" required v-model="recipe.type">
                         <option v-for="type in recipe_types.types" :value="type.short" :selected="recipe.type == type.short">{{ app_language.lang == "hu" ? type.hu : type.en  }}</option>
                     </select>
                 </div>
@@ -78,18 +79,15 @@
                         <div class="row mb-2">
                             <div class="col-6">
                                 <label for="step" class="form-label">{{ t("language") }}</label>
-                                <select name="language" id="lang" class="form-control" v-model="selectedLanguage">
+                                <select name="language" id="lang" class="form-control" v-model="selectedLanguage" v-on:change="selectedStep = '1'">
                                     <option value="hu">{{ t("hu") }}</option>
                                     <option value="en">{{ t("en") }}</option>
                                 </select>
                             </div>
                             <div class="col-4">
                                 <label for="step" class="form-label">{{ t("step") }}</label>
-                                <select name="step" id="step" class="form-control" v-model="selectedStep">
-                                    <option v-if="descHU.length == 0" value="1">1</option>
-                                    <option v-if="selectedLanguage == 'hu'" v-for="stepNmb in descHU.length" :value="stepNmb">{{ stepNmb }}</option>
-                                    <option v-if="selectedLanguage == 'en'" v-for="stepNmb in descEN.length" :value="stepNmb">{{ stepNmb }}</option>
-                                </select>
+                                <input v-if="selectedLanguage == 'hu'" type="number" name="step" id="step" class="form-control" min="1" :max="descHU.length == 4 ? '4' : descHU.length+1" v-model="selectedStep">
+                                <input v-if="selectedLanguage == 'en'" type="number" name="step" id="step" class="form-control" min="1" :max="descEN.length == 4 ? '4' : descEN.length+1" v-model="selectedStep">
                             </div>
                         </div>
                         
@@ -104,7 +102,7 @@
                         </div>
                         <div class="row mt-2">
                             <div class="col-4 offset-5">
-                                <button class="btn btn-success" v-on:click="saveStep">{{ t("save") }}</button>
+                                <button type="button" class="btn btn-success" v-on:click="saveStep">{{ t("save") }}</button>
                             </div>
                         </div>
                     </div>     
@@ -118,12 +116,13 @@
             </div>
             <div class="row m-3">
                 <div class="col d-flex justify-content-end">
-                    <button class="btn btn-danger" v-on:click="closeEditor">{{ t("cancel") }}</button>
+                    <button type="button" class="btn btn-danger" v-on:click="closeEditor">{{ t("cancel") }}</button>
                 </div>
                 <div class="col">
-                    <button class="btn btn-success" v-on:click="closeEditor">{{ t("save") }}</button>
+                    <button type="submit" class="btn btn-success">{{ t("save") }}</button>
                 </div>
             </div>
+        </form>
         </div> 
     </div>
 </template>
