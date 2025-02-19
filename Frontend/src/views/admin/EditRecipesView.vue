@@ -20,7 +20,7 @@ import type IRecipe from '@/models/Recipe';
             nameEN: "",
             descriptionHU: "",
             descriptionEN: "",
-            type: "",
+            type: "AME",
             difficulty: 0,
             time: 0,
             image: ""
@@ -46,9 +46,8 @@ import type IRecipe from '@/models/Recipe';
         console.log(selected);
     };
 
-    const saveData = (type: any) => {
-        // storeban lévő saveRecipe vagy editRecipe => serviceben
-        console.log(type.value);
+    const saveData = (recipe: IRecipe) => {
+        console.log(recipe);
         data.value = null;
     };
 
@@ -109,7 +108,7 @@ import type IRecipe from '@/models/Recipe';
             </div>
         </div>
     </div>
-    <RecipeEditor :recipe="data" v-on:editor-closed="closeEditor" v-if="openEditor == true"/>
+    <RecipeEditor :recipe="data" v-on:editor-closed="closeEditor" v-on:save-data="saveData" v-if="openEditor == true"/>
 </template>
 
 <style lang="css" scoped>
