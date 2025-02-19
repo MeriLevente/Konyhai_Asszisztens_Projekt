@@ -1,23 +1,38 @@
 <script setup lang="ts">
-    import { ref } from 'vue';
+    import { computed, ref } from 'vue';
     import { useI18n } from 'vue-i18n';
     import { useAdminStore } from '@/stores/adminstore';
     import { storeToRefs } from 'pinia';
     import { useAppStore } from '@/stores/appstore';
     const { t } = useI18n();
-    const props = defineProps(["recipe"])
-    const emit = defineEmits(["editorClosed"])
+    const props = defineProps(["recipe"]);
+    const emit = defineEmits(["editorClosed"]);
     const { recipe_types } = storeToRefs(useAdminStore());
     const { app_language } = storeToRefs(useAppStore());
 
     const selectedStep = ref("1");
     const selectedLanguage = ref("hu");
-    const descHU = ref<string[]>(props.recipe.descriptionHU.split("#"))
-    const descEN = ref<string[]>(props.recipe.descriptionEN.split("#"))
+
+    const descHU = computed(():string[] => {return props.recipe.descriptionHU.split("#")});
+    const descEN = ref<string[]>(props.recipe.descriptionEN.split("#"));
+
+    let stepInput = computed(()=> {
+            return selectedLanguage.value == 'hu' ? descHU.value[Number(selectedStep.value)-1] : descEN.value[Number(selectedStep.value)-1]
+        }   
+    );
 
     const closeEditor = () => {
         emit("editorClosed");
-    }; 
+    };
+
+    const saveStep = (): void => {
+        if(stepInput.value.length > 0){
+            if(selectedLanguage.value == "hu")
+                descHU.value[Number(selectedStep.value)-1] = stepInput.value
+            if(selectedLanguage.value == "en")
+                descEN.value[Number(selectedStep.value)-1] = stepInput.value
+        }
+    };
 </script>
 
 <template>
@@ -45,33 +60,46 @@
                 </div>
             </div>
             <hr>
-            <div class="row">
+            <div class="row p-2">
                 <div class="col-12 col-md-6">
                     <h5>{{ t("input_step") }}</h5>
                     <p>{{ t("input_step_rules") }}</p>
                     
-                    <div class="row">
-                        <div class="col-6">
-                            <label for="step" class="form-label">{{ t("language") }}</label>
-                            <select name="language" id="lang" class="form-control" v-model="selectedLanguage">
-                                <option value="hu">Magyar</option>
-                                <option value="en">English</option>
-                            </select>
+                    <div class="row stepInputDiv p-3">
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <label for="step" class="form-label">{{ t("language") }}</label>
+                                <select name="language" id="lang" class="form-control" v-model="selectedLanguage">
+                                    <option value="hu">Magyar</option>
+                                    <option value="en">English</option>
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                <label for="step" class="form-label">{{ t("step") }}</label>
+                                <select name="step" id="step" class="form-control" v-model="selectedStep">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="col-4">
-                            <label for="step" class="form-label">{{ t("step") }}</label>
-                            <select name="step" id="step" class="form-control" v-model="selectedStep">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                            </select>
+                        
+                        <div class="row">
+                            <div class="col-12">
+                                <label for="desc" class="form-label">{{ t("step") }}</label>
+                                <textarea id="desc" class="form-control"
+                                v-model="stepInput"
+                                maxlength="200" :placeholder="app_language.lang == 'hu' ? 'max 200 karakter' : 'max 200 charachter'"
+                                ></textarea>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <label for="desc" class="form-label">{{ t("step") }}</label>
-                        <textarea class="form-control" :value="selectedLanguage == 'hu' ? descHU[Number(selectedStep)-1] : descEN[Number(selectedStep)-1]" maxlength="200"></textarea>
-                    </div>
+                        <div class="row mt-2">
+                            <div class="col-4 offset-5">
+                                <button class="btn btn-success" v-on:click="saveStep">{{ t("save") }}</button>
+                            </div>
+                        </div>
+                    </div>     
                 </div>
                 <div class="col-12 col-md-6">
                     <h5>{{ t("steps") }}</h5>
@@ -87,7 +115,6 @@
                     <button class="btn btn-success" v-on:click="closeEditor">{{ t("save") }}</button>
                 </div>
             </div>
-            
         </div> 
     </div>
 </template>
@@ -102,6 +129,10 @@
     .container{
         background-color: var(--mercury);
         border: 3px solid var(--ebony-clay);
+        border-radius: 5px;
+    }
+    .stepInputDiv{
+        border: 0.5px solid gray;
         border-radius: 5px;
     }
 </style>
