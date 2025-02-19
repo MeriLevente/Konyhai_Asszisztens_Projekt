@@ -10,8 +10,8 @@
     const { recipe_types } = storeToRefs(useAdminStore());
     const { app_language } = storeToRefs(useAppStore());
 
-    let windowWidth = ref(window.innerWidth);
-    const selectedStep = ref();
+    const selectedStep = ref("1");
+    const selectedLanguage = ref("hu");
     const descHU = ref<string[]>(props.recipe.descriptionHU.split("#"))
     const descEN = ref<string[]>(props.recipe.descriptionEN.split("#"))
 
@@ -53,25 +53,30 @@
                     <div class="row">
                         <div class="col-6">
                             <label for="step" class="form-label">{{ t("language") }}</label>
-                            <select name="language" id="lang" class="form-control">
+                            <select name="language" id="lang" class="form-control" v-model="selectedLanguage">
                                 <option value="hu">Magyar</option>
                                 <option value="en">English</option>
                             </select>
                         </div>
-                        <div class="col-6">
+                        <div class="col-4">
                             <label for="step" class="form-label">{{ t("step") }}</label>
                             <select name="step" id="step" class="form-control" v-model="selectedStep">
-                                <option value="1" selected>1</option>
-                                <option value="1">2</option>
-                                <option value="1">3</option>
-                                <option value="1">4</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
                             </select>
                         </div>
+                    </div>
+                    <div class="row">
+                        <label for="desc" class="form-label">{{ t("step") }}</label>
+                        <textarea class="form-control" :value="selectedLanguage == 'hu' ? descHU[Number(selectedStep)-1] : descEN[Number(selectedStep)-1]" maxlength="200"></textarea>
                     </div>
                 </div>
                 <div class="col-12 col-md-6">
                     <h5>{{ t("steps") }}</h5>
-                    <p v-if="descHU.length > 0" v-for="(step, index) in descHU">{{ `${index+1}. ${step}` }}</p>
+                    <p v-if="descHU.length > 0 && selectedLanguage == 'hu'" v-for="(step, index) in descHU">{{ `${index+1}. ${step}` }}</p>
+                    <p v-if="descEN.length > 0 && selectedLanguage == 'en'" v-for="(step, index) in descEN">{{ `${index+1}. ${step}` }}</p>
                 </div>
             </div>
             <div class="row m-3">
