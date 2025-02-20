@@ -1,13 +1,13 @@
 <template>
-    <nav class="navbar sticky-top navbar-expand-lg">
+    <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container-fluid">
       <a class="navbar-brand" href="/">
         <img src="@\assets\images\fridgebuddy.png" alt="Lógó" width="90" height="60" class="d-inline-block align-text-center">
         <span class="navbar-title mercury-nav-element">DiKA</span>
       </a>
-      <button class="navbar-toggler mercury-nav-button" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      <button class="navbar-toggler mercury-nav-button navbar-ligth bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon mercury-nav-button"></span>
+        <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -18,8 +18,8 @@
             </li>
           </div>
         </ul>
+        <a href="" :class="app_language.lang == 'hu' ? 'bg-hu' : 'bg-en'" class="btn" v-on:click="changeLanguage()"></a>
       </div>
-      <a href="" :class="app_language.lang == 'hu' ? 'bg-hu' : 'bg-en'" class="btn" v-on:click="changeLanguage()"></a>
     </div>
   </nav>
 </template>
@@ -102,12 +102,14 @@ nav{
 }
 
 .bg-hu{
-  background-image: url('@/assets/images/hunflag.png');
+  background-image: url('@/assets/images/huflag.png');
   background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .bg-en{
   background-image: url('@/assets/images/enflag.png');
   background-size: cover;
+  background-repeat: no-repeat;
 }
 </style>

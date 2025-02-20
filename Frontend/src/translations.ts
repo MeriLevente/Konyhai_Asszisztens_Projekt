@@ -8,6 +8,8 @@ const i18n = createI18n({
         'hu': {
             //HomeView
             greeting: "Szervusz",
+            save: "Mentés",
+            cancel: "Mégse",
 
             //NotFoundView
             notfound_h1: "Hoppá! Valami hiba történt!",
@@ -21,10 +23,42 @@ const i18n = createI18n({
             confirm_password_form: "Jelszó megerősítése",
             go_register: "Nincs még profilod? Regisztrálj itt!",
             confirm_pass_incorrect: "A két jelszó nem egyezik!",
+
+            //AdminView
+            admin_h1: "Adminisztráció",
+            edit_type: "Élelmiszer típusok",
+            admin_reg: "Admin regisztráció",
+            edit_recipes: "Receptek",
+            edit_items: "Élelmiszerek",
+            add_new: "Új felvétele",
+            close: "Bezár",
+            no_data: "Nincsenek még adatok!",
+
+            //Edit types
+            name: "Név",
+            image: "Kép",
+
+            //Edit items
+            unit: "Mértékegység",
+            type: "Típus",
+
+            //Edit recipes
+            difficulty: "Nehézség",
+            time: "Elk. idő (perc)",
+            recipe_editor: "Recept írás",
+            steps: "Lépések",
+            input_step: "Lépés felvétele/módosítása",
+            input_step_rules: "Max. 4 lépés, legyen egyszerű!",
+            step: "Lépés",
+            language: "Nyelv",
+            hu: "Magyar",
+            en: "Angol"
         },
         'en': {
             //HomeView
             greeting: "Hi there",
+            save: "Save",
+            cancel: "Cancel",
 
             //NotFoundView
             notfound_h1: "Oops! Something went wrong!",
@@ -38,6 +72,36 @@ const i18n = createI18n({
             confirm_password_form: "Confrim password",
             go_register: "Don't have an account yet? Register here!",
             confirm_pass_incorrect: "The passwords doesn't match!",
+
+            //AdminView
+            admin_h1: "Administration",
+            edit_type: "Item types",
+            admin_reg: "Admin registration",
+            edit_recipes: "Recipes",
+            edit_items: "Items",
+            add_new: "Add new",
+            close: "Close",
+            no_data: "No data found yet!",
+
+            //Edit types
+            name: "Name",
+            image: "Image",
+
+            //Edit items
+            unit: "Unit",
+            type: "Type",
+
+            //Edit recipes
+            difficulty: "Difficulty",
+            time: "Prep. time (min)",
+            recipe_editor: "Recipe Editor",
+            steps: "Steps",
+            input_step: "Add/modify step",
+            input_step_rules: "Max. 4 steps, make it simple!",
+            step: "Step",
+            language: "Language",
+            hu: "Hungarian",
+            en: "English"
         }
     }
 });

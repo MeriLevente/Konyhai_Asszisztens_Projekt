@@ -85,11 +85,11 @@
                     <label for="confirmpass">{{t("confirm_password_form")}}</label>
                 </div>
                 <RouterLink to="/register" v-if="method != 'Regisztrálás' && method != 'Register'" class="my-2">{{ t("go_register") }}</RouterLink>
-                <div class="mb-3">
+                <div class="mb-1">
                     <button id="submit" type="submit" class="btn btn-primary w-100 p-2 my-3">{{ method }}</button>
                 </div>
             </form>
-            <div v-if="status.message" class="alert alert-danger text-center mt-5">{{ status.message }}</div>
+            <div v-if="status.message" class="alert alert-danger text-center">{{ status.message }}</div>
         </div>
     </div>
 </template>
