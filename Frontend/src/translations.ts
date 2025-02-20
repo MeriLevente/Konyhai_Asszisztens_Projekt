@@ -22,7 +22,6 @@ const i18n = createI18n({
             password_form: "Jelszó",
             confirm_password_form: "Jelszó megerősítése",
             go_register: "Nincs még profilod? Regisztrálj itt!",
-            confirm_pass_incorrect: "A két jelszó nem egyezik!",
 
             //AdminView
             admin_h1: "Adminisztráció",
@@ -71,7 +70,6 @@ const i18n = createI18n({
             password_form: "Password",
             confirm_password_form: "Confrim password",
             go_register: "Don't have an account yet? Register here!",
-            confirm_pass_incorrect: "The passwords doesn't match!",
 
             //AdminView
             admin_h1: "Administration",

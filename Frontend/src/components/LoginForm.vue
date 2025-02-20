@@ -1,11 +1,13 @@
 <script setup lang="ts">
     import type IUser from '@/models/User';
+    import { useAppStore } from '@/stores/appstore';
     import { useUserStore } from '@/stores/userstore';
     import { storeToRefs } from 'pinia';
     import { ref } from 'vue';
     import { useI18n } from 'vue-i18n';
     import { useRouter } from 'vue-router';
-    const { status } = storeToRefs(useUserStore())
+    const { status } = storeToRefs(useUserStore());
+    const { app_language } = storeToRefs(useAppStore());
     const { t } = useI18n();
     const { login, register } = useUserStore();
     const props = defineProps(["method", "role"]);
@@ -24,19 +26,16 @@
 
     const submitForm = () : void => {
         // userStore-ba register vagy login függvény és a logot töröld
-        if(confirm_password.value && confirm_password.value != formData.value.password){
-            status.value.message = t("confirm_pass_incorrect");
+        if(props.method == "Regisztrálás" || props.method == "Register"){
+            status.value.confirm_password = confirm_password.value!;
+            register(formData.value).then(()=>{
+                router.push("/")
+            });
         } else {
-            if(props.method == "Regisztrálás" || props.method == "Register"){
-                register(formData.value).then(()=>{
-                    router.push("/")
-                });
-            } else {
-                login(formData.value).then(()=>{
-                    router.push("/")
-                });;
-            };
-        }
+            login(formData.value).then(()=>{
+                router.push("/")
+            });;
+        };
     };
 
     const toggleShowPassword = (inputField: string) : void => {
@@ -55,6 +54,11 @@
         }
     };
 
+    const hideError = (): void =>{
+        status.value.message = '';
+        status.value.messageEn = '';
+    };
+
 </script>
 
 <template>
@@ -67,20 +71,20 @@
         <div class="col-12 col-md-4 mx-auto">
             <form @submit.prevent="submitForm()">
                 <div class="form-floating mb-3" v-if="method == 'Regisztrálás' || method == 'Register'">
-                    <input type="text" class="form-control" id="name" v-model="formData.name" required>
+                    <input type="text" class="form-control" id="name" v-model="formData.name" maxlength="50" v-on:focus="() => {if(status.message && status.messageEn) hideError()}">
                     <label for="name">{{t("name_form")}}</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="email" class="form-control" id="email" v-model="formData.email" required>
+                    <input type="email" class="form-control" id="email" v-model="formData.email" maxlength="320" v-on:focus="() => {if(status.message && status.messageEn) hideError()}">
                     <label for="email">Email</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input :type="see_password ? 'text' : 'password'" class="form-control" id="password" v-model="formData.password" required style="z-index: 0">
+                    <input :type="see_password ? 'text' : 'password'" class="form-control" id="password" v-model="formData.password" style="z-index: 0" maxlength="30" v-on:focus="() => {if(status.message && status.messageEn) hideError()}">
                     <span class="toggle-password" v-on:click="toggleShowPassword('password')"><i :class="see_password ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill'"></i></span>
                     <label for="password">{{t("password_form")}}</label>
                 </div>
                 <div class="form-floating mb-3" v-if="method == 'Regisztrálás' || method == 'Register'">
-                    <input :type="see_conf_password ? 'text' : 'password'" class="form-control" id="confirmpass" v-model="confirm_password" required>
+                    <input :type="see_conf_password ? 'text' : 'password'" class="form-control" id="confirmpass" v-model="confirm_password" maxlength="30" v-on:focus="() => {if(status.message && status.messageEn) hideError()}">
                     <span class="toggle-password" v-on:click="toggleShowPassword('confirm_password')"><i :class="see_conf_password ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill'"></i></span>
                     <label for="confirmpass">{{t("confirm_password_form")}}</label>
                 </div>
@@ -89,7 +93,7 @@
                     <button id="submit" type="submit" class="btn btn-primary w-100 p-2 my-3">{{ method }}</button>
                 </div>
             </form>
-            <div v-if="status.message" class="alert alert-danger text-center">{{ status.message }}</div>
+            <div v-if="status.message && status.messageEn" class="alert alert-danger text-center">{{ app_language.lang == "hu" ? status.message : status.messageEn }}</div>
         </div>
     </div>
 </template>
