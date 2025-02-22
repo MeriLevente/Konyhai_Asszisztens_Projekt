@@ -19,4 +19,14 @@ export default class UserValidation {
         else
             return {isError: false}
     }
+    public static PasswordInCorrectForm(pass: string) : IFormResponse {
+        const regex: RegExp = /^(?=.*[0-9])^(?=.*[A-Z])/gum;
+        if (pass.length < 8)
+            return {isError: true, message: "A jelszó legyen legalább 8 karakter!", messageEn: "The password must be at least 8 charachters!"}
+        if (!regex.test(pass))
+            return {isError: true, message: "A jelszó tartalmazzon legalább 1 nagy betűt és 1 számot!", messageEn: "The password must contain at least one uppercase and one number!"}
+        else
+            return {isError: false}
+    }
+     
 }
