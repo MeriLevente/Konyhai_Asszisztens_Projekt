@@ -26,6 +26,7 @@
 
     const editItem = (selected: Item) => {
         data.value = {
+            id: selected.id,
             nameHU: selected.nameHU,
             nameEN: selected.nameEN,
             typeId: selected.typeId,
@@ -35,16 +36,16 @@
     };
 
     const deleteItem = (selected: Item) => {
-        console.log(selected);
+        store.deleteItem(selected).then(()=> closeModal()).catch();
     };
 
-    const saveData = (type: any) => {
-        // storeban lévő saveItem vagy editItem => serviceben
-        console.log(type.value);
-        data.value = null;
+    const saveData = (item: any) => {
+        store.saveItem(item.value)?.then(()=> closeModal()).catch();
     };
 
     const closeModal = () => {
+        store.items_error.hu = "";
+        store.items_error.en = "";
         data.value = null;
     };
 

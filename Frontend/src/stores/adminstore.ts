@@ -1,6 +1,9 @@
 import type Item from "@/models/Item";
 import type IRecipe from "@/models/Recipe";
 import type IType from "@/models/Type";
+import adminService from "@/services/adminService";
+import ItemValidation from "@/utils/ItemValidation";
+import TypeValidation from "@/utils/TypeValidation";
 import { defineStore } from "pinia";
 
 export const useAdminStore = defineStore('adminStore', {
@@ -8,7 +11,10 @@ export const useAdminStore = defineStore('adminStore', {
         types: <IType[]> [{
             
         }],
-        type_error: "", //hiba a típus formnál vagy törlésnél
+        type_error: {
+            hu: "",
+            en: ""
+        },
 
         items: <Item[]> [{
             
@@ -18,7 +24,10 @@ export const useAdminStore = defineStore('adminStore', {
             "g",
             "ml"
         ],
-        items_error: "", //hiba az élelmiszer formnál vagy törlésnél
+        items_error: {
+            hu: "",
+            en: ""
+        },
 
         recipes: <IRecipe[]> [
 
@@ -61,6 +70,113 @@ export const useAdminStore = defineStore('adminStore', {
             return this.recipes = [
                 {id: 1, nameHU: "Bolognai tészta", nameEN: "Bolognese pasta", descriptionHU: "A zöldségeket apró darabokra vágjuk és egy serpenyőbe rakjuk főni 60 percre.#Hozzárakjuk a paradicsomot, amit leturmixolunk először és fűszerezzük.#A tésztát forralt vízben elkészítjük.#A tésztára öntünk a szószból, és sajttal tálaljuk.", descriptionEN: "Cut the vegetables into small pieces and put them in a pan to cook for 60 minutes.#Add the tomatoes, which we first blend and season.#Prepare the dough in boiled water.#Pour the sauce over the pasta and serve with cheese.", type: "ITA", difficulty: 5, time: 80, image: "https://staticcookist.akamaized.net/wp-content/uploads/sites/22/2021/06/THUMB-LINK-2020-2.jpg?im=AspectCrop=(16,9);Resize,width=742;"}
             ]
+        }
+    }, actions: {
+        saveType(data: IType){
+            let validation = TypeValidation.TypeAllFilled(data.nameHU, data.nameEN, data.image);
+            if (!validation.isError) {   
+                if (data.id) {
+                    return adminService.updateType(data)
+                            .then((res: any)=>{
+                                this.type_error.hu = "";
+                                this.type_error.en = "";
+                                this.types[this.types.indexOf(data)] = res;
+                            })
+                            .catch((err: any)=>{
+                                this.type_error.hu = err.message;
+                                this.type_error.en = err.messageEn;
+                                return Promise.reject();
+                            });;
+                } else {
+                    return adminService.addType(data)
+                            .then((res: any)=>{
+                                this.type_error.hu = "";
+                                this.type_error.en = "";
+                                this.types.push(res);
+                            })
+                            .catch((err: any)=>{
+                                this.type_error.hu = err.message;
+                                this.type_error.en = err.messageEn;
+                                return Promise.reject();
+                            });
+                }
+            } else {
+                this.type_error.hu = validation.message!;
+                this.type_error.en = validation.messageEn!;
+            }
+        },
+        deleteType(data: IType){
+            if (data) {
+                return adminService.deleteType(data)
+                .then(()=>{
+                    this.type_error.hu = "";
+                    this.type_error.en = "";
+                    this.types.splice(this.types.indexOf(data), 1);
+                })
+                .catch((err: any)=>{
+                    this.type_error.hu = err.message;
+                    this.type_error.en = err.messageEn;
+                    return Promise.reject();
+                });
+            } else {
+                this.type_error.hu = "Sikertelen törlés";
+                this.type_error.en = "Delete failed!";
+                return Promise.reject();
+            }
+        },
+
+        // ITEMS
+        saveItem(data: Item){
+            let validation = ItemValidation.ItemAllFilled(data.nameHU, data.nameEN, data.typeId, data.unit, data.image);
+            if (!validation.isError) {   
+                if (data.id) {
+                    return adminService.updateItem(data)
+                            .then((res: any)=>{
+                                this.items_error.hu = "";
+                                this.items_error.en = "";
+                                this.items[this.items.indexOf(data)] = res;
+                            })
+                            .catch((err: any)=>{
+                                this.items_error.hu = err.message;
+                                this.items_error.en = err.messageEn;
+                                return Promise.reject();
+                            });;
+                } else {
+                    return adminService.addItem(data)
+                            .then((res: any)=>{
+                                this.items_error.hu = "";
+                                this.items_error.en = "";
+                                this.types.push(res);
+                            })
+                            .catch((err: any)=>{
+                                this.items_error.hu = err.message;
+                                this.items_error.en = err.messageEn;
+                                return Promise.reject();
+                            });
+                }
+            } else {
+                this.items_error.hu = validation.message!;
+                this.items_error.en = validation.messageEn!;
+            }
+        },
+        deleteItem(data: Item){
+            if (data) {
+                return adminService.deleteItem(data)
+                .then(()=>{
+                    this.items_error.hu = "";
+                    this.items_error.en = "";
+                    this.items.splice(this.items.indexOf(data), 1);
+                })
+                .catch((err: any)=>{
+                    this.items_error.hu = err.message;
+                    this.items_error.en = err.messageEn;
+                    return Promise.reject();
+                });
+            } else {
+                this.items_error.hu = "Sikertelen törlés";
+                this.items_error.en = "Delete failed!";
+                return Promise.reject();
+            }
         }
     }
 });

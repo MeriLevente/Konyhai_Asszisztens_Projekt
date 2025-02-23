@@ -20,12 +20,18 @@
     }
 
     let modalData = ref<Item>({
+        id: props.data.id,
         nameHU: props.data.nameHU,
         nameEN: props.data.nameEN,
         unit: props.data.unit,
         typeId: props.data.typeId,
         image: props.data.image
     });
+
+    const hideError = (): void =>{
+        items_error.value.hu = '';
+        items_error.value.en = '';
+    };
 
 </script>
 
@@ -41,11 +47,11 @@
                 <form @submit.prevent="saveChanges()">
                     <div class="mb-3">
                         <label for="nameHU" class="form-label">{{ t("name") }} (hu)</label>
-                        <input type="text" class="form-control" id="nameHU" v-model="modalData.nameHU" required>
+                        <input type="text" class="form-control" id="nameHU" v-model="modalData.nameHU" v-on:focus="() => {if(items_error.hu && items_error.en) hideError()}">
                     </div>
                     <div class="mb-3">
                         <label for="nameEN" class="form-label">{{ t("name") }} (en)</label>
-                        <input type="text" class="form-control" id="nameEN" v-model="modalData.nameEN" required>
+                        <input type="text" class="form-control" id="nameEN" v-model="modalData.nameEN" v-on:focus="() => {if(items_error.hu && items_error.en) hideError()}">
                     </div>
                     <div class="mb-3">
                         <label for="types" class="form-label">{{ t("type") }}</label>
@@ -61,9 +67,9 @@
                     </div>
                     <div class="mb-3">
                         <label for="image" class="form-label">{{ t("image") }}</label>
-                        <input type="text" class="form-control" id="image" v-model="modalData.image" required>
+                        <input type="text" class="form-control" id="image" v-model="modalData.image" v-on:focus="() => {if(items_error.hu && items_error.en) hideError()}">
                     </div>
-                    <div v-if="items_error != ''" class="text-danger text-center mx-5 mb-2">{{ items_error }}</div>
+                    <div v-if="items_error.hu != '' && items_error.en != ''" class="text-danger text-center mx-5 mb-2">{{ app_language.lang == 'hu' ? items_error.hu : items_error.en }}</div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-success">{{ t("save") }}</button>
                     </div>

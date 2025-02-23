@@ -1,9 +1,9 @@
 import type IUser from "@/models/User";
-import Axios from "./dataService";
+import instance from "./dataService";
 
 export default {
     register(data: IUser){
-        return Axios.post('/register', data)
+        return instance.post('/register', data)
                 .then((res: any)=>{
                     return res
                 })
@@ -12,7 +12,7 @@ export default {
                 }) //hiba történt
     },
     login(data: IUser){
-        return Axios.post('/login', data)
+        return instance.post('/login', data)
                 .then((res)=>{
                     return res
                 })
