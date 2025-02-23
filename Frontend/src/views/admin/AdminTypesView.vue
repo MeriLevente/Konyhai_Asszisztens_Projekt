@@ -23,6 +23,7 @@
 
     const editType = (selected: IType) => {
         data.value = {
+            id: selected.id,
             nameHU: selected.nameHU,
             nameEN: selected.nameEN,
             image: selected.image
@@ -30,16 +31,18 @@
     };
 
     const deleteType = (selected: IType) => {
-        console.log(selected);
+        store.deleteType(selected)?.then().catch();
     };
 
     const saveData = (type: any) => {
-        // storeban lévő saveType vagy edittype => serviceben
-        console.log(type.value);
-        data.value = null;
+        store.saveType(type.value)?.then(()=>{
+            closeModal();
+        }).catch()
     };
 
     const closeModal = () => {
+        store.type_error.hu = "";
+        store.type_error.en = "";
         data.value = null;
     }
 

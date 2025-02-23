@@ -7,10 +7,10 @@ import { createRouter, createWebHistory } from 'vue-router'
 import RegisterView from '@/views/login/RegisterView.vue'
 import AdminView from '@/views/admin/AdminView.vue'
 import RecipeDetails from '@/views/user/RecipeDetails.vue'
-import EditItemsView from '@/views/admin/EditItemsView.vue'
-import EditRecipesView from '@/views/admin/EditRecipesView.vue'
 import NotFoundView from '@/views/NotFoundView.vue'
-import AddTypeView from '@/views/admin/AddTypeView.vue'
+import AdminItemsView from '@/views/admin/AdminItemsView.vue'
+import AdminRecipesView from '@/views/admin/AdminRecipesView.vue'
+import AdminTypesView from '@/views/admin/AdminTypesView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -59,17 +59,17 @@ const router = createRouter({
     {
       path: '/add-type',
       name: 'add-type',
-      component: AddTypeView,
+      component: AdminTypesView,
     },
     {
       path: '/edit-items',
       name: 'edit-items',
-      component: EditItemsView,
+      component: AdminItemsView,
     },
     {
       path: '/edit-recipes',
       name: 'edit-recipes',
-      component: EditRecipesView,
+      component: AdminRecipesView,
     },
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFoundView },
   ],
