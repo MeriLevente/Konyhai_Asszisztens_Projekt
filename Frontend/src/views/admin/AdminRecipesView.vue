@@ -30,6 +30,7 @@ import type IRecipe from '@/models/Recipe';
 
     const editRecipe = (selected: IRecipe) => {
         data.value = {
+            id: selected.id,
             nameHU: selected.nameHU,
             nameEN: selected.nameEN,
             descriptionHU: selected.descriptionHU,
@@ -43,12 +44,11 @@ import type IRecipe from '@/models/Recipe';
     };
 
     const deleteRecipe = (selected: IRecipe) => {
-        console.log(selected);
+        store.deleteRecipe(selected).then().catch();
     };
 
     const saveData = (recipe: IRecipe) => {
-        console.log(recipe);
-        data.value = null;
+        store.saveRecipes(recipe)?.then(()=>closeEditor()).catch();
     };
 
     const closeEditor = () => {
@@ -111,21 +111,7 @@ import type IRecipe from '@/models/Recipe';
     <RecipeEditor :recipe="data" v-on:editor-closed="closeEditor" v-on:save-data="saveData" v-if="openEditor == true"/>
 </template>
 
-<style lang="css" scoped>
-    th{
-        background-color: var(--ebony-clay);
-        color: var(--mercury);
-    }
-
-    table {
-        border: var(--ebony-clay) 1px solid;
-    }
-
-    .tdImage {
-        width: 8vh;
-        height: 5vh;
-    }
-
+<style lang="css">
     .add-btn{
         background: var(--bermuda);
     }

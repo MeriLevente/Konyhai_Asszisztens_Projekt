@@ -3,6 +3,7 @@ import type IRecipe from "@/models/Recipe";
 import type IType from "@/models/Type";
 import adminService from "@/services/adminService";
 import ItemValidation from "@/utils/ItemValidation";
+import RecipeValidation from "@/utils/RecipeValidation";
 import TypeValidation from "@/utils/TypeValidation";
 import { defineStore } from "pinia";
 
@@ -32,7 +33,10 @@ export const useAdminStore = defineStore('adminStore', {
         recipes: <IRecipe[]> [
 
         ],
-        recipes_error: "",
+        recipes_error: {
+            hu: "",
+            en: ""
+        },
         recipe_types: {
             types: [
                 {short: "AME", hu: "Amerikai", en: "American"},
@@ -175,6 +179,60 @@ export const useAdminStore = defineStore('adminStore', {
             } else {
                 this.items_error.hu = "Sikertelen törlés";
                 this.items_error.en = "Delete failed!";
+                return Promise.reject();
+            }
+        },
+
+        //RECIPES
+        saveRecipes(data: IRecipe){
+            let validation = RecipeValidation.RecipeAllFilled(data.nameHU, data.nameEN, data.difficulty, data.time, data.image, data.type, data.descriptionHU, data.descriptionEN);
+            if (!validation.isError) {   
+                if (data.id) {
+                    return adminService.updateRecipe(data)
+                            .then((res: any)=>{
+                                this.recipes_error.hu = "";
+                                this.recipes_error.en = "";
+                                this.recipes[this.recipes.indexOf(data)] = res;
+                            })
+                            .catch((err: any)=>{
+                                this.recipes_error.hu = err.message;
+                                this.recipes_error.en = err.messageEn;
+                                return Promise.reject();
+                            });;
+                } else {
+                    return adminService.addRecipe(data)
+                            .then((res: any)=>{
+                                this.recipes_error.hu = "";
+                                this.recipes_error.en = "";
+                                this.recipes.push(res);
+                            })
+                            .catch((err: any)=>{
+                                this.recipes_error.hu = err.message;
+                                this.recipes_error.en = err.messageEn;
+                                return Promise.reject();
+                            });
+                }
+            } else {
+                this.recipes_error.hu = validation.message!;
+                this.recipes_error.en = validation.messageEn!;
+            }
+        },
+        deleteRecipe(data: IRecipe){
+            if (data) {
+                return adminService.deleteRecipe(data)
+                .then(()=>{
+                    this.recipes_error.hu = "";
+                    this.recipes_error.en = "";
+                    this.recipes.splice(this.recipes.indexOf(data), 1);
+                })
+                .catch((err: any)=>{
+                    this.recipes_error.hu = err.message;
+                    this.recipes_error.en = err.messageEn;
+                    return Promise.reject();
+                });
+            } else {
+                this.recipes_error.hu = "Sikertelen törlés";
+                this.recipes_error.en = "Delete failed!";
                 return Promise.reject();
             }
         }

@@ -29,7 +29,7 @@ const i18n = createI18n({
             admin_reg: "Admin regisztráció",
             edit_recipes: "Receptek",
             edit_items: "Élelmiszerek",
-            add_new: "Új felvétele",
+            add_new: "Új",
             close: "Bezár",
             no_data: "Nincsenek még adatok!",
 
@@ -77,7 +77,7 @@ const i18n = createI18n({
             admin_reg: "Admin registration",
             edit_recipes: "Recipes",
             edit_items: "Items",
-            add_new: "Add new",
+            add_new: "New",
             close: "Close",
             no_data: "No data found yet!",
 

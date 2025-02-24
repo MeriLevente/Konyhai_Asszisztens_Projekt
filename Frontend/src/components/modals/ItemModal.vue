@@ -81,5 +81,12 @@
 </template>
 
 <style lang="css">
+    .modal{
+        position: absolute;
+        top: 10%;
+    }
 
+    body {
+        overflow: hidden;
+    }
 </style>
