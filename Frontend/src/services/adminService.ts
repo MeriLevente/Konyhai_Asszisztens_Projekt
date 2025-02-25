@@ -1,6 +1,7 @@
 import type IType from "@/models/Type";
 import instance from "./dataService";
 import type Item from "@/models/Item";
+import type IRecipe from "@/models/Recipe";
 
 export default {
     addType(data: IType){
@@ -59,4 +60,33 @@ export default {
             return Promise.reject(err.response)
         })
     },
+
+    //RECIPES
+    addRecipe(data: IRecipe) {
+        return instance.post('/addRecipe', data)
+        .then((res: any)=>{
+            return res
+        })
+        .catch((err: any)=>{
+            return Promise.reject(err.response)
+        })
+    },
+    updateRecipe(data: IRecipe) {
+        return instance.post(`/updateRecipe/${data.id}`, data)
+        .then((res: any)=>{
+            return res
+        })
+        .catch((err: any)=>{
+            return Promise.reject(err.response)
+        })
+    },
+    deleteRecipe(data: IRecipe) {
+        return instance.post(`/deleteRecipe/${data.id}`)
+        .then((res: any)=>{
+            return res
+        })
+        .catch((err: any)=>{
+            return Promise.reject(err.response)
+        })
+    }
 };

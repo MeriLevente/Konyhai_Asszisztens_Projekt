@@ -56,6 +56,7 @@
 </script>
 
 <template>
+    <div class="background" v-if="data"></div>
     <div class="container my-5 justify-center">
         <div class="row">
             <h1 class="display-3 text-center">{{t('edit_items')}}</h1>
@@ -109,18 +110,6 @@
     </div>
 </template>
 
-<style lang="css" scoped>
-     th{
-        background-color: var(--ebony-clay);
-        color: var(--mercury);
-    }
+<style lang="css">
 
-    table {
-        border: var(--ebony-clay) 1px solid
-    }
-
-    .tdImage {
-        width: 8vh;
-        height: 5vh;
-    }
 </style>

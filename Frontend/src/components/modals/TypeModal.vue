@@ -5,19 +5,19 @@
     import { storeToRefs } from 'pinia';
     import { ref } from 'vue';
     import { useI18n } from 'vue-i18n';
-    const { type_error } = storeToRefs(useAdminStore())
-    const { app_language } = storeToRefs(useAppStore())
+    const { type_error } = storeToRefs(useAdminStore());
+    const { app_language } = storeToRefs(useAppStore());
     const { t } = useI18n();
     const props = defineProps(["data"]);
-    const emit = defineEmits(["saveData", "closeModal"])
+    const emit = defineEmits(["saveData", "closeModal"]);
 
     const closeModal = () => {
-        emit('closeModal')
-    }
+        emit('closeModal');
+    };
 
     const saveChanges = () => {
-        emit('saveData', modalData)
-    }
+        emit('saveData', modalData);
+    };
 
     let modalData = ref<IType>({
         id: props.data.id,
@@ -26,9 +26,19 @@
         image: props.data.image
     });
 
-    const hideError = (): void =>{
+    const hideError = (): void => {
         type_error.value.hu = '';
         type_error.value.en = '';
+    };
+
+    const imageChanged = (event: any) => {
+        const selectedImage = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            modalData.value.image = e.target!.result!.toString();
+        };
+        reader.readAsDataURL(selectedImage);
     };
 
 </script>
@@ -53,7 +63,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="image" class="form-label">{{ t("image") }}</label>
-                        <input type="text" class="form-control" id="image" v-model="modalData.image" v-on:focus="() => {if(type_error.hu && type_error.en) hideError()}">
+                        <input type="file" class="form-control" id="image" accept="images/*,.png,.jpg,.jpeg,.svg" v-on:change="imageChanged" v-on:focus="() => {if(type_error.hu && type_error.en) hideError()}">
                     </div>
                     <div v-if="type_error.hu != '' && type_error.en != ''" class="text-danger text-center mx-5 mb-2">{{ app_language.lang == 'hu' ? type_error.hu : type_error.en }}</div>
                     <div class="modal-footer">
@@ -66,6 +76,14 @@
     </div>
 </template>
 
-<style lang="css">
+<style lang="css" scoped>
+    .modal{
+        position: absolute;
+        top: 20%;
+    }
 
+    body {
+        overflow: hidden;
+    }
+    
 </style>

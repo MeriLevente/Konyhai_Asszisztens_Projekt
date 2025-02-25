@@ -7,7 +7,7 @@
     const { t } = useI18n();
     const props = defineProps(["recipe"]);
     const emit = defineEmits(["editorClosed", "saveData"]);
-    const { recipe_types } = storeToRefs(useAdminStore());
+    const { recipe_types, recipes_error } = storeToRefs(useAdminStore());
     const { app_language } = storeToRefs(useAppStore());
 
     const selectedStep = ref("1");
@@ -40,7 +40,6 @@
         props.recipe.descriptionHU = descHU.value.join("#");
         props.recipe.descriptionEN = descEN.value.join("#");
         emit("saveData", props.recipe);
-        emit("editorClosed");
     };
 </script>
 
@@ -52,19 +51,19 @@
             <div class="row mb-2">
                 <div class="col-12 col-md-6">
                     <label for="nameHU" class="form-label">{{ t("name") }} (hu)</label>
-                    <input type="text" class="form-control m-1" id="nameHU" v-model="recipe.nameHU" required>
+                    <input type="text" class="form-control m-1" id="nameHU" v-model="recipe.nameHU" >
                     <label for="difficulty" class="form-label">{{ t("difficulty") }}</label>
-                    <input type="number" class="form-control m-1" id="difficulty" v-model="recipe.difficulty" required min="1" max="10">
+                    <input type="number" class="form-control m-1" id="difficulty" v-model="recipe.difficulty" min="1" max="10">
                     <label for="image" class="form-label">{{ t("image") }}</label>
-                    <input type="text" class="form-control m-1" id="image" v-model="recipe.image" required>
+                    <input type="text" class="form-control m-1" id="image" v-model="recipe.image">
                 </div>
                 <div class="col-12 col-md-6 mb">
                     <label for="nameEN" class="form-label">{{ t("name") }} (en)</label>
-                    <input type="text" class="form-control m-1" id="nameEN" v-model="recipe.nameEN" required>
+                    <input type="text" class="form-control m-1" id="nameEN" v-model="recipe.nameEN">
                     <label for="time" class="form-label">{{ t("time") }}</label>
-                    <input type="number" class="form-control m-1" id="time" v-model="recipe.time" required min="1" max="1000">
+                    <input type="number" class="form-control m-1" id="time" v-model="recipe.time" min="1" max="10080">
                     <label for="type" class="form-label">{{ t("type") }}</label>
-                    <select name="type" id="type" class="form-control m-1" required v-model="recipe.type">
+                    <select name="type" id="type" class="form-control m-1" v-model="recipe.type">
                         <option v-for="type in recipe_types.types" :value="type.short" :selected="recipe.type == type.short">{{ app_language.lang == "hu" ? type.hu : type.en  }}</option>
                     </select>
                 </div>
@@ -114,6 +113,7 @@
                     <p v-if="descEN[0] != '' && selectedLanguage == 'en'" v-for="(step, index) in descEN">{{ `${index+1}. ${step}` }}</p>
                 </div>
             </div>
+            <div v-if="recipes_error.hu != '' && recipes_error.en != ''" class="text-danger text-center mx-5 mb-2">{{ app_language.lang == 'hu' ? recipes_error.hu : recipes_error.en }}</div>
             <div class="row m-3">
                 <div class="col d-flex justify-content-end">
                     <button type="button" class="btn btn-danger" v-on:click="closeEditor">{{ t("cancel") }}</button>
