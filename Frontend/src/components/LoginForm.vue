@@ -16,7 +16,7 @@
     let see_password = ref<boolean>(false);
     let see_conf_password = ref<boolean>(false);
 
-    const router = useRouter()
+    const router = useRouter();
 
     const formData = ref<IUser>({
         email: "",
@@ -25,7 +25,6 @@
     });
 
     const submitForm = () : void => {
-        // userStore-ba register vagy login függvény és a logot töröld
         if(props.method == "Regisztrálás" || props.method == "Register"){
             status.value.confirm_password = confirm_password.value!;
             register(formData.value).then(()=>{
@@ -75,7 +74,7 @@
                     <label for="name">{{t("name_form")}}</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="email" class="form-control" id="email" v-model="formData.email" maxlength="320" v-on:focus="() => {if(status.message && status.messageEn) hideError()}">
+                    <input type="text" class="form-control" id="email" v-model="formData.email" maxlength="320" v-on:focus="() => {if(status.message && status.messageEn) hideError()}">
                     <label for="email">Email</label>
                 </div>
                 <div class="form-floating mb-3">
@@ -89,11 +88,11 @@
                     <label for="confirmpass">{{t("confirm_password_form")}}</label>
                 </div>
                 <RouterLink to="/register" v-if="method != 'Regisztrálás' && method != 'Register'" class="my-2">{{ t("go_register") }}</RouterLink>
+                <div v-if="status.message && status.messageEn" class="text-danger text-center" id="error-message">{{ app_language.lang == "hu" ? status.message : status.messageEn }}</div>
                 <div class="mb-1">
                     <button id="submit" type="submit" class="btn btn-primary w-100 p-2 my-3">{{ method }}</button>
                 </div>
             </form>
-            <div v-if="status.message && status.messageEn" class="alert alert-danger text-center">{{ app_language.lang == "hu" ? status.message : status.messageEn }}</div>
         </div>
     </div>
 </template>
