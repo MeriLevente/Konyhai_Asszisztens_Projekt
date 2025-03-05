@@ -47,7 +47,8 @@ export const useAdminStore = defineStore('adminStore', {
                 {short: "ITA", hu: "Olasz", en: "Italian"},
                 {short: "MEX", hu: "Mexikói", en: "Mexican"}
             ]
-        }
+        },
+        savedImageUrl: <string> ''
     }),
     getters: {
         storeTypes(): IType[] { //majd a backendről kérdezem le, typeService-ben lévő metódus, a képeket majd mi tároljuk majd
@@ -72,10 +73,19 @@ export const useAdminStore = defineStore('adminStore', {
         },
         storeRecipes(): IRecipe[]{
             return this.recipes = [
-                {id: 1, nameHU: "Bolognai tészta", nameEN: "Bolognese pasta", descriptionHU: "A zöldségeket apró darabokra vágjuk és egy serpenyőbe rakjuk főni 60 percre.#Hozzárakjuk a paradicsomot, amit leturmixolunk először és fűszerezzük.#A tésztát forralt vízben elkészítjük.#A tésztára öntünk a szószból, és sajttal tálaljuk.", descriptionEN: "Cut the vegetables into small pieces and put them in a pan to cook for 60 minutes.#Add the tomatoes, which we first blend and season.#Prepare the dough in boiled water.#Pour the sauce over the pasta and serve with cheese.", type: "ITA", difficulty: 5, time: 80, image: "https://staticcookist.akamaized.net/wp-content/uploads/sites/22/2021/06/THUMB-LINK-2020-2.jpg?im=AspectCrop=(16,9);Resize,width=742;"}
+                {id: 1, nameHU: "Bolognai tészta", nameEN: "Bolognese pasta", descriptionHU: "A zöldségeket apró darabokra vágjuk és egy serpenyőbe rakjuk főni 60 percre.#Hozzárakjuk a paradicsomot, amit leturmixolunk először és fűszerezzük.#A tésztát forralt vízben elkészítjük.#A tésztára öntünk a szószból, és sajttal tálaljuk.", descriptionEN: "Cut the vegetables into small pieces and put them in a pan to cook for 60 minutes.#Add the tomatoes, which we first blend and season.#Prepare the dough in boiled water.#Pour the sauce over the pasta and serve with cheese.", type: "ITA", difficulty: 5, time: 80, image: "https://staticcookist.akamaized.net/wp-content/uploads/sites/22/2021/06/THUMB-LINK-2020-2.jpg?im=AspectCrop=(16,9);Resize,width=742;", ingredients: [{item: {id: 1, nameHU: "Paradicsom", nameEN: "Tomato", typeId: 1,unit: "darab" , image: "https://gallery.yopriceville.com/Free-Clipart-Pictures/Vegetables-PNG/Tomato_Transparent_PNG_Clip_Art_Image"}, quantity: 30}]}
             ]
         }
     }, actions: {
+        imageChange(file: any){
+            const selectedImage = file;
+            const reader = new FileReader();
+            
+            reader.onload = (e) => {
+                this.savedImageUrl = e.target!.result!.toString();
+            };
+            reader.readAsDataURL(selectedImage);
+        },
         saveType(data: IType){
             let validation = TypeValidation.TypeAllFilled(data.nameHU, data.nameEN, data.image);
             if (!validation.isError) {   
@@ -185,7 +195,9 @@ export const useAdminStore = defineStore('adminStore', {
 
         //RECIPES
         saveRecipes(data: IRecipe){
-            let validation = RecipeValidation.RecipeAllFilled(data.nameHU, data.nameEN, data.difficulty, data.time, data.image, data.type, data.descriptionHU, data.descriptionEN);
+            let validation = RecipeValidation.RecipeIsCorrect(
+                data.nameHU, data.nameEN, data.difficulty, data.time, data.image, data.type, data.descriptionHU, data.descriptionEN, data.ingredients!
+            );
             if (!validation.isError) {   
                 if (data.id) {
                     return adminService.updateRecipe(data)

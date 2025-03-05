@@ -18,7 +18,8 @@
             nameHU: "",
             nameEN: "",
             image: ""
-        }
+        };
+        document.getElementsByTagName('body')[0].classList.add('disable-scrolling')
     };
 
     const editType = (selected: IType) => {
@@ -28,6 +29,7 @@
             nameEN: selected.nameEN,
             image: selected.image
         }
+        document.getElementsByTagName('body')[0].classList.add('disable-scrolling')
     };
 
     const deleteType = (selected: IType) => {
@@ -36,7 +38,7 @@
 
     const saveData = (type: any) => {
         store.saveType(type.value)?.then(()=>{
-            closeModal();
+            closeModal();          
         }).catch()
     };
 
@@ -44,6 +46,7 @@
         store.type_error.hu = "";
         store.type_error.en = "";
         data.value = null;
+        document.getElementsByTagName('body')[0].classList.remove('disable-scrolling')
     }
 
 </script>
@@ -51,6 +54,9 @@
 <template>
     <div class="background" v-if="data"></div>
     <div class="container my-5 justify-center">
+        <div class="row">
+            <RouterLink class="back-to-admin" to="/admin">Admin >> {{ t('edit_type') }}</RouterLink>
+        </div>
         <div class="row">
             <h1 class="display-3 text-center">{{t('edit_type')}}</h1>
         </div>
@@ -65,11 +71,11 @@
                     </span>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-hover" v-if="itemtypes.length > 0">
+                    <table class="admin-table" v-if="itemtypes.length > 0">
                     <thead>
                     <tr>
                         <th style="width: 10%;">
-                            <span class="btn btn-success btn-add pt-0" v-on:click="addType">
+                            <span class="btn btn-success m-1" v-on:click="addType">
                                 {{ t("add_new") }}
                             </span>
                         </th>
@@ -88,14 +94,12 @@
                         <td class="text-center pt-3">{{ type.id }}</td>
                         <td class="text-center pt-3">{{ type.nameHU }}</td>
                         <td class="text-center pt-3">{{ type.nameEN }}</td>
-                        <!-- <td><img class="tdImage" v-bind:src="type.image"></img></td> -->
                         <td><img class="tdImage" :src="type.image" alt="image"></td>
                     </tr>
                     </tbody>
                     </table>
                 </div>
-            <TypeModal :data="data" v-if="data" v-on:save-data="saveData" v-on:close-modal="closeModal"/>
-            
+                <TypeModal :data="data" v-if="data" v-on:save-data="saveData" v-on:close-modal="closeModal"/>
             </div>
         </div>
     </div>
@@ -107,9 +111,14 @@
         color: var(--mercury);
     }
 
-    table {
+    .admin-table {
         border: var(--ebony-clay) 1px solid;
-        font-size: 2vh;
+        font-size: 1.8vh;
+        background-color: var(--mercury);
+    }
+
+    tr{
+        border: var(--ebony-clay) 0.30px solid;
     }
 
     .tdImage {
@@ -119,8 +128,7 @@
 
     .background {
         width: 100%;
-        height: 100vh;
-        overflow: hidden;
+        height: 100%;
         position: absolute;
         left: 0;
         top: 0;
@@ -141,5 +149,16 @@
 
     i {
         font-size: 1.6vh;
+    }
+
+    .back-to-admin {
+        text-decoration: none;
+        color: black;
+        font-weight: bold;
+    }
+
+    .disable-scrolling {
+        height: 100%;
+        overflow: hidden;
     }
 </style>

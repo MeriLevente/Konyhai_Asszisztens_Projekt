@@ -81,9 +81,4 @@
         position: absolute;
         top: 20%;
     }
-
-    body {
-        overflow: hidden;
-    }
-    
 </style>

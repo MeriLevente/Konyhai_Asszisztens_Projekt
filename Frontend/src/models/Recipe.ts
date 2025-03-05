@@ -1,3 +1,5 @@
+import type Ingredient from "./Ingredient"
+
 export default interface IRecipe {
     id?: number
     nameHU: string
@@ -8,4 +10,5 @@ export default interface IRecipe {
     difficulty: number
     time: number
     image: string
+    ingredients: Ingredient[]
 };

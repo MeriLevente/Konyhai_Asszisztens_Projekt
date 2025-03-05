@@ -18,7 +18,7 @@
             </li>
           </div>
         </ul>
-        <a href="" :class="app_language.lang == 'hu' ? 'bg-hu' : 'bg-en'" class="btn" v-on:click="changeLanguage()"></a>
+        <a href="" :class="app_language.lang == 'hu' ? 'bg-hu' : 'bg-en'" class="btn" id="langBtn" v-on:click="changeLanguage()"></a>
       </div>
     </div>
   </nav>

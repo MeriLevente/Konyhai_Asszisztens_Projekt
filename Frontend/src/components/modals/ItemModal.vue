@@ -12,10 +12,13 @@
     const emit = defineEmits(["saveData", "closeModal"])
 
     const closeModal = () => {
+        useAdminStore().savedImageUrl = '';
         emit('closeModal')
     }
 
     const saveChanges = () => {
+        modalData.value.image = useAdminStore().savedImageUrl;
+        useAdminStore().savedImageUrl = '';
         emit('saveData', modalData)
     }
 
@@ -31,6 +34,10 @@
     const hideError = (): void =>{
         items_error.value.hu = '';
         items_error.value.en = '';
+    };
+
+    const imageChanged = (event: any) => {
+        useAdminStore().imageChange(event.target.files[0])
     };
 
 </script>
@@ -67,7 +74,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="image" class="form-label">{{ t("image") }}</label>
-                        <input type="text" class="form-control" id="image" v-model="modalData.image" v-on:focus="() => {if(items_error.hu && items_error.en) hideError()}">
+                        <input type="file" class="form-control" id="image" accept="images/*,.png,.jpg,.jpeg,.svg" v-on:change="imageChanged" v-on:focus="() => {if(items_error.hu && items_error.en) hideError()}">
                     </div>
                     <div v-if="items_error.hu != '' && items_error.en != ''" class="text-danger text-center mx-5 mb-2">{{ app_language.lang == 'hu' ? items_error.hu : items_error.en }}</div>
                     <div class="modal-footer">
@@ -80,13 +87,9 @@
     </div>
 </template>
 
-<style lang="css">
+<style lang="css" scoped>
     .modal{
         position: absolute;
         top: 10%;
-    }
-
-    body {
-        overflow: hidden;
     }
 </style>

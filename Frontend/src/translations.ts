@@ -34,6 +34,7 @@ const i18n = createI18n({
             no_data: "Nincsenek még adatok!",
 
             //Edit types
+            id: "Id",
             name: "Név",
             image: "Kép",
 
@@ -51,7 +52,13 @@ const i18n = createI18n({
             step: "Lépés",
             language: "Nyelv",
             hu: "Magyar",
-            en: "Angol"
+            en: "Angol",
+            ingredients: "Hozzávalók",
+
+            quantity: "Mennyiség",
+            darab: "darab",
+            g: "g",
+            ml: "ml"
         },
         'en': {
             //HomeView
@@ -82,6 +89,7 @@ const i18n = createI18n({
             no_data: "No data found yet!",
 
             //Edit types
+            id: "Id",
             name: "Name",
             image: "Image",
 
@@ -99,7 +107,13 @@ const i18n = createI18n({
             step: "Step",
             language: "Language",
             hu: "Hungarian",
-            en: "English"
+            en: "English",
+            ingredients: "Ingredients",
+
+            quantity: "Quantity",
+            darab: "piece",
+            g: "g",
+            ml: "ml"
         }
     }
 });
