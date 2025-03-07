@@ -31,7 +31,7 @@
                 email: formData.value.email.trim(),
                 password: formData.value.password.trim(),
                 role: formData.value.role,
-            }
+        }
         if(props.method == "Regisztrálás" || props.method == "Register"){
             status.value.confirm_password = confirm_password.value!;
             register(userData).then(()=>{
@@ -95,7 +95,7 @@
                     <label for="confirmpass">{{t("confirm_password_form")}}</label>
                 </div>
                 <RouterLink to="/register" v-if="method != 'Regisztrálás' && method != 'Register'" class="my-2">{{ t("go_register") }}</RouterLink>
-                <div v-if="status.message && status.messageEn" class="text-danger text-center" id="error-message">{{ app_language.lang == "hu" ? status.message : status.messageEn }}</div>
+                <div v-if="status.message && status.messageEn" class="text-danger text-center" id="error-message">{{ app_language == "hu" ? status.message : status.messageEn }}</div>
                 <div class="mb-1">
                     <button id="submit" type="submit" class="btn btn-primary w-100 p-2 my-3">{{ method }}</button>
                 </div>

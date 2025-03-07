@@ -23,7 +23,8 @@ import type IRecipe from '@/models/Recipe';
             type: "AME",
             difficulty: 0,
             time: 0,
-            image: ""
+            image: "",
+            ingredients: []
         };
         openEditor.value = true;
     };
@@ -49,6 +50,7 @@ import type IRecipe from '@/models/Recipe';
     };
 
     const saveData = (recipe: IRecipe) => {
+        console.log(recipe)
         store.saveRecipes(recipe)?.then(()=>closeEditor()).catch();
     };
 
@@ -80,7 +82,7 @@ import type IRecipe from '@/models/Recipe';
                     <table class="admin-table" v-if="recipes.length > 0">
                     <thead>
                         <tr>
-                            <th style="width: 8%;">
+                            <th style="width: 10%;">
                                 <span class="btn btn-success m-1" v-on:click="addRecipe">
                                     {{ t("add_new") }}
                                 </span>
@@ -95,8 +97,12 @@ import type IRecipe from '@/models/Recipe';
                     <tbody>
                         <tr v-for="(recipe,index) in recipes" :key="index">
                             <td>
-                                <span class="btn btn-primary p-2 m-1"  v-on:click="editRecipe(recipe)"><i class="bi bi-pencil"></i></span>
-                                <span class="btn btn-danger p-2" v-on:click="deleteRecipe(recipe)"><i class="bi bi-trash"></i></span>
+                                <span class="btn btn-primary table-btn p-2 m-1"  v-on:click="editRecipe(recipe)">
+                                    <i class="bi bi-pencil d-flex justify-content-center"></i>
+                                </span>
+                                <span class="btn btn-danger table-btn p-2" v-on:click="deleteRecipe(recipe)">
+                                    <i class="bi bi-trash d-flex justify-content-center"></i>
+                                </span>
                             </td>
                             <td class="text-center pt-3">{{ recipe.id }}</td>
                             <td class="text-center pt-3">{{ recipe.nameHU }}</td>

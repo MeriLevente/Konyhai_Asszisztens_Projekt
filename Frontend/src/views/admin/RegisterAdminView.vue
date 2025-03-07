@@ -18,7 +18,7 @@
 
 <style lang="css" scoped>
     .content-box {
-        height: 75vh;
+        height: 90vh;
         display: flex;
         justify-content: center;
         align-items: center;

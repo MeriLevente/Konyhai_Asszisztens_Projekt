@@ -105,60 +105,6 @@
     </div>
 </template>
 
-<style lang="css">
-    th{
-        background-color: var(--ebony-clay);
-        color: var(--mercury);
-    }
-
-    .admin-table {
-        border: var(--ebony-clay) 1px solid;
-        font-size: 1.8vh;
-        background-color: var(--mercury);
-    }
-
-    tr{
-        border: var(--ebony-clay) 0.30px solid;
-    }
-
-    .tdImage {
-        width: 6vh;
-        height: 5vh;
-    }
-
-    .background {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        left: 0;
-        top: 0;
-        background-color: black;
-        opacity: 0.8;
-        z-index: 0;
-    }
-
-    .table-btn {
-        width: 3.5vh;
-        height: 3.5vh;
-    }
-
-    .btn-add {
-        width: 10vh;
-        height: 3.5vh; 
-    }
-
-    i {
-        font-size: 1.6vh;
-    }
-
-    .back-to-admin {
-        text-decoration: none;
-        color: black;
-        font-weight: bold;
-    }
-
-    .disable-scrolling {
-        height: 100%;
-        overflow: hidden;
-    }
+<style lang="css" src="@/assets/css/admin.css">
+    
 </style>

@@ -19,5 +19,14 @@ export default {
                 .catch((err)=>{
                     return Promise.reject(err.response)
         })
+    },
+    logout(token: string){
+        return instance.post('/logout')
+                .then((res)=>{
+                    return res.data
+                })
+                .catch(()=>{
+                    return Promise.reject()
+                })
     }
 }

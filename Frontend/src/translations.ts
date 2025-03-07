@@ -4,6 +4,7 @@ const i18n = createI18n({
     legacy: false,
     locale: 'hu',
     fallbackLocale: 'hu',
+    reloadOnLanguageChange: false,
     messages: {
         'hu': {
             //HomeView
@@ -17,6 +18,7 @@ const i18n = createI18n({
 
             //LoginView, RegisterView
             login_h1: "Bejelentkezés",
+            logout: "Kijelentkezés",
             register_h1: "Regisztrálás",
             name_form: "Név",
             password_form: "Jelszó",
@@ -58,7 +60,9 @@ const i18n = createI18n({
             quantity: "Mennyiség",
             darab: "darab",
             g: "g",
-            ml: "ml"
+            ml: "ml",
+
+            toHome: "Vissza a főoldalra",
         },
         'en': {
             //HomeView
@@ -72,6 +76,7 @@ const i18n = createI18n({
 
             //LoginView, RegisterView
             login_h1: "Login",
+            logout: "Logout",
             register_h1: "Register",
             name_form: "Name",
             password_form: "Password",
@@ -113,7 +118,9 @@ const i18n = createI18n({
             quantity: "Quantity",
             darab: "piece",
             g: "g",
-            ml: "ml"
+            ml: "ml",
+
+            toHome: "Back to the homepage",
         }
     }
 });

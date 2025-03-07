@@ -51,11 +51,6 @@
         data.value = null;
         document.getElementsByTagName('body')[0].classList.remove('disable-scrolling')
     };
-
-    const getTypeById = (typeId: number): {} => {
-        const type: IType = store.storeTypes.filter(x=> x.id == typeId)[0];
-        return {hu: type.nameHU, en: type.nameEN} 
-    };
 </script>
 
 <template>
@@ -82,7 +77,7 @@
                     <table class="admin-table" v-if="items.length > 0">
                     <thead>
                         <tr>
-                            <th style="width: 8%;">
+                            <th style="width: 10%;">
                                 <span class="btn btn-success m-1" v-on:click="addItem">
                                     {{ t("add_new") }}
                                 </span>
@@ -90,21 +85,24 @@
                             <th class="text-center" style="width: 1%;">Id</th>
                             <th class="text-center" style="width: 10%;">{{ t("name") }} (hu)</th>
                             <th class="text-center" style="width: 10%;">{{ t("name") }} (en)</th>
-                            <th class="text-center" style="width: 8%;">{{ t("type")}} (hu)</th>
-                            <th class="text-center" style="width: 8%;">{{ t("type") }} (en)</th>
+                            <th class="text-center" style="width: 8%;">{{ t("type")}} id</th>
                             <th style="width: 6%;">{{ t("image") }}</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="(item,index) in items" :key="index">
                             <td>
-                                <span class="btn btn-primary p-2 m-1"  v-on:click="editItem(item)"><i class="bi bi-pencil"></i></span>
-                                <span class="btn btn-danger p-2" v-on:click="deleteItem(item)"><i class="bi bi-trash"></i></span>
+                                <span class="btn btn-primary table-btn p-2 m-1"  v-on:click="editItem(item)">
+                                    <i class="bi bi-pencil d-flex justify-content-center"></i>
+                                </span>
+                                <span class="btn btn-danger table-btn p-2" v-on:click="deleteItem(item)">
+                                    <i class="bi bi-trash d-flex justify-content-center"></i>
+                                </span>
                             </td>
                             <td class="text-center pt-3">{{ item.id }}</td>
                             <td class="text-center pt-3">{{ item.nameHU }}</td>
                             <td class="text-center pt-3">{{ item.nameEN }}</td>
-                            <td class="text-center pt-3" v-for="type in getTypeById(item.typeId)">{{ type }}</td>
+                            <td class="text-center pt-3">{{ item.typeId }}</td>
                             <td><img class="tdImage" v-bind:src="item.image" alt="Img"></td>
                         </tr>
                     </tbody>

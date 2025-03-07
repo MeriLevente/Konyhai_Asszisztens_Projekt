@@ -85,6 +85,7 @@ export const useAdminStore = defineStore('adminStore', {
                 this.savedImageUrl = e.target!.result!.toString();
             };
             reader.readAsDataURL(selectedImage);
+            return this.savedImageUrl;
         },
         saveType(data: IType){
             let validation = TypeValidation.TypeAllFilled(data.nameHU, data.nameEN, data.image);

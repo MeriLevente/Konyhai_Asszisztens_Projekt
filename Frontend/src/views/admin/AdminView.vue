@@ -1,9 +1,15 @@
 <script setup lang="ts">
+    import { ref } from 'vue';
     import { useI18n } from 'vue-i18n';
     const { t } = useI18n();
     import { useRouter } from 'vue-router';
 
     const router = useRouter();
+    let windowWidth = ref<number>(window.innerWidth);
+
+    window.addEventListener('resize', ()=>{
+        windowWidth.value = window.innerWidth
+    });
 
     const navigateToPage = (to: string) : void => {
         router.push(to);
@@ -17,20 +23,20 @@
         </div>
         <div class="row row-content my-5 d-flex justify-content-center">
             <div class="col-11 col-sm-5 p-2 admin-box-blue m-1" v-on:click="navigateToPage('/add-type')">
-                <p class="text-center display-5 link-box-blue">{{ t("edit_type") }}</p>
-                <i class="bi bi-egg d-flex justify-content-center link-box-blue"></i>
+                <p class="text-center display-5">{{ t("edit_type") }}</p>
+                <i class="bi bi-egg d-flex justify-content-center"></i>
             </div>
             <div class="col-11 col-sm-5 admin-box-white m-1" v-on:click="navigateToPage('/edit-items')">
-                <p class="text-center p-2 display-5 link-box-white">{{ t("edit_items") }}</p>
-                <i class="bi bi-apple d-flex justify-content-center link-box-white"></i>
+                <p class="text-center p-2 display-5">{{ t("edit_items") }}</p>
+                <i class="bi bi-apple d-flex justify-content-center"></i>
             </div>
-            <div class="col-11 col-sm-5 p-2 admin-box-white m-1" v-on:click="navigateToPage('/edit-recipes')">
-                <p class="text-center display-5 link-box-white">{{ t("edit_recipes") }}</p>
-                <i class="bi bi-journals d-flex justify-content-center link-box-white"></i>
+            <div class="col-11 col-sm-5 p-2 m-1" v-on:click="navigateToPage('/edit-recipes')" :class="windowWidth > 575 ? 'admin-box-white' : 'admin-box-blue'">
+                <p class="text-center display-5">{{ t("edit_recipes") }}</p>
+                <i class="bi bi-journals d-flex justify-content-center"></i>
             </div>
-            <div class="col-11 col-sm-5 p-2 admin-box-blue m-1" v-on:click="navigateToPage('/register-admin')">
-                <p class="text-center display-5 link-box-blue">{{ t("admin_reg") }}</p>
-                <i class="bi bi-person-add d-flex justify-content-center link-box-blue"></i>
+            <div class="col-11 col-sm-5 p-2 admin-box-blue m-1" v-on:click="navigateToPage('/register-admin')" :class="windowWidth > 575 ? 'admin-box-blue' : 'admin-box-white'">
+                <p class="text-center display-5">{{ t("admin_reg") }}</p>
+                <i class="bi bi-person-add d-flex justify-content-center"></i>
             </div>
         </div>
     </div>
@@ -41,12 +47,23 @@
         height: 60vh;
     }
 
-    .admin-box-blue{
+    .admin-box-blue {
         height: 25vh;
         background-color: var(--ebony-clay);
         border: 1px solid var(--mercury);
         border-radius: 3px;
         cursor: pointer;
+    }
+
+    .admin-box-blue > p{
+        text-decoration: none;
+        font-size: 5vh;
+        color: var(--mercury);
+    }
+
+    .admin-box-blue > i {
+        font-size: 8.5vh;
+        color: var(--mercury);
     }
 
     .admin-box-white{
@@ -57,23 +74,14 @@
         cursor: pointer;
     }
 
-    .link-box-blue{
-        text-decoration: none;
-        font-size: 5vh;
-        color: var(--mercury);
-    }
-
-    i.link-box-blue {
-        font-size: 8.5vh;
-    }
-
-    .link-box-white{
+    .admin-box-white > p{
         text-decoration: none;
         font-size: 5vh;
         color: var(--ebony-clay);
     }
 
-    i.link-box-white {
+    .admin-box-white > i {
         font-size: 8.5vh;
+        color: var(--ebony-clay);
     }
 </style>

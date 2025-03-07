@@ -1,12 +1,8 @@
+import i18n from "@/translations";
 import {defineStore} from "pinia";
 
 export const useAppStore = defineStore('appStore', {
     state: () => ({
-        visual_mode : {
-            mode: "light"
-        },
-        app_language : {
-            lang: localStorage.getItem("language") ?? "hu"
-        }
+        app_language : i18n.global.locale.value
     })
 });

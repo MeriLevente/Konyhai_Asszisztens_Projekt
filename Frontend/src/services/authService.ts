@@ -10,7 +10,7 @@ axios.interceptors.request.use((config) => {
     if(token){
       config.headers['Authorization'] = `Bearer ${token}`
     }
-    config.headers['Accept-Language'] = `${useAppStore().app_language.lang == 'hu' ? 'hu' : 'en'}`
+    config.headers['Accept-Language'] = `${useAppStore().app_language == 'hu' ? 'hu' : 'en'}`
     return config
   } else{
     return Promise.reject();
