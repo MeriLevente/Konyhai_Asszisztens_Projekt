@@ -66,6 +66,18 @@ export const useUserStore = defineStore('userStore', {
                 this.status.messageEn = validation.messageEn!;
                 return Promise.reject();
             }
+        },
+        logout(){
+            return userService.logout(this.user.token!)
+                .then(()=>{
+                    this.status.loggedIn = false
+                    this.user = {name: "", token: "", id: null, role: ""}
+                    sessionStorage.removeItem("user")
+                })
+                .catch(()=>{
+                    this.status.loggedIn = false
+                    this.user = {name: "", token: "", id: null, role: ""}
+                })
         }
     }
 });

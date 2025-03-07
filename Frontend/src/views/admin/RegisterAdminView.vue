@@ -6,8 +6,11 @@
 </script>
 
 <template>
-    <div class="content-box my-5">
+    <div class="content-box m-3">
         <div class="container">
+            <div class="row">
+                <RouterLink class="back-to-admin" to="/admin">Admin >> {{ t('register_h1') }}</RouterLink>
+            </div>
             <LoginForm :method="method" :role="'admin'"/>
         </div> 
     </div>
@@ -15,7 +18,7 @@
 
 <style lang="css" scoped>
     .content-box {
-        height: 75vh;
+        height: 90vh;
         display: flex;
         justify-content: center;
         align-items: center;

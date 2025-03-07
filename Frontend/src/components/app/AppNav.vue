@@ -14,11 +14,14 @@
           <div v-for="(menuItem, index) in menuItems" :key="index">
             <li class="nav-item">
               <!-- && menuItem.roles.includes(user.role) -->
-              <router-link class="nav-link mercury-nav-element" :to="menuItem.to" v-if="menuItem.isVisible ">{{ app_language.lang == "hu" ? menuItem.title : menuItem.title_EN }}</router-link>
+              <router-link class="nav-link mercury-nav-element"
+                :to="menuItem.to" v-if="menuItem.isVisible ">{{ i18n.global.locale.value == "hu" ? menuItem.title : menuItem.title_EN }}
+              </router-link>
             </li>
           </div>
         </ul>
-        <a href="" :class="app_language.lang == 'hu' ? 'bg-hu' : 'bg-en'" class="btn" v-on:click="changeLanguage()"></a>
+        <a :class="i18n.global.locale.value == 'hu' ? 'bg-hu btn' : 'bg-en btn'" id="langBtn" v-on:click="changeLanguage()"></a>
+        <a v-if="useUserStore().status.loggedIn" class="btn btn-danger mx-4" v-on:click="onLogout">{{ t("logout") }}</a>
       </div>
     </div>
   </nav>
@@ -28,16 +31,14 @@
     import { computed, ref } from 'vue';
     import { storeToRefs } from 'pinia';
     import { useUserStore } from '@/stores/userstore';
-    import { useAppStore } from '@/stores/appstore';
+    const { logout } = useUserStore();
+    import i18n from '@/translations';
     import { useI18n } from 'vue-i18n';
-    const { locale } = useI18n({useScope: 'global'}); //nyelv megváltoztatása
-
+    const { t } = useI18n();
     const { status } = storeToRefs(useUserStore());
-    const { app_language } = storeToRefs(useAppStore());
-
-    let lang = ref(app_language.value.lang!);
-    locale.value = lang.value;
-
+    import { useRouter } from 'vue-router';
+    const router = useRouter();
+    
     const menuItems = computed(()=>{
       return [
         {
@@ -79,12 +80,17 @@
     });
 
     const changeLanguage = () : void => {
-      if(app_language.value.lang == "hu"){
-        localStorage.setItem("language", "en");
+      const lang: string = i18n.global.locale.value;
+      if(lang == "hu"){
+        i18n.global.locale.value = 'en';
       }
       else{
-        localStorage.setItem("language", "hu");
+        i18n.global.locale.value = 'hu';
       }
+    };
+
+    const onLogout = () : void => {
+      logout().then(()=>router.push('/'))
     };
 </script>
 

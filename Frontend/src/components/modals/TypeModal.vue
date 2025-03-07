@@ -65,7 +65,7 @@
                         <label for="image" class="form-label">{{ t("image") }}</label>
                         <input type="file" class="form-control" id="image" accept="images/*,.png,.jpg,.jpeg,.svg" v-on:change="imageChanged" v-on:focus="() => {if(type_error.hu && type_error.en) hideError()}">
                     </div>
-                    <div v-if="type_error.hu != '' && type_error.en != ''" class="text-danger text-center mx-5 mb-2">{{ app_language.lang == 'hu' ? type_error.hu : type_error.en }}</div>
+                    <div v-if="type_error.hu != '' && type_error.en != ''" class="text-danger text-center mx-5 mb-2">{{ app_language == 'hu' ? type_error.hu : type_error.en }}</div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-success">{{ t("save") }}</button>
                     </div>
@@ -81,9 +81,4 @@
         position: absolute;
         top: 20%;
     }
-
-    body {
-        overflow: hidden;
-    }
-    
 </style>

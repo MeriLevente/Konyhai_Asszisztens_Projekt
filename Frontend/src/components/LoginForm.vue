@@ -3,7 +3,7 @@
     import { useAppStore } from '@/stores/appstore';
     import { useUserStore } from '@/stores/userstore';
     import { storeToRefs } from 'pinia';
-    import { ref } from 'vue';
+    import { computed, ref } from 'vue';
     import { useI18n } from 'vue-i18n';
     import { useRouter } from 'vue-router';
     const { status } = storeToRefs(useUserStore());
@@ -15,6 +15,7 @@
     let confirm_password = ref<string>();
     let see_password = ref<boolean>(false);
     let see_conf_password = ref<boolean>(false);
+    
 
     const router = useRouter();
 
@@ -25,15 +26,21 @@
     });
 
     const submitForm = () : void => {
+        const userData: IUser = {
+                name: formData.value.name?.trim(),
+                email: formData.value.email.trim(),
+                password: formData.value.password.trim(),
+                role: formData.value.role,
+        }
         if(props.method == "Regisztrálás" || props.method == "Register"){
             status.value.confirm_password = confirm_password.value!;
-            register(formData.value).then(()=>{
+            register(userData).then(()=>{
                 router.push("/")
-            });
+            }).catch(()=>console.log(userData));
         } else {
-            login(formData.value).then(()=>{
+            login(userData).then(()=>{
                 router.push("/")
-            });;
+            }).catch(()=>console.log(userData));
         };
     };
 
@@ -63,7 +70,7 @@
 <template>
     <div class="row my-3">
         <div class="col-12">
-            <h1 class="text-center display-2 text-bold">{{ role == 'admin' ? `Admin ${method}` : method }}</h1>
+            <h1 class="text-center display-2 text-bold" id="PageTitle">{{ role == 'admin' ? `Admin ${method}` : method }}</h1>
         </div>
     </div>
     <div class="row my-3">
@@ -88,7 +95,7 @@
                     <label for="confirmpass">{{t("confirm_password_form")}}</label>
                 </div>
                 <RouterLink to="/register" v-if="method != 'Regisztrálás' && method != 'Register'" class="my-2">{{ t("go_register") }}</RouterLink>
-                <div v-if="status.message && status.messageEn" class="text-danger text-center" id="error-message">{{ app_language.lang == "hu" ? status.message : status.messageEn }}</div>
+                <div v-if="status.message && status.messageEn" class="text-danger text-center" id="error-message">{{ app_language == "hu" ? status.message : status.messageEn }}</div>
                 <div class="mb-1">
                     <button id="submit" type="submit" class="btn btn-primary w-100 p-2 my-3">{{ method }}</button>
                 </div>

@@ -6,7 +6,7 @@
 </script>
 
 <template>
-    <div class="content-box my-5">
+    <div class="content-box my-5 mx-3">
         <div class="container">
             <LoginForm :method="method" :role="'user'"/>
         </div>
