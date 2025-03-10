@@ -2,23 +2,25 @@
     import LoginForm from '@/components/LoginForm.vue';
     import { useI18n } from 'vue-i18n';
     const { t } = useI18n();
-    let method: string = t("register_h1");
+    import { useUserStore } from '@/stores/userstore';
+    useUserStore().hideError();
 </script>
 
 <template>
     <div class="content-box m-3">
         <div class="container">
             <div class="row">
-                <RouterLink class="back-to-admin" to="/admin">Admin >> {{ t('register_h1') }}</RouterLink>
+                <RouterLink class="back-to-admin" to="/admin">Admin >> {{ 'Admin ' + t('register') }}</RouterLink>
             </div>
-            <LoginForm :method="method" :role="'admin'"/>
+            <LoginForm :method="'register'" :role="'admin'"/>
         </div> 
     </div>
 </template>
 
 <style lang="css" scoped>
     .content-box {
-        height: 90vh;
+        font-family: "Funnel Sans", sans-serif;
+        height: 85vh;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -27,5 +29,8 @@
         background-color: var(--mercury);
         border: 3px solid var(--ebony-clay);
         border-radius: 5px;
+    }
+    body{
+        font-family: "Funnel Sans", sans-serif;
     }
 </style>

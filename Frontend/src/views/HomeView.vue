@@ -82,6 +82,13 @@
         cursor: pointer;
     }
 
+    .fridge-image{
+        display: inline-block;
+        width: 10rem;
+        height: 10rem;
+        margin-top: 5%;
+    }
+
     @media only screen and (max-width: 600px) {
         .logo-img {
             width: 7rem;
@@ -94,5 +101,12 @@
         h5.greeting {
             font-size: 0.7rem;
         } 
+        .fridge-image{
+            width: 7rem;
+            height: 7rem;
+        }
+        .recipebook-btn{
+            font-size: 0.9rem;
+        }
     }
 </style>

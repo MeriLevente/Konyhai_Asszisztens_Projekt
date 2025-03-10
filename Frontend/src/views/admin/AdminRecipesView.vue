@@ -61,7 +61,7 @@ import type IRecipe from '@/models/Recipe';
 </script>
 
 <template>
-    <div class="container my-5 justify-center" v-if="openEditor == false">
+    <div class="container my-5 justify-center" v-if="openEditor == false" style="font-family: Funnel Sans, sans-serif;">
         <div class="row">
             <RouterLink class="back-to-admin" to="/admin">Admin >> {{t('edit_recipes')}}</RouterLink>
         </div>

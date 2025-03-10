@@ -14,7 +14,7 @@
           <div v-for="(menuItem, index) in menuItems" :key="index">
             <li class="nav-item">
               <!-- && menuItem.roles.includes(user.role) -->
-              <router-link class="nav-link mercury-nav-element"
+              <router-link class="nav-link mercury-nav-element d-flex justify-content-center"
                 :to="menuItem.to" v-if="menuItem.isVisible ">{{ i18n.global.locale.value == "hu" ? menuItem.title : menuItem.title_EN }}
               </router-link>
             </li>
@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-    import { computed, ref } from 'vue';
+    import { computed } from 'vue';
     import { storeToRefs } from 'pinia';
     import { useUserStore } from '@/stores/userstore';
     const { logout } = useUserStore();
@@ -37,6 +37,7 @@
     const { t } = useI18n();
     const { status } = storeToRefs(useUserStore());
     import { useRouter } from 'vue-router';
+    import { useAppStore } from '@/stores/appstore';
     const router = useRouter();
     
     const menuItems = computed(()=>{
@@ -83,9 +84,13 @@
       const lang: string = i18n.global.locale.value;
       if(lang == "hu"){
         i18n.global.locale.value = 'en';
+        useAppStore().app_language = 'en';
+        localStorage.setItem('lang', 'en');
       }
       else{
         i18n.global.locale.value = 'hu';
+        useAppStore().app_language = 'hu';
+        localStorage.setItem('lang', 'hu');
       }
     };
 
@@ -97,6 +102,7 @@
 <style scoped>
 nav{
     background-color: var(--ebony-clay);
+    border-bottom: 0.5rem solid white;
 }
 
 .mercury-nav-element{

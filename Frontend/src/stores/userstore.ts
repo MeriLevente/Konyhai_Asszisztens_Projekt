@@ -18,14 +18,17 @@ export const useUserStore = defineStore('userStore', {
         }
     }),
     actions: {
+        hideError() {
+            this.status.message = '';
+            this.status.messageEn = '';
+        },
         login(data: IUser) {
             let validation: IFormResponse = UserValidation.LoginIsValid(data.email, data.password)
             if(!validation.isError){
                 return userService.login(data)
                         .then((res: any) => {
                             this.status.loggedIn = true;
-                            this.status.message = "";
-                            this.status.messageEn = "";
+                            this.hideError();
                             this.user = res.data.data; // a backendről érkező user IIT LEHET PROBLÉMA
                             localStorage.setItem("user", JSON.stringify(this.user)) //csak stringet lehet tárolni
                         })
@@ -48,8 +51,7 @@ export const useUserStore = defineStore('userStore', {
                 return userService.register(data)
                             .then((res: any) => {
                                 this.status.loggedIn = true;
-                                this.status.message = "";
-                                this.status.messageEn = "";
+                                this.hideError();
                                 this.status.confirm_password = "";
                                 this.user = res.data.data; // a backendről érkező user IIT LEHET PROBLÉMA
                                 localStorage.setItem("user", JSON.stringify(this.user)); //csak stringet lehet tárolni

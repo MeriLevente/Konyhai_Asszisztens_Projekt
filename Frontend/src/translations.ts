@@ -53,9 +53,9 @@ const i18n = createI18n({
             notfound_text: "A keresett oldal nem található! Győződj meg róla, hogy nem írtad el az oldal címét!",
 
             //LoginView, RegisterView
-            login_h1: "Bejelentkezés",
+            login: "Bejelentkezés",
             logout: "Kijelentkezés",
-            register_h1: "Regisztrálás",
+            register: "Regisztrálás",
             name_form: "Név",
             password_form: "Jelszó",
             confirm_password_form: "Jelszó megerősítése",
@@ -147,9 +147,9 @@ const i18n = createI18n({
             notfound_text: "The site cannot be found! Make sure you haven't misstyped the site address!",
 
             //LoginView, RegisterView
-            login_h1: "Login",
+            login: "Login",
             logout: "Logout",
-            register_h1: "Register",
+            register: "Register",
             name_form: "Name",
             password_form: "Password",
             confirm_password_form: "Confrim password",
@@ -193,7 +193,6 @@ const i18n = createI18n({
             ml: "ml",
 
             toHome: "Back to the homepage",
-            
         }
     }
 });

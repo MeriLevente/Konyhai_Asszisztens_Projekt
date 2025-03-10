@@ -56,7 +56,7 @@
 <template>
     <div class="background" v-if="data"></div>
     
-    <div class="container my-5 justify-center">
+    <div class="container my-5 justify-center" style="font-family: Funnel Sans, sans-serif;">
         <div class="row">
             <RouterLink class="back-to-admin" to="/admin">Admin >> {{ t('edit_items') }}</RouterLink>
         </div>
