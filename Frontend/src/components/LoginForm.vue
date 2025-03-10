@@ -3,7 +3,7 @@
     import { useAppStore } from '@/stores/appstore';
     import { useUserStore } from '@/stores/userstore';
     import { storeToRefs } from 'pinia';
-    import { computed, ref } from 'vue';
+    import { ref } from 'vue';
     import { useI18n } from 'vue-i18n';
     import { useRouter } from 'vue-router';
     const { status } = storeToRefs(useUserStore());
@@ -15,7 +15,6 @@
     let confirm_password = ref<string>();
     let see_password = ref<boolean>(false);
     let see_conf_password = ref<boolean>(false);
-    
 
     const router = useRouter();
 
@@ -32,7 +31,7 @@
                 password: formData.value.password.trim(),
                 role: formData.value.role,
         }
-        if(props.method == "Regisztrálás" || props.method == "Register"){
+        if(props.method == "register"){
             status.value.confirm_password = confirm_password.value!;
             register(userData).then(()=>{
                 router.push("/")
@@ -61,43 +60,52 @@
     };
 
     const hideError = (): void =>{
-        status.value.message = '';
-        status.value.messageEn = '';
+        useUserStore().hideError();
     };
-
 </script>
 
 <template>
     <div class="row my-3">
         <div class="col-12">
-            <h1 class="text-center display-2 text-bold" id="PageTitle">{{ role == 'admin' ? `Admin ${method}` : method }}</h1>
+            <h1 class="text-center display-2 text-bold" id="PageTitle">{{ role == 'admin' ? `Admin ${t(method)}` : t(method) }}</h1>
         </div>
     </div>
     <div class="row my-3">
         <div class="col-12 col-md-4 mx-auto">
             <form @submit.prevent="submitForm()">
-                <div class="form-floating mb-3" v-if="method == 'Regisztrálás' || method == 'Register'">
-                    <input type="text" class="form-control" id="name" v-model="formData.name" maxlength="50" v-on:focus="() => {if(status.message && status.messageEn) hideError()}">
+                <div class="form-floating mb-3" v-if="method == 'register'">
+                    <input type="text" class="form-control" id="name" v-model="formData.name" maxlength="50"
+                        v-on:focus="() => {if(status.message && status.messageEn) hideError()}">
                     <label for="name">{{t("name_form")}}</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="email" v-model="formData.email" maxlength="320" v-on:focus="() => {if(status.message && status.messageEn) hideError()}">
+                    <input type="text" class="form-control" id="email" v-model="formData.email" maxlength="320" 
+                        v-on:focus="() => {if(status.message && status.messageEn) hideError()}">
                     <label for="email">Email</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input :type="see_password ? 'text' : 'password'" class="form-control" id="password" v-model="formData.password" style="z-index: 0" maxlength="30" v-on:focus="() => {if(status.message && status.messageEn) hideError()}">
-                    <span class="toggle-password" v-on:click="toggleShowPassword('password')"><i :class="see_password ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill'"></i></span>
+                    <input :type="see_password ? 'text' : 'password'" class="form-control" id="password"
+                        v-model="formData.password" style="z-index: 0" maxlength="30"
+                        v-on:focus="() => {if(status.message && status.messageEn) hideError()}">
+                    <span class="toggle-password" v-on:click="toggleShowPassword('password')">
+                        <i :class="see_password ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill'"></i>
+                    </span>
                     <label for="password">{{t("password_form")}}</label>
                 </div>
-                <div class="form-floating mb-3" v-if="method == 'Regisztrálás' || method == 'Register'">
-                    <input :type="see_conf_password ? 'text' : 'password'" class="form-control" id="confirmpass" v-model="confirm_password" maxlength="30" v-on:focus="() => {if(status.message && status.messageEn) hideError()}">
-                    <span class="toggle-password" v-on:click="toggleShowPassword('confirm_password')"><i :class="see_conf_password ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill'"></i></span>
+                <div class="form-floating mb-3" v-if="method == 'register'">
+                    <input :type="see_conf_password ? 'text' : 'password'" class="form-control" id="confirmpass"
+                        v-model="confirm_password" maxlength="30" v-on:focus="() => {if(status.message && status.messageEn) hideError()}">
+                    <span class="toggle-password" v-on:click="toggleShowPassword('confirm_password')">
+                        <i :class="see_conf_password ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill'"></i>
+                    </span>
                     <label for="confirmpass">{{t("confirm_password_form")}}</label>
                 </div>
-                <RouterLink to="/register" v-if="method != 'Regisztrálás' && method != 'Register'" class="my-2">{{ t("go_register") }}</RouterLink>
-                <div v-if="status.message && status.messageEn" class="text-danger text-center" id="error-message">{{ app_language == "hu" ? status.message : status.messageEn }}</div>
+                <RouterLink to="/register" v-if="method != 'register'" class="my-2">{{ t("go_register") }}</RouterLink>
+                <div v-if="status.message && status.messageEn" class="text-danger text-center" id="error-message">
+                    {{ app_language == "hu" ? status.message : status.messageEn }}
+                </div>
                 <div class="mb-1">
-                    <button id="submit" type="submit" class="btn btn-primary w-100 p-2 my-3">{{ method }}</button>
+                    <button id="submit" type="submit" class="btn btn-primary w-100 p-2 my-3">{{ t(method) }}</button>
                 </div>
             </form>
         </div>
@@ -124,5 +132,10 @@
 
     i {
         font-size: 15px;
+    }
+
+    #error-message {
+        font-family: Funnel Sans, sans-serif;
+        font-weight: bold;
     }
 </style>

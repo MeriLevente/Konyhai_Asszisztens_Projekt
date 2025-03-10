@@ -265,6 +265,7 @@
 
 <style lang="css" scoped>
     .content-box {
+        font-family: Funnel Sans, sans-serif;
         display: flex;
         justify-content: center;
         align-items: center;

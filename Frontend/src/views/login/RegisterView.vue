@@ -1,14 +1,13 @@
 <script setup lang="ts">
     import LoginForm from '@/components/LoginForm.vue';
-    import { useI18n } from 'vue-i18n';
-    const { t } = useI18n();
-    let method: string = t("register_h1");
+    import { useUserStore } from '@/stores/userstore';
+    useUserStore().hideError();
 </script>
 
 <template>
     <div class="content-box my-5 mx-3">
         <div class="container">
-            <LoginForm :method="method" :role="'user'"/>
+            <LoginForm :method="'register'" :role="'user'"/>
         </div>
     </div>
 </template>

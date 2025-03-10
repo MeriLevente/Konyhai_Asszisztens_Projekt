@@ -14,10 +14,11 @@
     const navigateToPage = (to: string) : void => {
         router.push(to);
     };
+    
 </script>
 
 <template>
-    <div class="container my-5 justify-center">
+    <div class="container my-5 justify-center" style="font-family: 'Funnel Sans', sans-serif;">
         <div class="row">
             <h1 class="display-3 text-center">{{t('admin_h1')}}</h1>
         </div>
