@@ -1,0 +1,6 @@
+@KonyhaiAsszisztensBackend_HostAddress = http://localhost:5098
+
+GET {{KonyhaiAsszisztensBackend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
