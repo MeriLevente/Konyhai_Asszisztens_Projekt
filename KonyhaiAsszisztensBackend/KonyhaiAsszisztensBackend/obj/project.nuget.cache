@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "479+eAmoozY=",
+  "dgSpecHash": "8MXwrwnod7c=",
   "success": true,
-  "projectFilePath": "D:\\projectmunka\\KonyhaiAsszisztensBackend\\KonyhaiAsszisztensBackend\\KonyhaiAsszisztensBackend.csproj",
+  "projectFilePath": "D:\\projectmunka\\Konyhai_Asszisztens_Projekt\\KonyhaiAsszisztensBackend\\KonyhaiAsszisztensBackend\\KonyhaiAsszisztensBackend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Kaplon\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Kaplon\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\7.0.0\\microsoft.bcl.asyncinterfaces.7.0.0.nupkg.sha512",
