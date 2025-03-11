@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
@@ -13,8 +14,8 @@ namespace Models
     [Table("users")]
     public class Users
     {
-        [Key, JsonIgnore]
-        public required int Id { get; set; }
+        [Key, JsonIgnore, NotNull]
+        public int Id { get; set; }
         [Column("name"), StringLength(50)]
         public required string Name { get; set; }
         [Column("email"), StringLength(320)]
