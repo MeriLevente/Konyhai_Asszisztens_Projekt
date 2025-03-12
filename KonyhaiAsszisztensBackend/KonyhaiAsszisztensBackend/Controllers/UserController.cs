@@ -42,6 +42,7 @@ namespace KonyhaiAsszisztensBackend.Controllers
         [HttpPost]
         public async Task<ActionResult<Users>> CreateUser(Users newUser)
         {
+            newUser.Token = Guid.NewGuid().ToString();
             _context.UsersSet.Add(newUser);
             await _context.SaveChangesAsync();
 

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("KonyhaiAsszisztensBackend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fc2c005dea81f068b1e38c94ad440bb523e05b92")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+32d9bdae044c44904298b7fc3d38b97c31e354c7")]
 [assembly: System.Reflection.AssemblyProductAttribute("KonyhaiAsszisztensBackend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("KonyhaiAsszisztensBackend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
