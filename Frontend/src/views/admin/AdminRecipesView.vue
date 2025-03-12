@@ -50,7 +50,6 @@ import type IRecipe from '@/models/Recipe';
     };
 
     const saveData = (recipe: IRecipe) => {
-        console.log(recipe)
         store.saveRecipes(recipe)?.then(()=>closeEditor()).catch();
     };
 

@@ -34,12 +34,23 @@
         if(props.method == "register"){
             status.value.confirm_password = confirm_password.value!;
             register(userData).then(()=>{
-                router.push("/")
-            }).catch(()=>console.log(userData));
+                if(props.role == 'user')
+                    router.push("/");
+                else{
+                    alert(t("admin_reg_success"));
+                    formData.value = {
+                        name: "",
+                        email: "",
+                        password: "",
+                        role: "admin"
+                    };
+                    confirm_password.value = "";
+                }
+            }).catch();
         } else {
             login(userData).then(()=>{
                 router.push("/")
-            }).catch(()=>console.log(userData));
+            }).catch();
         };
     };
 

@@ -1,6 +1,6 @@
 export default interface Item {
     id?: number
-    nameHU: string
+    name: string
     nameEN: string
     typeId: number
     unit: string

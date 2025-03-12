@@ -3,7 +3,7 @@ import instance from "./dataService";
 
 export default {
     register(data: IUser){
-        return instance.post('/register', data)
+        return instance.post('/users/register', data)
                 .then((res: any)=>{
                     return res
                 })
@@ -12,7 +12,7 @@ export default {
                 }) //hiba történt
     },
     login(data: IUser){
-        return instance.post('/login', data)
+        return instance.put('/users/login', data)
                 .then((res)=>{
                     return res
                 })
@@ -20,10 +20,10 @@ export default {
                     return Promise.reject(err.response)
         })
     },
-    logout(token: string){
-        return instance.post('/logout')
-                .then((res)=>{
-                    return res.data
+    logout(id: number){
+        return instance.put(`/users/logout/${id}`)
+                .then(()=>{
+                    return
                 })
                 .catch(()=>{
                     return Promise.reject()

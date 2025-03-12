@@ -63,17 +63,17 @@ export const useAdminStore = defineStore('adminStore', {
         },
         storeItems(): Item[] {
             return this.items = [
-                {id: 1, nameHU: "Paradicsom", nameEN: "Tomato", typeId: 1,unit: "darab" , image: "https://gallery.yopriceville.com/Free-Clipart-Pictures/Vegetables-PNG/Tomato_Transparent_PNG_Clip_Art_Image"},
-                {id: 20, nameHU: "Tej", nameEN: "Milk",  typeId: 4, unit: "ml" , image: "https://static.vecteezy.com/system/resources/thumbnails/041/931/242/small_2x/breakfast-meal-objects-milk-drink-clip-art-cartoon-isolated-free-png.png"},
-                {id: 9, nameHU: "Alma", nameEN: "Apple",  typeId: 2, unit: "darab" , image: "https://gallery.yopriceville.com/Free-Clipart-Pictures/Fruit-PNG/Apple_Transparent_PNG_Clip_Art_Image"},
-                {id: 17, nameHU: "Mogyoró", nameEN: "Nut",  typeId: 3, unit: "g" , image: "https://pngfre.com/wp-content/uploads/Peanut-11-1024x758.png"},
-                {id: 27, nameHU: "Csirke", nameEN: "Chicken",  typeId: 5, unit: "g" , image: "https://pngfre.com/wp-content/uploads/chicken-poster.png"},
-                {id: 34, nameHU: "Étolaj", nameEN: "Oil",  typeId: 6, unit: "ml" , image: "https://static.vecteezy.com/system/resources/thumbnails/024/851/117/small_2x/a-bottle-of-palm-kernel-cooking-oil-on-a-transparent-background-png.png"}
+                {id: 1, name: "Paradicsom", nameEN: "Tomato", typeId: 1,unit: "darab" , image: "https://gallery.yopriceville.com/Free-Clipart-Pictures/Vegetables-PNG/Tomato_Transparent_PNG_Clip_Art_Image"},
+                {id: 20, name: "Tej", nameEN: "Milk",  typeId: 4, unit: "ml" , image: "https://static.vecteezy.com/system/resources/thumbnails/041/931/242/small_2x/breakfast-meal-objects-milk-drink-clip-art-cartoon-isolated-free-png.png"},
+                {id: 9, name: "Alma", nameEN: "Apple",  typeId: 2, unit: "darab" , image: "https://gallery.yopriceville.com/Free-Clipart-Pictures/Fruit-PNG/Apple_Transparent_PNG_Clip_Art_Image"},
+                {id: 17, name: "Mogyoró", nameEN: "Nut",  typeId: 3, unit: "g" , image: "https://pngfre.com/wp-content/uploads/Peanut-11-1024x758.png"},
+                {id: 27, name: "Csirke", nameEN: "Chicken",  typeId: 5, unit: "g" , image: "https://pngfre.com/wp-content/uploads/chicken-poster.png"},
+                {id: 34, name: "Étolaj", nameEN: "Oil",  typeId: 6, unit: "ml" , image: "https://static.vecteezy.com/system/resources/thumbnails/024/851/117/small_2x/a-bottle-of-palm-kernel-cooking-oil-on-a-transparent-background-png.png"}
             ]
         },
         storeRecipes(): IRecipe[]{
             return this.recipes = [
-                {id: 1, nameHU: "Bolognai tészta", nameEN: "Bolognese pasta", descriptionHU: "A zöldségeket apró darabokra vágjuk és egy serpenyőbe rakjuk főni 60 percre.#Hozzárakjuk a paradicsomot, amit leturmixolunk először és fűszerezzük.#A tésztát forralt vízben elkészítjük.#A tésztára öntünk a szószból, és sajttal tálaljuk.", descriptionEN: "Cut the vegetables into small pieces and put them in a pan to cook for 60 minutes.#Add the tomatoes, which we first blend and season.#Prepare the dough in boiled water.#Pour the sauce over the pasta and serve with cheese.", type: "ITA", difficulty: 5, time: 80, image: "https://staticcookist.akamaized.net/wp-content/uploads/sites/22/2021/06/THUMB-LINK-2020-2.jpg?im=AspectCrop=(16,9);Resize,width=742;", ingredients: [{item: {id: 1, nameHU: "Paradicsom", nameEN: "Tomato", typeId: 1,unit: "darab" , image: "https://gallery.yopriceville.com/Free-Clipart-Pictures/Vegetables-PNG/Tomato_Transparent_PNG_Clip_Art_Image"}, quantity: 30}]}
+                {id: 1, nameHU: "Bolognai tészta", nameEN: "Bolognese pasta", descriptionHU: "A zöldségeket apró darabokra vágjuk és egy serpenyőbe rakjuk főni 60 percre.#Hozzárakjuk a paradicsomot, amit leturmixolunk először és fűszerezzük.#A tésztát forralt vízben elkészítjük.#A tésztára öntünk a szószból, és sajttal tálaljuk.", descriptionEN: "Cut the vegetables into small pieces and put them in a pan to cook for 60 minutes.#Add the tomatoes, which we first blend and season.#Prepare the dough in boiled water.#Pour the sauce over the pasta and serve with cheese.", type: "ITA", difficulty: 5, time: 80, image: "https://staticcookist.akamaized.net/wp-content/uploads/sites/22/2021/06/THUMB-LINK-2020-2.jpg?im=AspectCrop=(16,9);Resize,width=742;", ingredients: [{item: {id: 1, name: "Paradicsom", nameEN: "Tomato", typeId: 1,unit: "darab" , image: "https://gallery.yopriceville.com/Free-Clipart-Pictures/Vegetables-PNG/Tomato_Transparent_PNG_Clip_Art_Image"}, quantity: 30}]}
             ]
         }
     }, actions: {
@@ -142,7 +142,7 @@ export const useAdminStore = defineStore('adminStore', {
 
         // ITEMS
         saveItem(data: Item){
-            let validation = ItemValidation.ItemAllFilled(data.nameHU, data.nameEN, data.typeId, data.unit, data.image);
+            let validation = ItemValidation.ItemAllFilled(data.name, data.nameEN, data.typeId, data.unit, data.image);
             if (!validation.isError) {   
                 if (data.id) {
                     return adminService.updateItem(data)
