@@ -10,7 +10,7 @@
         <ul style="display: inline;">
             <li><p class="about-p">{{ t('about_itemsParag') }}</p></li>
             <li><p class="about-p">{{ t('about_itemsParag2') }}</p></li>
-            <div class="d-flex justify-content-start">
+            <div class="d-flex justify-content-start" v-if="useUserStore().user?.role != 'admin'">
                 <RouterLink to="/login" v-if="!useUserStore().status.loggedIn" class="about-p btn btn-warning">{{ t('clickmeRegisterFirst') }}</RouterLink>
                 <RouterLink to="/items" v-if="useUserStore().status.loggedIn" class="recipebook-btn">{{ t('clickmeTakeMeThere') }}</RouterLink>
             </div>

@@ -11,6 +11,7 @@ import NotFoundView from '@/views/NotFoundView.vue'
 import AdminItemsView from '@/views/admin/AdminItemsView.vue'
 import AdminRecipesView from '@/views/admin/AdminRecipesView.vue'
 import AdminTypesView from '@/views/admin/AdminTypesView.vue'
+import { useUserStore } from '@/stores/userstore'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -73,6 +74,14 @@ const router = createRouter({
     },
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFoundView },
   ],
+})
+
+router.beforeEach((to, from, next) => {
+  if (!["login", "register", "Notfound", "home"].includes(to.name?.toString()!) && !useUserStore().status.loggedIn) next({ name: 'login' });
+  if(["login", "register",].includes(to.name?.toString()!) && useUserStore().status.loggedIn) next({ name: 'home' })
+  if(["admin", "edit-recipes", "edit-items", "add-type", "register-admin"].includes(to.name?.toString()!) && useUserStore().user?.role != "admin") next({name: 'home'});
+  if(["items", "recipes", "recipe"].includes(to.name?.toString()!) && useUserStore().user?.role != "user") next({name: 'home'});
+  else next()
 })
 
 export default router

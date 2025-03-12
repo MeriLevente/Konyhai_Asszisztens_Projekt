@@ -3,8 +3,10 @@
 </script>
 
 <template>
-    Recipes
-    <RouterLink :to="{ path: 'recipe', query: { id: `${id}` }}">{{ id }}</RouterLink>
+    <div class="container mt-2">
+        Recipes
+        <RouterLink :to="{ path: 'recipe', query: { id: `${id}` }}">{{ id }}</RouterLink>
+    </div>
 </template>
 
 <style lang="css">

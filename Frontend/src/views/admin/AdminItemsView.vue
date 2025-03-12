@@ -16,7 +16,7 @@
 
     const addItem = () => {
         data.value = {
-            nameHU: "",
+            name: "",
             nameEN: "",
             typeId: 1,
             unit: "darab",
@@ -28,7 +28,7 @@
     const editItem = (selected: Item) => {
         data.value = {
             id: selected.id,
-            nameHU: selected.nameHU,
+            name: selected.name,
             nameEN: selected.nameEN,
             typeId: selected.typeId,
             unit: selected.unit,
@@ -100,7 +100,7 @@
                                 </span>
                             </td>
                             <td class="text-center pt-3">{{ item.id }}</td>
-                            <td class="text-center pt-3">{{ item.nameHU }}</td>
+                            <td class="text-center pt-3">{{ item.name }}</td>
                             <td class="text-center pt-3">{{ item.nameEN }}</td>
                             <td class="text-center pt-3">{{ item.typeId }}</td>
                             <td><img class="tdImage" v-bind:src="item.image" alt="Img"></td>

@@ -24,7 +24,7 @@
 
     let modalData = ref<Item>({
         id: props.data.id,
-        nameHU: props.data.nameHU,
+        name: props.data.name,
         nameEN: props.data.nameEN,
         unit: props.data.unit,
         typeId: props.data.typeId,
@@ -54,7 +54,7 @@
                 <form @submit.prevent="saveChanges()">
                     <div class="mb-3">
                         <label for="nameHU" class="form-label">{{ t("name") }} (hu)</label>
-                        <input type="text" class="form-control" id="nameHU" v-model="modalData.nameHU" v-on:focus="() => {if(items_error.hu && items_error.en) hideError()}">
+                        <input type="text" class="form-control" id="nameHU" v-model="modalData.name" v-on:focus="() => {if(items_error.hu && items_error.en) hideError()}">
                     </div>
                     <div class="mb-3">
                         <label for="nameEN" class="form-label">{{ t("name") }} (en)</label>

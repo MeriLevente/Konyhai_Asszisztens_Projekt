@@ -13,9 +13,8 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <div v-for="(menuItem, index) in menuItems" :key="index">
             <li class="nav-item">
-              <!-- && menuItem.roles.includes(user.role) -->
               <router-link class="nav-link mercury-nav-element d-flex justify-content-center"
-                :to="menuItem.to" v-if="menuItem.isVisible ">{{ i18n.global.locale.value == "hu" ? menuItem.title : menuItem.title_EN }}
+                :to="menuItem.to" v-if="menuItem.isVisible">{{ i18n.global.locale.value == "hu" ? menuItem.title : menuItem.title_EN }}
               </router-link>
             </li>
           </div>
@@ -47,35 +46,30 @@
             title_EN: "Home",
             to: '/',
             isVisible: true,
-            roles: ["", "admin", "user"]
         },
         {
             title: "Bejelentkezés",
             title_EN: "Login",
             to: '/login',
             isVisible: !status.value.loggedIn,
-            roles: ["", "admin", "user"]
         },
         {
             title: "Konyhám",
             title_EN: "My Kitchen",
             to: '/items',
-            isVisible: !status.value.loggedIn,
-            roles: ["user"]
+            isVisible: status.value.loggedIn && useUserStore().user?.role == "user",
         },
         {
             title: "Receptek",
             title_EN: "Recipes",
             to: '/recipes',
-            isVisible: !status.value.loggedIn,
-            roles: ["user"]
+            isVisible: status.value.loggedIn && useUserStore().user?.role == "user",
         },
         {
             title: "Admin",
             title_EN: "Admin",
             to: '/admin',
-            isVisible: !status.value.loggedIn,
-            roles: ["admin"]
+            isVisible: status.value.loggedIn && useUserStore().user?.role == "admin",
         },
     ]
     });

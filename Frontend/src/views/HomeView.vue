@@ -26,7 +26,7 @@
                 <img src="@/assets/images/fridgebuddy.png" alt="Fridge logo" class="logo-img">
             </div>
             <div style="display: inline-block;" class="pt-5">
-                <h1 class="greeting">{{ `${t('greeting')}, ${useUserStore().user.name ?? t("stranger")}!` }}</h1>
+                <h1 class="greeting">{{ `${t('greeting')}, ${useUserStore().user?.name ?? t("stranger")}!` }}</h1>
                 <h5 class="greeting">{{ t("greeting2") }}</h5>
             </div>
         </div>

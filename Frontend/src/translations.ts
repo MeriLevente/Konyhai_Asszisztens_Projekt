@@ -70,6 +70,7 @@ const i18n = createI18n({
             add_new: "Új",
             close: "Bezár",
             no_data: "Nincsenek még adatok!",
+            admin_reg_success: "Admin profil sikeresen regisztrálva!",
 
             //Edit types
             id: "Id",
@@ -115,7 +116,7 @@ const i18n = createI18n({
 
             //About me
             abouth2: "Hi, DiKA is the name!",
-            abouth6: "Are you also bad in the kitchen? Don't worry, engem, I was made to help you!",
+            abouth6: "Are you also bad in the kitchen? Don't worry, I was made to help you!",
             aboutParag: "Manage the items in your kitchen. You can access your food from anywhere and anytime, you don't have to blindly guess, what" +
                         " you have at home?!",
             aboutParag2: "I help you modernize your kitchen. You can view your stored items at our website or at our mobile app," +
@@ -164,6 +165,7 @@ const i18n = createI18n({
             add_new: "New",
             close: "Close",
             no_data: "No data found yet!",
+            admin_reg_success: "Admin profile successfully registered!",
 
             //Edit types
             id: "Id",

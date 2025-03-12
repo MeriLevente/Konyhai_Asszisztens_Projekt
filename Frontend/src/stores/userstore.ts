@@ -1,21 +1,26 @@
 import type IFormResponse from "@/models/FormResponse";
 import type ILoggedInUser from "@/models/LoggedInUser";
+import type StoredItem from "@/models/StoredItem";
 import type IUser from "@/models/User";
+import storageService from "@/services/storageService";
 import userService from "@/services/userService";
 import UserValidation from "@/utils/UserValidation";
 import {defineStore} from "pinia";
 
 export const useUserStore = defineStore('userStore', {
     state: () => ({
+        user: <ILoggedInUser | undefined>{
+
+        },
         status : {
             loggedIn: false,
             message: '',
             messageEn: '',
             confirm_password: ''
         },
-        user: <ILoggedInUser>{
+        storedItems: <StoredItem[]> [
 
-        }
+        ]
     }),
     actions: {
         hideError() {
@@ -29,13 +34,13 @@ export const useUserStore = defineStore('userStore', {
                         .then((res: any) => {
                             this.status.loggedIn = true;
                             this.hideError();
-                            this.user = res.data.data; // a backendről érkező user IIT LEHET PROBLÉMA
-                            localStorage.setItem("user", JSON.stringify(this.user)) //csak stringet lehet tárolni
+                            this.user = res.data;
+                            localStorage.setItem("user", JSON.stringify(this.user))
                         })
                         .catch((err: any)=>{
                             this.status.loggedIn = false
-                            this.status.message = err.message
-                            this.status.messageEn = err.messageEn // a backend szerverről érkező hibaüzenet ITT LEHET PROBLÉMA
+                            this.status.message = err.data.hu
+                            this.status.messageEn = err.data.en
                             this.user = {name: "", token: "", id: null, role: ""}
                             return Promise.reject()
                         })
@@ -53,13 +58,13 @@ export const useUserStore = defineStore('userStore', {
                                 this.status.loggedIn = true;
                                 this.hideError();
                                 this.status.confirm_password = "";
-                                this.user = res.data.data; // a backendről érkező user IIT LEHET PROBLÉMA
-                                localStorage.setItem("user", JSON.stringify(this.user)); //csak stringet lehet tárolni
+                                this.user = res.data;
+                                localStorage.setItem("user", JSON.stringify(this.user));
                             })
                             .catch((err: any)=>{
                                 this.status.loggedIn = false;
-                                this.status.message = err.message; // a backend szerverről érkező hibaüzenet ITT LEHET PROBLÉMA
-                                this.status.messageEn = err.messageEn; // a backend szerverről érkező hibaüzenet ITT LEHET PROBLÉMA
+                                this.status.message = err.data.hu;
+                                this.status.messageEn = err.data.en;
                                 this.user = {name: "", token: "", id: null, role: ""};
                                 return Promise.reject();
                             })
@@ -70,16 +75,25 @@ export const useUserStore = defineStore('userStore', {
             }
         },
         logout(){
-            return userService.logout(this.user.token!)
+            return userService.logout(this.user!.id!)
                 .then(()=>{
-                    this.status.loggedIn = false
-                    this.user = {name: "", token: "", id: null, role: ""}
-                    sessionStorage.removeItem("user")
+                    this.status.loggedIn = false;
+                    this.user = undefined;
+                    localStorage.removeItem("user");
                 })
-                .catch(()=>{
-                    this.status.loggedIn = false
-                    this.user = {name: "", token: "", id: null, role: ""}
+                .catch((err: any)=>{
+                    this.status.message = err.data.hu;
+                    this.status.messageEn = err.data.en;
+                    return Promise.reject();
                 })
+        },
+        getStoredItems(){
+            return storageService.getStoredItems()
+                .then((res: any)=>{
+                    this.storedItems = res.data;
+                }).catch((err)=>
+                    console.log(err)
+                )
         }
     }
 });

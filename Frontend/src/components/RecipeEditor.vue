@@ -166,7 +166,7 @@
                      </select>
                      <label for="ingredient">{{ t('ingredients') }}</label>
                      <select id="ingredient" class="form-control" v-model="selectedIngredient" v-bind:disabled="selectedTypeId == null">
-                        <option v-for="ingr in useAdminStore().storeItems" :value="ingr">{{app_language == 'hu' ? ingr.nameHU : ingr.nameEN}}</option>
+                        <option v-for="ingr in useAdminStore().storeItems" :value="ingr">{{app_language == 'hu' ? ingr.name : ingr.nameEN}}</option>
                      </select>
                      
                      <div class="row">
@@ -187,7 +187,7 @@
                     <div v-for="(ingr,index) in ingredients" :key="index" class="ingredient-div d-flex align-items-start">
                         <i class="bi bi-trash" v-on:click="deleteIngredient(ingr.item.id!)"></i>
                         <div>
-                            {{ `${app_language == 'hu' ? ingr.item.nameHU : ingr.item.nameEN}`}}
+                            {{ `${app_language == 'hu' ? ingr.item.name : ingr.item.nameEN}`}}
                             <br>
                             {{ `${ingr.quantity} ${ingr.item.unit}` }}
                         </div>
