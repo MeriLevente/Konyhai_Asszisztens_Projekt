@@ -2,33 +2,34 @@
     import TypeModal from '@/components/modals/TypeModal.vue';
     import type IType from '@/models/Type';
     import { useAdminStore } from '@/stores/adminstore';
-    import { computed, ref } from 'vue';
+    import DataLoader from '@/utils/DataLoader';
+    import { ref } from 'vue';
     import { useI18n } from 'vue-i18n';
     const { t } = useI18n();
     const store = useAdminStore();
 
-    const itemtypes = computed((): IType[] => {
-        return store.storeTypes
-    });
+    DataLoader.loadTypes();
 
     let data = ref<IType | null>();
 
     const addType = () => {
         data.value = {
-            nameHU: "",
-            nameEN: "",
+            name_HU: "",
+            name_EN: "",
             image: ""
         };
+        document.documentElement.scrollTop = 0;
         document.getElementsByTagName('body')[0].classList.add('disable-scrolling')
     };
 
     const editType = (selected: IType) => {
         data.value = {
             id: selected.id,
-            nameHU: selected.nameHU,
-            nameEN: selected.nameEN,
+            name_HU: selected.name_HU,
+            name_EN: selected.name_EN,
             image: selected.image
         }
+        document.documentElement.scrollTop = 0;
         document.getElementsByTagName('body')[0].classList.add('disable-scrolling')
     };
 
@@ -62,16 +63,16 @@
         </div>
         <div class="row my-2">  
             <div class="col-12">
-                <div v-if="itemtypes.length == 0" class="d-flex justify-content-center">
+                <div v-if="store.types.length == 0" class="d-flex justify-content-center">
                     <p style="font-weight: bold;color: red;">{{ t("no_data") }}</p>
                 </div>
                 <div class="d-flex justify-content-center">
-                    <span v-if="itemtypes.length == 0" class="btn btn-success" v-on:click="addType">
+                    <span v-if="store.types.length == 0" class="btn btn-success" v-on:click="addType">
                         {{ t("add_new") }}
                     </span>
                 </div>
                 <div class="table-responsive">
-                    <table class="admin-table" v-if="itemtypes.length > 0">
+                    <table class="admin-table" v-if="store.types.length > 0">
                     <thead>
                     <tr>
                         <th style="width: 10%;">
@@ -86,14 +87,14 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="(type,index) in itemtypes" :key="index">
+                    <tr v-for="(type,index) in store.types" :key="index">
                         <td>
                             <span class="btn btn-primary p-2 m-1 table-btn"  v-on:click="editType(type)"><i class="bi bi-pencil d-flex justify-content-center"></i></span>
                             <span class="btn btn-danger p-2 table-btn" v-on:click="deleteType(type)"><i class="bi bi-trash d-flex justify-content-center"></i></span>
                         </td>
                         <td class="text-center pt-3">{{ type.id }}</td>
-                        <td class="text-center pt-3">{{ type.nameHU }}</td>
-                        <td class="text-center pt-3">{{ type.nameEN }}</td>
+                        <td class="text-center pt-3">{{ type.name_HU }}</td>
+                        <td class="text-center pt-3">{{ type.name_EN }}</td>
                         <td><img class="tdImage" :src="type.image" alt="image"></td>
                     </tr>
                     </tbody>

@@ -1,25 +1,24 @@
 <script setup lang="ts">
     import RecipeEditor from '@/components/RecipeEditor.vue';
-import type IRecipe from '@/models/Recipe';
+    import type IRecipe from '@/models/Recipe';
     import { useAdminStore } from '@/stores/adminstore';
-    import { computed, ref } from 'vue';
+    import DataLoader from '@/utils/DataLoader';
+    import { ref } from 'vue';
     import { useI18n } from 'vue-i18n';
     const { t } = useI18n();
     const store = useAdminStore();
     let openEditor = ref(false);
 
-    const recipes = computed((): IRecipe[] => {
-        return store.storeRecipes
-    });
+    DataLoader.loadRecipes();
 
     let data = ref<IRecipe | null>();
 
     const addRecipe = () => {
         data.value = {
-            nameHU: "",
-            nameEN: "",
-            descriptionHU: "",
-            descriptionEN: "",
+            name: "",
+            name_EN: "",
+            description: "",
+            description_EN: "",
             type: "AME",
             difficulty: 0,
             time: 0,
@@ -32,10 +31,10 @@ import type IRecipe from '@/models/Recipe';
     const editRecipe = (selected: IRecipe) => {
         data.value = {
             id: selected.id,
-            nameHU: selected.nameHU,
-            nameEN: selected.nameEN,
-            descriptionHU: selected.descriptionHU,
-            descriptionEN: selected.descriptionEN,
+            name: selected.name,
+            name_EN: selected.name_EN,
+            description: selected.description,
+            description_EN: selected.description_EN,
             type: selected.type,
             difficulty: selected.difficulty,
             time: selected.time,
@@ -69,16 +68,16 @@ import type IRecipe from '@/models/Recipe';
         </div>
         <div class="row my-2">  
             <div class="col-12">
-                <div v-if="recipes.length == 0" class="d-flex justify-content-center">
+                <div v-if="useAdminStore().recipes.length == 0" class="d-flex justify-content-center">
                     <p style="font-weight: bold;color: red;">{{ t("no_data") }}</p>
                 </div>
                 <div class="d-flex justify-content-center">
-                    <span v-if="recipes.length == 0" class="btn btn-success" v-on:click="addRecipe">
+                    <span v-if="useAdminStore().recipes.length == 0" class="btn btn-success" v-on:click="addRecipe">
                         {{ t("add_new") }}
                     </span>
                 </div>
                 <div class="table-responsive">
-                    <table class="admin-table" v-if="recipes.length > 0">
+                    <table class="admin-table" v-if="useAdminStore().recipes.length > 0">
                     <thead>
                         <tr>
                             <th style="width: 10%;">
@@ -94,7 +93,7 @@ import type IRecipe from '@/models/Recipe';
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(recipe,index) in recipes" :key="index">
+                        <tr v-for="(recipe,index) in useAdminStore().recipes" :key="index">
                             <td>
                                 <span class="btn btn-primary table-btn p-2 m-1"  v-on:click="editRecipe(recipe)">
                                     <i class="bi bi-pencil d-flex justify-content-center"></i>
@@ -104,8 +103,8 @@ import type IRecipe from '@/models/Recipe';
                                 </span>
                             </td>
                             <td class="text-center pt-3">{{ recipe.id }}</td>
-                            <td class="text-center pt-3">{{ recipe.nameHU }}</td>
-                            <td class="text-center pt-3">{{ recipe.nameEN }}</td>
+                            <td class="text-center pt-3">{{ recipe.name }}</td>
+                            <td class="text-center pt-3">{{ recipe.name_EN }}</td>
                             <td class="text-center pt-3">{{ recipe.type }}</td>
                             <td><img class="tdImage" v-bind:src="recipe.image"></img></td>
                         </tr>

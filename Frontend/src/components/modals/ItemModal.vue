@@ -1,4 +1,5 @@
 <script setup lang="ts">
+    import DataLoader from '@/utils/DataLoader';
     import type Item from '../../models/Item';
     import { useAdminStore } from '../../stores/adminstore';
     import { useAppStore } from '../../stores/appstore'
@@ -23,9 +24,9 @@
     }
 
     let modalData = ref<Item>({
-        id: props.data.id,
+        itemId: props.data.itemId,
         name: props.data.name,
-        nameEN: props.data.nameEN,
+        name_EN: props.data.name_EN,
         unit: props.data.unit,
         typeId: props.data.typeId,
         image: props.data.image
@@ -58,12 +59,12 @@
                     </div>
                     <div class="mb-3">
                         <label for="nameEN" class="form-label">{{ t("name") }} (en)</label>
-                        <input type="text" class="form-control" id="nameEN" v-model="modalData.nameEN" v-on:focus="() => {if(items_error.hu && items_error.en) hideError()}">
+                        <input type="text" class="form-control" id="nameEN" v-model="modalData.name_EN" v-on:focus="() => {if(items_error.hu && items_error.en) hideError()}">
                     </div>
                     <div class="mb-3">
                         <label for="types" class="form-label">{{ t("type") }}</label>
-                        <select name="type" id="types" required v-model="modalData.typeId" class="form-control">
-                            <option v-for="(type,index) in types" :value="type.id" :selected="index+1 == modalData.typeId">{{ app_language == 'hu' ? type.nameHU : type.nameEN }}</option>
+                        <select name="type" id="types" required v-model="modalData.typeId" class="form-control" v-on:click="DataLoader.loadTypes()">
+                            <option v-for="(type,index) in useAdminStore().types" :value="type.id" :selected="index+1 == modalData.typeId">{{ app_language == 'hu' ? type.name_HU : type.name_EN }}</option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -89,7 +90,6 @@
 
 <style lang="css" scoped>
     .modal{
-        position: absolute;
-        top: 10%;
+        margin: auto;
     }
 </style>

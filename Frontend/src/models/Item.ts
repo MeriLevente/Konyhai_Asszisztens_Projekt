@@ -1,7 +1,7 @@
 export default interface Item {
-    id?: number
+    itemId?: number
     name: string
-    nameEN: string
+    name_EN: string
     typeId: number
     unit: string
     image: string

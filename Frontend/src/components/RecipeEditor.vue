@@ -8,6 +8,7 @@
     import type Ingredient from '@/models/Ingredient';
     import RecipeValidation from '@/utils/RecipeValidation';
     import type IFormResponse from '@/models/FormResponse';
+    import DataLoader from '@/utils/DataLoader';
     const { t } = useI18n();
     const props = defineProps(["recipe"]);
     const emit = defineEmits(["editorClosed", "saveData"]);
@@ -23,8 +24,8 @@
     let ingredientQuantity = ref<number | null>();
     let ingrInputError = ref<string | undefined>("");
 
-    let descHU = ref<string[]>(props.recipe.descriptionHU == "" ? [] : props.recipe.descriptionHU.split("#"));
-    let descEN = ref<string[]>(props.recipe.descriptionEN == "" ? [] : props.recipe.descriptionEN.split("#"));
+    let descHU = ref<string[]>(props.recipe.description == "" ? [] : props.recipe.description.split("#"));
+    let descEN = ref<string[]>(props.recipe.description_EN == "" ? [] : props.recipe.description_EN.split("#"));
     let stepInput = ref<string>("");
     let stepInputError = ref<string | undefined>("");
 
@@ -55,10 +56,10 @@
                     item: selectedIngredient.value!,
                     quantity: ingredientQuantity.value!
                 }
-                const ingrContains = ingredients.value.find(x=> x.item.id == ingredient.item.id);
+                const ingrContains = ingredients.value.find(x=> x.item.itemId == ingredient.item.itemId);
                 if(ingrContains)
                     ingredients.value.forEach(x=> {
-                        if(x.item.id == ingrContains.item.id){
+                        if(x.item.itemId == ingrContains.item.itemId){
                             x.quantity += ingredient.quantity;
                         }
                     })
@@ -79,7 +80,7 @@
     };
 
     const deleteIngredient = (index: number): void => {
-        ingredients.value = ingredients.value.filter(x=> x.item.id != index);
+        ingredients.value = ingredients.value.filter(x=> x.item.itemId != index);
     };
 
     const saveStep = (): void => {
@@ -117,8 +118,8 @@
     }
 
     const submitRecipe = (): void => {
-        props.recipe.descriptionHU = descHU.value.join("#");
-        props.recipe.descriptionEN = descEN.value.join("#");
+        props.recipe.description = descHU.value.join("#");
+        props.recipe.description_EN = descEN.value.join("#");
         props.recipe.ingredients = ingredients.value;
         props.recipe.image = imageToSave;
         resetRecipeError();
@@ -134,7 +135,7 @@
             <div class="row mb-2">
                 <div class="col-12 col-md-6">
                     <label for="nameHU" class="form-label">{{ t("name") }} (hu)</label>
-                    <input type="text" class="form-control m-1" id="nameHU" v-model="recipe.nameHU" v-on:focus="resetRecipeError()">
+                    <input type="text" class="form-control m-1" id="nameHU" v-model="recipe.name" v-on:focus="resetRecipeError()">
                     <label for="difficulty" class="form-label">{{ t("difficulty") }}</label>
                     <input type="number" class="form-control m-1" id="difficulty" v-model="recipe.difficulty" placeholder="min: 1, max: 10" v-on:focus="resetRecipeError()">
                     <label for="image" class="form-label">{{ t("image") }}</label>
@@ -142,7 +143,7 @@
                 </div>
                 <div class="col-12 col-md-6 mb">
                     <label for="nameEN" class="form-label">{{ t("name") }} (en)</label>
-                    <input type="text" class="form-control m-1" id="nameEN" v-model="recipe.nameEN" v-on:focus="resetRecipeError()">
+                    <input type="text" class="form-control m-1" id="nameEN" v-model="recipe.name_EN" v-on:focus="resetRecipeError()">
                     <label for="time" class="form-label">{{ t("time") }}</label>
                     <input type="number" class="form-control m-1" id="time" v-model="recipe.time" placeholder="min: 1, max: 10080" v-on:focus="resetRecipeError()">
                     <label for="type" class="form-label">{{ t("type") }}</label>
@@ -159,14 +160,16 @@
                 <h5 class="text-center">{{ t("ingredients") }}</h5>
                 <div class="col-12 col-md-6 InputDiv mb-2 p-2">
                      <label for="itemtype">{{ t('type') }}</label>
-                     <select id="itemtype" name="itemtype" v-model="selectedTypeId" class="form-control">
-                        <option v-for="type in useAdminStore().storeTypes" :value="type.id">
-                            {{ app_language == 'hu' ? type.nameHU : type.nameEN }}
+                     <select id="itemtype" name="itemtype" v-model="selectedTypeId" class="form-control" v-on:click="DataLoader.loadTypes()">
+                        <option v-for="type in useAdminStore().types" :value="type.id">
+                            {{ app_language == 'hu' ? type.name_HU : type.name_EN }}
                         </option>
                      </select>
                      <label for="ingredient">{{ t('ingredients') }}</label>
-                     <select id="ingredient" class="form-control" v-model="selectedIngredient" v-bind:disabled="selectedTypeId == null">
-                        <option v-for="ingr in useAdminStore().storeItems" :value="ingr">{{app_language == 'hu' ? ingr.name : ingr.nameEN}}</option>
+                     <select id="ingredient" class="form-control"
+                        v-model="selectedIngredient" v-bind:disabled="selectedTypeId == null" 
+                        v-on:click="DataLoader.loadItems()">
+                        <option v-for="ingr in useAdminStore().items" :value="ingr">{{app_language == 'hu' ? ingr.name : ingr.name_EN}}</option>
                      </select>
                      
                      <div class="row">
@@ -185,9 +188,9 @@
                 </div>
                 <div class="col-12 col-md-6" style="display: flex; float: left; flex-wrap: wrap;">
                     <div v-for="(ingr,index) in ingredients" :key="index" class="ingredient-div d-flex align-items-start">
-                        <i class="bi bi-trash" v-on:click="deleteIngredient(ingr.item.id!)"></i>
+                        <i class="bi bi-trash" v-on:click="deleteIngredient(ingr.item.itemId!)"></i>
                         <div>
-                            {{ `${app_language == 'hu' ? ingr.item.name : ingr.item.nameEN}`}}
+                            {{ `${app_language == 'hu' ? ingr.item.name : ingr.item.name_EN}`}}
                             <br>
                             {{ `${ingr.quantity} ${ingr.item.unit}` }}
                         </div>

@@ -100,6 +100,12 @@ const i18n = createI18n({
             ml: "ml",
 
             toHome: "Vissza a főoldalra",
+
+            //ItemsView
+            mykitchen: "Konyhám",
+            manageitems: "Itt menedzselheted a konyhád tartalmát!",
+            search: "Keresés",
+            showAll: "Mutasd mind",
         },
         'en': {
             //HomeView
@@ -195,6 +201,12 @@ const i18n = createI18n({
             ml: "ml",
 
             toHome: "Back to the homepage",
+
+            //ItemsView
+            mykitchen: "My Kitchen",
+            manageitems: "You can manage the items in your kitchen here!",
+            search: "Search",
+            showAll: "Show all",
         }
     }
 });

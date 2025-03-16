@@ -2,10 +2,10 @@ import type Ingredient from "./Ingredient"
 
 export default interface IRecipe {
     id?: number
-    nameHU: string
-    nameEN: string
-    descriptionHU: string
-    descriptionEN: string
+    name: string
+    name_EN: string
+    description: string
+    description_EN: string
     type: string
     difficulty: number
     time: number

@@ -4,10 +4,19 @@ import type Item from "@/models/Item";
 import type IRecipe from "@/models/Recipe";
 
 export default {
+    getTypes(){
+        return instance.get('/types')
+        .then((res: any)=>{
+            return res
+        })
+        .catch((err: any)=>{
+            return Promise.reject(err.response)
+        })
+    },
     addType(data: IType){
         return instance.post('/addType', data)
         .then((res: any)=>{
-            return res //elmentet típus visszakérem és a lokális tömbhöz adom
+            return res
         })
         .catch((err: any)=>{
             return Promise.reject(err.response)
@@ -33,6 +42,15 @@ export default {
     },
 
     // ITEMS
+    getItems(){
+        return instance.get('/items')
+        .then((res: any)=>{
+            return res
+        })
+        .catch((err: any)=>{
+            return Promise.reject(err.response)
+        })
+    },
     addItem(data: Item){
         return instance.post('/addItem', data)
         .then((res: any)=>{
@@ -43,7 +61,7 @@ export default {
         })
     },
     updateItem(data: Item){
-        return instance.post(`/updateItem/${data.id}`, data)
+        return instance.post(`/updateItem/${data.itemId}`, data)
         .then((res: any)=>{
             return res
         })
@@ -52,7 +70,7 @@ export default {
         })
     },
     deleteItem(data: Item){
-        return instance.post(`/deleteItem/${data.id}`)
+        return instance.post(`/deleteItem/${data.itemId}`)
         .then((res: any)=>{
             return res
         })
@@ -62,6 +80,15 @@ export default {
     },
 
     //RECIPES
+    getRecipes(){
+        return instance.get('/recipes')
+        .then((res: any)=>{
+            return res
+        })
+        .catch((err: any)=>{
+            return Promise.reject(err.response)
+        })
+    },
     addRecipe(data: IRecipe) {
         return instance.post('/addRecipe', data)
         .then((res: any)=>{

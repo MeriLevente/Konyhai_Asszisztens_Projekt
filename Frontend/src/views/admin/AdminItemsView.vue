@@ -1,39 +1,39 @@
 <script setup lang="ts">
     import ItemModal from '@/components/modals/ItemModal.vue';
     import type Item from '@/models/Item';
-    import type IType from '@/models/Type';
     import { useAdminStore } from '@/stores/adminstore';
-    import { computed, ref } from 'vue';
+    import DataLoader from '@/utils/DataLoader';
+    import { ref } from 'vue';
     import { useI18n } from 'vue-i18n';
     const { t } = useI18n();
     const store = useAdminStore();
 
-    const items = computed((): Item[] => {
-        return store.storeItems
-    });
+    DataLoader.loadItems();
 
     let data = ref<Item | null>();
 
     const addItem = () => {
         data.value = {
             name: "",
-            nameEN: "",
+            name_EN: "",
             typeId: 1,
             unit: "darab",
             image: ""
         };
+        document.documentElement.scrollTop = 0;
         document.getElementsByTagName('body')[0].classList.add('disable-scrolling')
     };
 
     const editItem = (selected: Item) => {
         data.value = {
-            id: selected.id,
+            itemId: selected.itemId,
             name: selected.name,
-            nameEN: selected.nameEN,
+            name_EN: selected.name_EN,
             typeId: selected.typeId,
             unit: selected.unit,
             image: selected.image
         }
+        document.documentElement.scrollTop = 0;
         document.getElementsByTagName('body')[0].classList.add('disable-scrolling')
     };
 
@@ -65,16 +65,16 @@
         </div>
         <div class="row my-2">
             <div class="col-12">
-                <div v-if="items.length == 0" class="d-flex justify-content-center">
+                <div v-if="useAdminStore().items.length == 0" class="d-flex justify-content-center">
                     <p style="font-weight: bold;color: red;">{{ t("no_data") }}</p>
                 </div>
                 <div class="d-flex justify-content-center">
-                    <span v-if="items.length == 0" class="btn btn-success" v-on:click="addItem">
+                    <span v-if="useAdminStore().items.length == 0" class="btn btn-success" v-on:click="addItem">
                         {{ t("add_new") }}
                     </span>
                 </div>
                 <div class="table-responsive">
-                    <table class="admin-table" v-if="items.length > 0">
+                    <table class="admin-table" v-if="useAdminStore().items.length > 0">
                     <thead>
                         <tr>
                             <th style="width: 10%;">
@@ -90,7 +90,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(item,index) in items" :key="index">
+                        <tr v-for="(item,index) in useAdminStore().items" :key="index">
                             <td>
                                 <span class="btn btn-primary table-btn p-2 m-1"  v-on:click="editItem(item)">
                                     <i class="bi bi-pencil d-flex justify-content-center"></i>
@@ -99,9 +99,9 @@
                                     <i class="bi bi-trash d-flex justify-content-center"></i>
                                 </span>
                             </td>
-                            <td class="text-center pt-3">{{ item.id }}</td>
+                            <td class="text-center pt-3">{{ item.itemId }}</td>
                             <td class="text-center pt-3">{{ item.name }}</td>
-                            <td class="text-center pt-3">{{ item.nameEN }}</td>
+                            <td class="text-center pt-3">{{ item.name_EN }}</td>
                             <td class="text-center pt-3">{{ item.typeId }}</td>
                             <td><img class="tdImage" v-bind:src="item.image" alt="Img"></td>
                         </tr>
