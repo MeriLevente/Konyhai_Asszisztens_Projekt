@@ -4,6 +4,7 @@ import type StoredItem from "@/models/StoredItem";
 import type IUser from "@/models/User";
 import storageService from "@/services/storageService";
 import userService from "@/services/userService";
+import DataLoader from "@/utils/DataLoader";
 import UserValidation from "@/utils/UserValidation";
 import {defineStore} from "pinia";
 
@@ -79,11 +80,14 @@ export const useUserStore = defineStore('userStore', {
                 .then(()=>{
                     this.status.loggedIn = false;
                     this.user = undefined;
-                    localStorage.removeItem("user");
+                    DataLoader.clearLocalStorage();
                 })
                 .catch((err: any)=>{
                     this.status.message = err.data.hu;
                     this.status.messageEn = err.data.en;
+                    this.status.loggedIn = false;
+                    this.user = undefined;
+                    DataLoader.clearLocalStorage();
                     return Promise.reject();
                 })
         },
@@ -94,6 +98,14 @@ export const useUserStore = defineStore('userStore', {
                 }).catch((err)=>
                     console.log(err)
                 )
-        }
+        },
+        getStoredItemsByTypeId(typeId: number){
+            return storageService.getStoredItemsByTypeId(typeId)
+                .then((res: any)=>{
+                    this.storedItems = res.data;
+                }).catch((err)=>
+                    console.log(err)
+                )
+        },
     }
 });

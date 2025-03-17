@@ -20,7 +20,7 @@ tr{
 
 .background {
     width: 100%;
-    min-height: 10000vh;
+    min-height: 100vh;
     position: absolute;
     left: 0;
     top: 0;
@@ -45,6 +45,6 @@ i {
 }
 
 .disable-scrolling {
-    height: 100%;
+    min-height: 100%;
     overflow: hidden;
 }

@@ -10,6 +10,15 @@ export default {
                 })
                 .catch((err: any)=>{
                     return Promise.reject(err.response)
+        })
+    },
+    getStoredItemsByTypeId(typeId: number){
+        return instance.get(`/storage/${useUserStore().user?.id}/${typeId}`)
+                .then((res: any)=>{
+                    return res
                 })
+                .catch((err: any)=>{
+                    return Promise.reject(err.response)
+        })
     }
 }

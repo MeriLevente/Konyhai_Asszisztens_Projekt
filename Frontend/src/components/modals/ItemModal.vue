@@ -88,8 +88,9 @@
     </div>
 </template>
 
-<style lang="css" scoped>
+<style lang="css">
     .modal{
-        margin: auto;
+        position: absolute;
+        top: 10%;
     }
 </style>

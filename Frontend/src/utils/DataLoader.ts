@@ -4,6 +4,11 @@ import type IType from "@/models/Type";
 import { useAdminStore } from "@/stores/adminstore";
 
 export default class DataLoader{
+    public static clearLocalStorage(){
+        const lang: string = localStorage.getItem('lang')!.toString();
+        localStorage.clear()
+        localStorage.setItem('lang', lang);
+    }
     public static loadTypes(){
         if(!localStorage.getItem('types'))
             useAdminStore().getTypes()

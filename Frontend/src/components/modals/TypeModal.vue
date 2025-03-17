@@ -40,7 +40,6 @@
         };
         reader.readAsDataURL(selectedImage);
     };
-    console.log(modalData.value)
 </script>
 
 <template>
@@ -76,9 +75,6 @@
     </div>
 </template>
 
-<style lang="css" scoped>
-    .modal{
-        position: absolute;
-        top: 20%;
-    }
+<style lang="css">
+    
 </style>
