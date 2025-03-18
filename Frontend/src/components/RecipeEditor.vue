@@ -159,16 +159,18 @@
             <div class="row p-2">
                 <h5 class="text-center">{{ t("ingredients") }}</h5>
                 <div class="col-12 col-md-6 InputDiv mb-2 p-2">
-                     <label for="itemtype">{{ t('type') }}</label>
-                     <select id="itemtype" name="itemtype" v-model="selectedTypeId" class="form-control" v-on:click="DataLoader.loadTypes()">
+                    <label for="itemtype">{{ t('type') }}</label>
+                    <select id="itemtype" name="itemtype" 
+                        v-model="selectedTypeId" class="form-control" 
+                        v-on:click="DataLoader.loadTypes(); useAdminStore().getItemsByTypeId(selectedTypeId!)"
+                    >
                         <option v-for="type in useAdminStore().types" :value="type.id">
                             {{ app_language == 'hu' ? type.name_HU : type.name_EN }}
                         </option>
                      </select>
                      <label for="ingredient">{{ t('ingredients') }}</label>
                      <select id="ingredient" class="form-control"
-                        v-model="selectedIngredient" v-bind:disabled="selectedTypeId == null" 
-                        v-on:click="DataLoader.loadItems()">
+                        v-model="selectedIngredient" v-bind:disabled="selectedTypeId == null">
                         <option v-for="ingr in useAdminStore().items" :value="ingr">{{app_language == 'hu' ? ingr.name : ingr.name_EN}}</option>
                      </select>
                      
@@ -266,47 +268,4 @@
     </div>
 </template>
 
-<style lang="css" scoped>
-    .content-box {
-        font-family: Funnel Sans, sans-serif;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .container{
-        background-color: var(--mercury);
-        border: 3px solid var(--ebony-clay);
-        border-radius: 5px;
-    }
-    .InputDiv{
-        border: 0.5px solid gray;
-        border-radius: 5px;
-    }
-    textarea{
-        height: 12vh;
-        resize: none;
-    }
-    .ingredient-div{
-        border: 0.5px var(--ebony-clay) solid;
-        border-radius: 20px;
-        height: 3rem;
-        width: 12rem;
-        background-color: var(--mercury);
-        color: var(--ebony-clay);
-        font-weight: bold;
-    }
-    i {
-        font-size: 1.2rem;
-        cursor: pointer;
-        padding: 0.5rem;
-    }
-    .unitSpan {
-        border: 0.5px white solid;
-        background-color: var(--ebony-clay);
-        color: white;
-        font-size: 1rem;
-        font-weight: bold;
-        padding: 0.35rem;
-        border-radius: 90px;
-    }
-</style>
+<style lang="css" scoped src="@/assets/css/recipeeditor.css"></style>

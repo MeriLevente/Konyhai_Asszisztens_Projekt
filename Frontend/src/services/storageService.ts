@@ -20,5 +20,15 @@ export default {
                 .catch((err: any)=>{
                     return Promise.reject(err.response)
         })
+    },
+    getStoredItemsBySearch(typeId: number | null, sWord: string){
+        const routeEnd: string = `${!typeId ? `search/${sWord}` : `${typeId}/search/${sWord}`}`
+        return instance.get(`/storage/${useUserStore().user?.id}/${routeEnd}`)
+                .then((res: any)=>{
+                    return res
+                })
+                .catch((err: any)=>{
+                    return Promise.reject(err.response)
+        })
     }
 }

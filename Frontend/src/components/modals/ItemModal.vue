@@ -11,6 +11,7 @@
     const { t } = useI18n();
     const props = defineProps(["data"]);
     const emit = defineEmits(["saveData", "closeModal"])
+    DataLoader.loadTypes()
 
     const closeModal = () => {
         useAdminStore().savedImageUrl = '';
@@ -44,7 +45,8 @@
 </script>
 
 <template>
-   <div class="modal" tabindex="-1" style="display: block;" v-if="data">
+    <div class="background" v-if="data"></div>
+    <div class="modal" tabindex="-1" v-if="data">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -63,7 +65,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="types" class="form-label">{{ t("type") }}</label>
-                        <select name="type" id="types" required v-model="modalData.typeId" class="form-control" v-on:click="DataLoader.loadTypes()">
+                        <select name="type" id="types" required v-model="modalData.typeId" class="form-control">
                             <option v-for="(type,index) in useAdminStore().types" :value="type.id" :selected="index+1 == modalData.typeId">{{ app_language == 'hu' ? type.name_HU : type.name_EN }}</option>
                         </select>
                     </div>
@@ -89,8 +91,18 @@
 </template>
 
 <style lang="css">
-    .modal{
+   .modal {
+        transform: translateY(15%);
+        display: block;
+   }
+   .background {
+        width: 100%;
+        min-height: 100000vh;
         position: absolute;
-        top: 10%;
+        left: 0;
+        top: 0;
+        background-color: black;
+        opacity: 0.8;
+        z-index: 1;
     }
 </style>

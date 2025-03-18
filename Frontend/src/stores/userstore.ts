@@ -5,8 +5,12 @@ import type IUser from "@/models/User";
 import storageService from "@/services/storageService";
 import userService from "@/services/userService";
 import DataLoader from "@/utils/DataLoader";
+import SearchValidation from "@/utils/SearchValidation";
 import UserValidation from "@/utils/UserValidation";
 import {defineStore} from "pinia";
+import { useAppStore } from "./appstore";
+import type IRecipe from "@/models/Recipe";
+import adminService from "@/services/adminService";
 
 export const useUserStore = defineStore('userStore', {
     state: () => ({
@@ -21,7 +25,8 @@ export const useUserStore = defineStore('userStore', {
         },
         storedItems: <StoredItem[]> [
 
-        ]
+        ],
+        viewedRecipe: <IRecipe>{}
     }),
     actions: {
         hideError() {
@@ -96,7 +101,7 @@ export const useUserStore = defineStore('userStore', {
                 .then((res: any)=>{
                     this.storedItems = res.data;
                 }).catch((err)=>
-                    console.log(err)
+                    console.error(err.data.messageEn)
                 )
         },
         getStoredItemsByTypeId(typeId: number){
@@ -104,8 +109,30 @@ export const useUserStore = defineStore('userStore', {
                 .then((res: any)=>{
                     this.storedItems = res.data;
                 }).catch((err)=>
-                    console.log(err)
+                    console.error(err.data.messageEn)
                 )
         },
+        getStoredItemsBySearch(typeId: number | null, sWord: string | undefined){
+            let validation: IFormResponse = SearchValidation.SearchedWordIsValid(sWord);
+            if(!validation.isError){
+                return storageService.getStoredItemsBySearch(typeId, sWord!)
+                .then((res: any)=>{
+                    this.storedItems = res.data;
+                }).catch((err)=>
+                    console.error(err.data.messageEn)
+                )
+            } else {
+                alert(useAppStore().app_language == 'hu' ? validation.message : validation.messageEn);
+            }
+        },
+        getRecipeById(id:number){
+            return adminService.getRecipeById(id)
+                .then((res: any)=>{
+                    this.viewedRecipe = res.data;
+                    localStorage.setItem('viewed_recipe', JSON.stringify(this.viewedRecipe));
+                }).catch((err: any)=>
+                    console.error(err.data.messageEn)
+                )
+        }
     }
 });

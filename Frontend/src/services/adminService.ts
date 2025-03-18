@@ -51,6 +51,15 @@ export default {
             return Promise.reject(err.response)
         })
     },
+    getItemsByType(typid: number){
+        return instance.get(`/items/typeid/${typid}`)
+        .then((res: any)=>{
+            return res
+        })
+        .catch((err: any)=>{
+            return Promise.reject(err.response)
+        })
+    },
     addItem(data: Item){
         return instance.post('/addItem', data)
         .then((res: any)=>{
@@ -82,6 +91,15 @@ export default {
     //RECIPES
     getRecipes(){
         return instance.get('/recipes')
+        .then((res: any)=>{
+            return res
+        })
+        .catch((err: any)=>{
+            return Promise.reject(err.response)
+        })
+    },
+    getRecipeById(id: number){
+        return instance.get(`/recipes/${id}`)
         .then((res: any)=>{
             return res
         })

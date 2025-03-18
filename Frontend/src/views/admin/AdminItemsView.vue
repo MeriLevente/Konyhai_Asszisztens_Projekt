@@ -20,8 +20,7 @@
             unit: "darab",
             image: ""
         };
-        document.documentElement.scrollTop = 0;
-        document.getElementsByTagName('body')[0].classList.add('disable-scrolling')
+        document.getElementsByTagName('body')[0].classList.add('disable-scrolling');
     };
 
     const editItem = (selected: Item) => {
@@ -33,8 +32,7 @@
             unit: selected.unit,
             image: selected.image
         }
-        document.documentElement.scrollTop = 0;
-        document.getElementsByTagName('body')[0].classList.add('disable-scrolling')
+        document.getElementsByTagName('body')[0].classList.add('disable-scrolling');
     };
 
     const deleteItem = (selected: Item) => {
@@ -54,8 +52,6 @@
 </script>
 
 <template>
-    <div class="background" v-if="data"></div>
-    
     <div class="container my-5 justify-center" style="font-family: Funnel Sans, sans-serif;">
         <div class="row">
             <RouterLink class="back-to-admin" to="/admin">Admin >> {{ t('edit_items') }}</RouterLink>
@@ -65,6 +61,7 @@
         </div>
         <div class="row my-2">
             <div class="col-12">
+                <ItemModal :data="data" v-if="data" v-on:save-data="saveData" v-on:close-modal="closeModal"/>
                 <div v-if="useAdminStore().items.length == 0" class="d-flex justify-content-center">
                     <p style="font-weight: bold;color: red;">{{ t("no_data") }}</p>
                 </div>
@@ -108,8 +105,6 @@
                     </tbody>
                     </table>
                 </div>
-                
-            <ItemModal :data="data" v-if="data" v-on:save-data="saveData" v-on:close-modal="closeModal"/>
             </div>
         </div>
     </div>

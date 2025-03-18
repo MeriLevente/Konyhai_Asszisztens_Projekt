@@ -43,6 +43,7 @@
 </script>
 
 <template>
+    <div class="background" v-if="data"></div>
    <div class="modal" tabindex="-1" style="display: block;" v-if="data">
     <div class="modal-dialog">
         <div class="modal-content">

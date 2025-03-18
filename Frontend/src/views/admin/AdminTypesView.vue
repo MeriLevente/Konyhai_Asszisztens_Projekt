@@ -18,8 +18,7 @@
             name_EN: "",
             image: ""
         };
-        document.documentElement.scrollTop = 0;
-        document.getElementsByTagName('body')[0].classList.add('disable-scrolling')
+        document.getElementsByTagName('body')[0].classList.add('disable-scrolling');
     };
 
     const editType = (selected: IType) => {
@@ -29,8 +28,7 @@
             name_EN: selected.name_EN,
             image: selected.image
         }
-        document.documentElement.scrollTop = 0;
-        document.getElementsByTagName('body')[0].classList.add('disable-scrolling')
+        document.getElementsByTagName('body')[0].classList.add('disable-scrolling');
     };
 
     const deleteType = (selected: IType) => {
@@ -63,6 +61,7 @@
         </div>
         <div class="row my-2">  
             <div class="col-12">
+                <TypeModal :data="data" v-if="data" v-on:save-data="saveData" v-on:close-modal="closeModal"/>
                 <div v-if="store.types.length == 0" class="d-flex justify-content-center">
                     <p style="font-weight: bold;color: red;">{{ t("no_data") }}</p>
                 </div>
@@ -100,7 +99,6 @@
                     </tbody>
                     </table>
                 </div>
-                <TypeModal :data="data" v-if="data" v-on:save-data="saveData" v-on:close-modal="closeModal"/>
             </div>
         </div>
     </div>

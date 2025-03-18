@@ -14,19 +14,21 @@
 
     DataLoader.loadTypes();
 
-    const search = () => {
-        console.log(searchedWord.value)
+    const search = () => { 
+        useUserStore().getStoredItemsBySearch(selectedType.value, searchedWord.value)?.then(()=>{
+            showAlltriggered.value = true;
+        });
     };
 
     const typeClicked = (id: number): void => {
         selectedType.value = id;
         showAlltriggered.value = false;
-        useUserStore().getStoredItemsByTypeId(selectedType.value).then(()=>{});
+        useUserStore().getStoredItemsByTypeId(selectedType.value);
     };
 
     const showAllItems = ():void => {
         showAlltriggered.value = !showAlltriggered.value;
-        useUserStore().getStoredItems().then(()=>{});
+        useUserStore().getStoredItems();
     }
 </script>
 

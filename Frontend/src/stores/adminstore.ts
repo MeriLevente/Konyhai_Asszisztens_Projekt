@@ -145,6 +145,18 @@ export const useAdminStore = defineStore('adminStore', {
                 })
             return Promise.reject()
         },
+        getItemsByTypeId(typeid: number){
+            adminService.getItemsByType(typeid)
+                .then((res: any)=>{
+                    this.items = res.data;
+                }
+                )
+                .catch((err:any)=>{
+                    console.error(err);
+                    return Promise.reject();
+                })
+            return Promise.reject()
+        },
         saveItem(data: Item){
             let validation = ItemValidation.ItemAllFilled(data.name, data.name_EN, data.typeId, data.unit, data.image);
             if (!validation.isError) {   
