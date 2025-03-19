@@ -72,7 +72,7 @@
                 ingredientQuantity.value = null;
                 resetRecipeError();
             } else {
-                ingrInputError.value = app_language.value == 'hu' ? validation.message : validation.messageEn;  
+                ingrInputError.value = app_language.value == 'hu' ? validation.message : validation.messageEn;
             }
         } else {
             ingrInputError.value = app_language.value == 'hu' ? 'Maximum 20 elemet vehet fel!' : 'The maximum ingredient count is 20!';
@@ -95,7 +95,7 @@
             const stepIndex: number = Number(selectedStep.value)-1;
             if(selectedLanguage.value == "hu"){
                 descHU.value[stepIndex] = stepInput.value!;
-            }  
+            }
             if(selectedLanguage.value == "en")
                 descEN.value[stepIndex] = stepInput.value!;
             if(stepIndex != 3){
@@ -148,7 +148,7 @@
                     <input type="number" class="form-control m-1" id="time" v-model="recipe.time" placeholder="min: 1, max: 10080" v-on:focus="resetRecipeError()">
                     <label for="type" class="form-label">{{ t("type") }}</label>
                     <select name="type" id="type" class="form-control m-1" v-model="recipe.type">
-                        <option v-for="type in recipe_types.types" :value="type.short" 
+                        <option v-for="type in recipe_types.types" :value="type.short"
                             :selected="recipe.type == type.short">{{ app_language == "hu" ? type.hu : type.en  }}
                         </option>
                     </select>
@@ -160,8 +160,8 @@
                 <h5 class="text-center">{{ t("ingredients") }}</h5>
                 <div class="col-12 col-md-6 InputDiv mb-2 p-2">
                     <label for="itemtype">{{ t('type') }}</label>
-                    <select id="itemtype" name="itemtype" 
-                        v-model="selectedTypeId" class="form-control" 
+                    <select id="itemtype" name="itemtype"
+                        v-model="selectedTypeId" class="form-control"
                         v-on:click="DataLoader.loadTypes(); useAdminStore().getItemsByTypeId(selectedTypeId!)"
                     >
                         <option v-for="type in useAdminStore().types" :value="type.id">
@@ -173,7 +173,7 @@
                         v-model="selectedIngredient" v-bind:disabled="selectedTypeId == null">
                         <option v-for="ingr in useAdminStore().items" :value="ingr">{{app_language == 'hu' ? ingr.name : ingr.name_EN}}</option>
                      </select>
-                     
+
                      <div class="row">
                         <div class="col-8">
                             <label for="quantity">{{ t("quantity") }}</label>
@@ -205,7 +205,7 @@
                 <div class="col-12 col-md-6">
                     <h5>{{ t("input_step") }}</h5>
                     <p>{{ t("input_step_rules") }}</p>
-                    
+
                     <div class="row InputDiv p-3 mb-2">
                         <div class="row mb-2">
                             <div class="col-6">
@@ -221,13 +221,13 @@
                             </div>
                             <div class="col-4">
                                 <label for="step" class="form-label">{{ t("step") }}</label>
-                                <input v-if="selectedLanguage == 'hu'" type="number" name="step" id="step" 
+                                <input v-if="selectedLanguage == 'hu'" type="number" name="step" id="step"
                                    class="form-control" min="1" :max="descHU.length == 4 ? '4' : descHU.length+1" v-model="selectedStep">
-                                <input v-if="selectedLanguage == 'en'" type="number" name="step" id="stepEn" 
+                                <input v-if="selectedLanguage == 'en'" type="number" name="step" id="stepEn"
                                     class="form-control" min="1" :max="descEN.length == 4 ? '4' : descEN.length+1" v-model="selectedStep">
                             </div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="col-12">
                                 <label for="desc" class="form-label">{{ t("step") }}</label>
@@ -243,7 +243,7 @@
                                 <button type="button" class="btn btn-success" v-on:click="saveStep">{{ t("save") }}</button>
                             </div>
                         </div>
-                    </div>     
+                    </div>
                 </div>
                 <div class="col-12 col-md-6">
                     <h5>{{ t("steps") }}</h5>
@@ -264,7 +264,7 @@
                 </div>
             </div>
         </form>
-        </div> 
+        </div>
     </div>
 </template>
 

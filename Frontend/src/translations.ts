@@ -106,6 +106,10 @@ const i18n = createI18n({
             manageitems: "Itt menedzselheted a konyhád tartalmát!",
             search: "Keresés",
             showAll: "Mutasd mind",
+
+            //RecipesView
+            hour: "ó",
+            minute: "perc"
         },
         'en': {
             //HomeView
@@ -207,6 +211,10 @@ const i18n = createI18n({
             manageitems: "You can manage the items in your kitchen here!",
             search: "Search",
             showAll: "Show all",
+
+            //RecipesView
+            hour: "h",
+            minute: "min"
         }
     }
 });

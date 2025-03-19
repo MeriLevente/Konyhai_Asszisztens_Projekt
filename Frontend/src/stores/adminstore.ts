@@ -10,7 +10,7 @@ import { defineStore } from "pinia";
 export const useAdminStore = defineStore('adminStore', {
     state: () => ({
         types: <IType[]> [{
-            
+
         }],
         type_error: {
             hu: "",
@@ -18,7 +18,7 @@ export const useAdminStore = defineStore('adminStore', {
         },
 
         items: <Item[]> [{
-            
+
         }],
         units: <string[]> [
             "darab",
@@ -51,15 +51,21 @@ export const useAdminStore = defineStore('adminStore', {
         savedImageUrl: <string> ''
     }),
     actions: {
-        imageChange(file: any){
-            const selectedImage = file;
-            const reader = new FileReader();
-            
-            reader.onload = (e) => {
-                this.savedImageUrl = e.target!.result!.toString();
-            };
-            reader.readAsDataURL(selectedImage);
-            return this.savedImageUrl;
+        imageChange(target: HTMLInputElement){
+          let selectedImage: File;
+          if(target.files && target.files[0]){
+            selectedImage = target.files[0]
+            const formData = new FormData()
+            formData.append('image', selectedImage)
+          }
+
+            // const reader = new FileReader();
+
+            // reader.onload = (e) => {
+            //     this.savedImageUrl = e.target!.result!.toString();
+            // };
+            // reader.readAsDataURL(selectedImage);
+            // return this.savedImageUrl;
         },
 
         //Types
@@ -79,7 +85,7 @@ export const useAdminStore = defineStore('adminStore', {
         },
         saveType(data: IType){
             let validation = TypeValidation.TypeAllFilled(data.name_HU, data.name_EN, data.image);
-            if (!validation.isError) {   
+            if (!validation.isError) {
                 if (data.id) {
                     return adminService.updateType(data)
                             .then((res: any)=>{
@@ -159,7 +165,7 @@ export const useAdminStore = defineStore('adminStore', {
         },
         saveItem(data: Item){
             let validation = ItemValidation.ItemAllFilled(data.name, data.name_EN, data.typeId, data.unit, data.image);
-            if (!validation.isError) {   
+            if (!validation.isError) {
                 if (data.itemId) {
                     return adminService.updateItem(data)
                             .then((res: any)=>{
@@ -229,7 +235,7 @@ export const useAdminStore = defineStore('adminStore', {
             let validation = RecipeValidation.RecipeIsCorrect(
                 data.name, data.name_EN, data.difficulty, data.time, data.image, data.type, data.description, data.description_EN, data.ingredients!
             );
-            if (!validation.isError) {   
+            if (!validation.isError) {
                 if (data.id) {
                     return adminService.updateRecipe(data)
                             .then((res: any)=>{

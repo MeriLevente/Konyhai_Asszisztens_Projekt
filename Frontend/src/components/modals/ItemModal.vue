@@ -39,7 +39,7 @@
     };
 
     const imageChanged = (event: any) => {
-        useAdminStore().imageChange(event.target.files[0])
+        useAdminStore().imageChange(event.target)
     };
 
 </script>

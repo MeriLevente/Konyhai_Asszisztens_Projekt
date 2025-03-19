@@ -41,7 +41,8 @@ export const useUserStore = defineStore('userStore', {
                             this.status.loggedIn = true;
                             this.hideError();
                             this.user = res.data;
-                            localStorage.setItem("user", JSON.stringify(this.user))
+                            localStorage.setItem("user", JSON.stringify(this.user));
+                            localStorage.setItem("token", JSON.stringify(this.user?.token));
                         })
                         .catch((err: any)=>{
                             this.status.loggedIn = false
@@ -66,6 +67,7 @@ export const useUserStore = defineStore('userStore', {
                                 this.status.confirm_password = "";
                                 this.user = res.data;
                                 localStorage.setItem("user", JSON.stringify(this.user));
+                                localStorage.setItem("token", JSON.stringify(this.user?.token));
                             })
                             .catch((err: any)=>{
                                 this.status.loggedIn = false;
