@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import RecipeEditor from '@/components/RecipeEditor.vue';
+    import RecipeEditor from '@/components/recipes/RecipeEditor.vue';
     import type IRecipe from '@/models/Recipe';
     import { useAdminStore } from '@/stores/adminstore';
     import DataLoader from '@/utils/DataLoader';

@@ -5,11 +5,11 @@
   import { useUserStore } from './stores/userstore';
   import i18n from './translations';
   
-  const startupLang: string | null = localStorage.getItem('lang');
-  useAppStore().app_language = startupLang ?? 'hu';
-  i18n.global.locale.value = startupLang == 'hu' ? 'hu' : 'en';
-  if(localStorage.getItem('user')){
-    useUserStore().user = JSON.parse(localStorage.getItem('user')!.toString()) as ILoggedInUser;
+  const startupLang: string | null = localStorage.getItem("lang");
+  useAppStore().app_language = startupLang ?? "hu";
+  i18n.global.locale.value = startupLang == "en" ? "en" : "hu";
+  if (localStorage.getItem('user')) {
+    useUserStore().user = JSON.parse(localStorage.getItem("user")!.toString()) as ILoggedInUser;
     useUserStore().status.loggedIn = true;
   }
 </script>

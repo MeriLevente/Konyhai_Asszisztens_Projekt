@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { computed, ref } from 'vue';
+    import { ref } from 'vue';
     import { useI18n } from 'vue-i18n';
     import { useAdminStore } from '@/stores/adminstore';
     import { storeToRefs } from 'pinia';
@@ -29,7 +29,7 @@
     let stepInput = ref<string>("");
     let stepInputError = ref<string | undefined>("");
 
-    let imageToSave: string | undefined = props.recipe.image;
+    // let imageToSave: string | undefined = props.recipe.image;
 
     const resetRecipeError = (): void => {
         recipes_error.value.en = '';
@@ -42,7 +42,7 @@
     };
 
     const imageChanged = (event: any) => {
-        imageToSave = useAdminStore().imageChange(event.target.files[0])
+        // imageToSave = useAdminStore().imageChange(event.target.files[0])
     };
 
     const saveIngredient = (): void => {
@@ -121,7 +121,7 @@
         props.recipe.description = descHU.value.join("#");
         props.recipe.description_EN = descEN.value.join("#");
         props.recipe.ingredients = ingredients.value;
-        props.recipe.image = imageToSave;
+        //props.recipe.image = imageToSave;
         resetRecipeError();
         emit("saveData", props.recipe);
     };

@@ -93,6 +93,7 @@ const i18n = createI18n({
             hu: "Magyar",
             en: "Angol",
             ingredients: "Hozzávalók",
+            prep: "Elkészítés",
 
             quantity: "Mennyiség",
             darab: "darab",
@@ -106,10 +107,14 @@ const i18n = createI18n({
             manageitems: "Itt menedzselheted a konyhád tartalmát!",
             search: "Keresés",
             showAll: "Mutasd mind",
+            titleCatchphrase: "Szerezd meg hát mind!",
+            noitems: "A manóba, nem találtam semmilyen élelmiszert!",
 
             //RecipesView
             hour: "ó",
-            minute: "perc"
+            minute: "perc",
+            recipeimgtext: "A kép csak illusztráció!",
+            letmecook: "Elkészítem!"
         },
         'en': {
             //HomeView
@@ -198,6 +203,7 @@ const i18n = createI18n({
             hu: "Hungarian",
             en: "English",
             ingredients: "Ingredients",
+            prep: "Directions",
 
             quantity: "Quantity",
             darab: "piece",
@@ -211,10 +217,14 @@ const i18n = createI18n({
             manageitems: "You can manage the items in your kitchen here!",
             search: "Search",
             showAll: "Show all",
+            titleCatchphrase: "Gotta catch'em all!",
+            noitems: "Oh no, I couldn't find any items!",
 
             //RecipesView
             hour: "h",
-            minute: "min"
+            minute: "min",
+            recipeimgtext: "Image is only an illustration!",
+            letmecook: "Let me cook!"
         }
     }
 });

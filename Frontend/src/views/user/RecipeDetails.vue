@@ -1,5 +1,7 @@
 <script setup lang="ts">
-    import type IRecipe from '@/models/Recipe';
+    import RecipeBookLeftPage from '@/components/recipes/RecipeBookLeftPage.vue';
+import RecipeBookRightPage from '@/components/recipes/RecipeBookRightPage.vue';
+import type IRecipe from '@/models/Recipe';
     import router from '@/router';
     import { useAppStore } from '@/stores/appstore';
     import { useUserStore } from '@/stores/userstore';
@@ -24,19 +26,14 @@
 </script>
 
 <template>
-  <div class="recipe-content-box my-3">
-    <div class="container rec-container">
-      <div class="row pt-5">
-        <div class="col-12 col-md-6">
-          <h2>{{ app_language == 'hu' ? recipe?.name : recipe?.name_EN }}</h2>
-          <img src="" alt="">
+  <div class="recipe-content-box">
+    <div class="container rec-container my-3 mt-5">
+      <div class="row">
+        <div class="col-12 col-md-6 left-col pt-3">
+          <RecipeBookLeftPage :recipe="recipe" v-if="recipe"/>
         </div>
-        <div class="col-12 col-md-6">
-          <ul>
-            <li v-for="ingr in recipe?.ingredients">
-              {{ `${app_language == 'hu' ? ingr.item.name : ingr.item.name_EN}, ${ingr.quantity} ${ingr.item.unit}` }}
-            </li>
-          </ul>
+        <div class="col-12 col-md-6 pt-5">
+          <RecipeBookRightPage :recipe="recipe" v-if="recipe"/>
         </div>
       </div>
     </div>
@@ -45,11 +42,15 @@
 
 <style lang="css">
     .recipe-content-box {
-      display: flex;
+      display: flex; 
     }
   .rec-container{
       background-color: white;
       border: 3px solid var(--ebony-clay);
       border-radius: 5px;
+      box-shadow: 8px 12px var(--ebony-clay);
+  }
+  .left-col {
+    border-right: 1px solid black;
   }
 </style>
