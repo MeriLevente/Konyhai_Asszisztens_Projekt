@@ -1,12 +1,12 @@
 <script setup lang="ts">
     import RecipeEditor from '@/components/recipes/RecipeEditor.vue';
     import type IRecipe from '@/models/Recipe';
-    import { useAdminStore } from '@/stores/adminstore';
+    import { useRecipesStore } from '@/stores/recipesstore';
     import DataLoader from '@/utils/DataLoader';
     import { ref } from 'vue';
     import { useI18n } from 'vue-i18n';
     const { t } = useI18n();
-    const store = useAdminStore();
+    const store = useRecipesStore();
     let openEditor = ref(false);
 
     DataLoader.loadRecipes();
@@ -68,16 +68,16 @@
         </div>
         <div class="row my-2">  
             <div class="col-12">
-                <div v-if="useAdminStore().recipes.length == 0" class="d-flex justify-content-center">
+                <div v-if="store.recipes.length == 0" class="d-flex justify-content-center">
                     <p style="font-weight: bold;color: red;">{{ t("no_data") }}</p>
                 </div>
                 <div class="d-flex justify-content-center">
-                    <span v-if="useAdminStore().recipes.length == 0" class="btn btn-success" v-on:click="addRecipe">
+                    <span v-if="store.recipes.length == 0" class="btn btn-success" v-on:click="addRecipe">
                         {{ t("add_new") }}
                     </span>
                 </div>
                 <div class="table-responsive">
-                    <table class="admin-table" v-if="useAdminStore().recipes.length > 0">
+                    <table class="admin-table" v-if="store.recipes.length > 0">
                     <thead>
                         <tr>
                             <th style="width: 10%;">
@@ -93,7 +93,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(recipe,index) in useAdminStore().recipes" :key="index">
+                        <tr v-for="(recipe,index) in useRecipesStore().recipes" :key="index">
                             <td>
                                 <span class="btn btn-primary table-btn p-2 m-1"  v-on:click="editRecipe(recipe)">
                                     <i class="bi bi-pencil d-flex justify-content-center"></i>

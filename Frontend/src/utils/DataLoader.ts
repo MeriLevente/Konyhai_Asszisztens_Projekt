@@ -2,6 +2,7 @@ import type Item from "@/models/Item";
 import type IRecipe from "@/models/Recipe";
 import type IType from "@/models/Type";
 import { useAdminStore } from "@/stores/adminstore";
+import { useRecipesStore } from "@/stores/recipesstore";
 import { useUserStore } from "@/stores/userstore";
 
 export default class DataLoader{
@@ -15,7 +16,11 @@ export default class DataLoader{
         useAdminStore().getItems()
     }
     public static loadRecipes(){
-        useAdminStore().getRecipes()
+        const selectedType: string | null = sessionStorage.getItem("selectedRecipeType");
+        if(!selectedType || selectedType == "0")
+            useRecipesStore().getRecipes();
+        else
+            useRecipesStore().getRecipesByType(selectedType);
     }
     public static async loadViewedRecipe(id: number){
         await useUserStore().getRecipeById(id);

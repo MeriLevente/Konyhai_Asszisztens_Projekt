@@ -9,10 +9,11 @@
     import RecipeValidation from '@/utils/RecipeValidation';
     import type IFormResponse from '@/models/FormResponse';
     import DataLoader from '@/utils/DataLoader';
+    import { useRecipesStore } from '@/stores/recipesstore';
     const { t } = useI18n();
     const props = defineProps(["recipe"]);
     const emit = defineEmits(["editorClosed", "saveData"]);
-    const { recipe_types, recipes_error } = storeToRefs(useAdminStore());
+    const { recipe_types, recipes_error } = storeToRefs(useRecipesStore());
     const { app_language } = storeToRefs(useAppStore());
 
     const selectedStep = ref("1");
@@ -148,7 +149,7 @@
                     <input type="number" class="form-control m-1" id="time" v-model="recipe.time" placeholder="min: 1, max: 10080" v-on:focus="resetRecipeError()">
                     <label for="type" class="form-label">{{ t("type") }}</label>
                     <select name="type" id="type" class="form-control m-1" v-model="recipe.type">
-                        <option v-for="type in recipe_types.types" :value="type.short"
+                        <option v-for="type in recipe_types" :value="type.short"
                             :selected="recipe.type == type.short">{{ app_language == "hu" ? type.hu : type.en  }}
                         </option>
                     </select>

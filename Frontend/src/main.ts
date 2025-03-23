@@ -7,6 +7,7 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
 import i18n from './translations'
+import instance from './services/dataService'
 
 const app = createApp(App);
 

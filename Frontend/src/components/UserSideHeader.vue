@@ -1,6 +1,6 @@
 <script setup lang="ts">
-    import { useAdminStore } from '@/stores/adminstore';
     import { useAppStore } from '@/stores/appstore';
+    import { useRecipesStore } from '@/stores/recipesstore';
     import { storeToRefs } from 'pinia';
     import { ref } from 'vue';
     import { useI18n } from 'vue-i18n';
@@ -13,7 +13,11 @@
     const selectedType = ref<string>(sessionStorage.getItem("selectedRecipeType") ?? "0");
 
     const search = (): void => {
+        if(props.headerTitle == "mykitchen"){
 
+        } else {
+            useRecipesStore().getRecipesBySearcg(searchedWord.value!)
+        }
     };
 
     const showAll = (): void => {
@@ -23,9 +27,9 @@
     const recipeTypeChanged = (): void => {
         sessionStorage.setItem("selectedRecipeType", selectedType.value)
         if (selectedType.value != "0")
-            useAdminStore().getRecipesByType(selectedType.value);
+            useRecipesStore().getRecipesByType(selectedType.value);
         else
-            useAdminStore().getRecipes();
+            useRecipesStore().getRecipes();
     };
 </script>
 
@@ -42,7 +46,7 @@
             <div class="col-5 col-md-2 form-floating p-1 ms-1" v-if="props.headerTitle == 'recipesTitle'">
                     <select class="form-control input-area" id="typeselect" v-on:change="recipeTypeChanged()" v-model="selectedType">
                         <option value="0">{{ t("all") }}</option>
-                        <option v-for="type in useAdminStore().recipe_types.types" :value="type.short">
+                        <option v-for="type in useRecipesStore().recipe_types" :value="type.short">
                             {{ app_language == 'hu' ? type.hu : type.en }}
                         </option>
                     </select>

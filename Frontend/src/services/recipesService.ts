@@ -10,7 +10,7 @@ export default {
         })
         .catch((err: any)=>{
             console.error(useAppStore().app_language == "hu" ? err.data.hu : err.data.en)
-            return Promise.reject();
+            return Promise.reject(err.data);
         })
     },
     getRecipeById(id: number){
@@ -20,7 +20,7 @@ export default {
         })
         .catch((err: any)=>{
             console.error(useAppStore().app_language == "hu" ? err.data.hu : err.data.en)
-            return Promise.reject();
+            return Promise.reject(err.data);
         })
     },
     getRecipesByType(type: string){
@@ -29,7 +29,18 @@ export default {
             return res
         })
         .catch((err: any)=>{
-            console.error(useAppStore().app_language == "hu" ? err.data.hu : err.data.en)
+            console.error(useAppStore().app_language == "hu" ? err.data.hu : err.data.en);
+            return Promise.reject(err.data);
+        })
+    },
+    getRecipesBySearch(searchWord: string){
+        return instance.get(`/recipes/search/${searchWord}`)
+        .then((res: any)=>{
+            return res
+        })
+        .catch((err: any)=>{
+            console.error(useAppStore().app_language == "hu" ? err.data.hu : err.data.en);
+            return Promise.reject(useAppStore().app_language == "hu" ? err.data.hu : err.data.en);
         })
     },
     addRecipe(data: IRecipe) {
@@ -38,7 +49,7 @@ export default {
             return res
         })
         .catch((err: any)=>{
-            return Promise.reject(err.response)
+            return Promise.reject(err.data)
         })
     },
     updateRecipe(data: IRecipe) {
@@ -47,7 +58,8 @@ export default {
             return res
         })
         .catch((err: any)=>{
-            return Promise.reject(err.response)
+            console.error(useAppStore().app_language == "hu" ? err.data.hu : err.data.en);
+            return Promise.reject(err.data)
         })
     },
     deleteRecipe(data: IRecipe) {
@@ -56,7 +68,8 @@ export default {
             return res
         })
         .catch((err: any)=>{
-            return Promise.reject(err.response)
+            console.error(useAppStore().app_language == "hu" ? err.data.hu : err.data.en);
+            return Promise.reject(err.data);
         })
     }
 };

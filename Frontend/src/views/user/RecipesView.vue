@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import RecipeCard from '@/components/RecipeCard.vue';
-import UserSideHeader from '@/components/UserSideHeader.vue';
-  import { useAdminStore } from '@/stores/adminstore';
+  import UserSideHeader from '@/components/UserSideHeader.vue';
+  import { useRecipesStore } from '@/stores/recipesstore';
   import DataLoader from '@/utils/DataLoader';
   import { onMounted, ref } from 'vue';
   import { useI18n } from 'vue-i18n';
@@ -20,7 +20,7 @@ import UserSideHeader from '@/components/UserSideHeader.vue';
           <span v-if="!showAlltriggered" v-on:click="showAlltriggered = true">
                 <i class="bi bi-arrow-left" style="font-weight: bold; font-size: 1.5rem; cursor: pointer;"></i>
           </span>
-          <div class="col-12 col-sm-6 col-md-5 col-xl-3 mt-2" v-for="recipe in useAdminStore().recipes">
+          <div class="col-12 col-sm-6 col-md-5 col-xl-3 mt-2" v-for="recipe in useRecipesStore().recipes">
             <RecipeCard :recipe="recipe"/>
           </div>
         </div>
