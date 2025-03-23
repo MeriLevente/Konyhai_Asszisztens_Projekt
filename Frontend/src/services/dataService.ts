@@ -6,7 +6,7 @@ const instance = Axios.create({
     headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
-        'Authorization': `Bearer ${await localStorage.getItem("token") ?? ""}`,
+        'Authorization': `Bearer ${await sessionStorage.getItem("token") ?? ""}`,
         'Accept-Language': localStorage.getItem('lang') ?? ""
     }
 })

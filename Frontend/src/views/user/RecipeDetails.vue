@@ -20,7 +20,7 @@ import type IRecipe from '@/models/Recipe';
             recipe.value = useUserStore().viewedRecipe;
         }).catch((err: any)=>{
             console.error(err);
-            router.push('/incorrect-id');
+            router.push('/error');
         });
     })
 </script>
@@ -29,10 +29,10 @@ import type IRecipe from '@/models/Recipe';
   <div class="recipe-content-box">
     <div class="container rec-container my-3 mt-5">
       <div class="row">
-        <div class="col-12 col-md-6 left-col pt-3">
+        <div class="col-12 col-lg-6 left-col pt-3">
           <RecipeBookLeftPage :recipe="recipe" v-if="recipe"/>
         </div>
-        <div class="col-12 col-md-6 pt-5">
+        <div class="col-12 col-lg-6 pt-5">
           <RecipeBookRightPage :recipe="recipe" v-if="recipe"/>
         </div>
       </div>

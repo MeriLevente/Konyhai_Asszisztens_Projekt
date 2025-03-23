@@ -52,7 +52,7 @@
             const validation = RecipeValidation.IngredientInputCorrect(selectedTypeId.value!, selectedIngredient.value!, ingredientQuantity.value!);
             if(!validation.isError){
                 ingredient = {
-                    recipe_id: props.recipe.id,
+                    recipeId: props.recipe.id,
                     item: selectedIngredient.value!,
                     quantity: ingredientQuantity.value!
                 }
@@ -165,7 +165,7 @@
                         v-on:click="DataLoader.loadTypes(); useAdminStore().getItemsByTypeId(selectedTypeId!)"
                     >
                         <option v-for="type in useAdminStore().types" :value="type.id">
-                            {{ app_language == 'hu' ? type.name_HU : type.name_EN }}
+                            {{ app_language == 'hu' ? type.name : type.name_EN }}
                         </option>
                      </select>
                      <label for="ingredient">{{ t('ingredients') }}</label>

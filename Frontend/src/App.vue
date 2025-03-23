@@ -8,8 +8,8 @@
   const startupLang: string | null = localStorage.getItem("lang");
   useAppStore().app_language = startupLang ?? "hu";
   i18n.global.locale.value = startupLang == "en" ? "en" : "hu";
-  if (localStorage.getItem('user')) {
-    useUserStore().user = JSON.parse(localStorage.getItem("user")!.toString()) as ILoggedInUser;
+  if (sessionStorage.getItem('user')) {
+    useUserStore().user = JSON.parse(sessionStorage.getItem("user")!.toString()) as ILoggedInUser;
     useUserStore().status.loggedIn = true;
   }
 </script>

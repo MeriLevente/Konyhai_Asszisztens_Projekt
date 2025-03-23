@@ -14,7 +14,7 @@
 
     const addType = () => {
         data.value = {
-            name_HU: "",
+            name: "",
             name_EN: "",
             image: ""
         };
@@ -24,7 +24,7 @@
     const editType = (selected: IType) => {
         data.value = {
             id: selected.id,
-            name_HU: selected.name_HU,
+            name: selected.name,
             name_EN: selected.name_EN,
             image: selected.image
         }
@@ -92,7 +92,7 @@
                             <span class="btn btn-danger p-2 table-btn" v-on:click="deleteType(type)"><i class="bi bi-trash d-flex justify-content-center"></i></span>
                         </td>
                         <td class="text-center pt-3">{{ type.id }}</td>
-                        <td class="text-center pt-3">{{ type.name_HU }}</td>
+                        <td class="text-center pt-3">{{ type.name }}</td>
                         <td class="text-center pt-3">{{ type.name_EN }}</td>
                         <td><img class="tdImage" :src="type.image" alt="image"></td>
                     </tr>

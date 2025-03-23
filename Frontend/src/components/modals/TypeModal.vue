@@ -21,7 +21,7 @@
 
     let modalData = ref<IType>({
         id: props.data.id,
-        name_HU: props.data.name_HU,
+        name: props.data.name,
         name_EN: props.data.name_EN,
         image: props.data.image
     });
@@ -55,7 +55,7 @@
                 <form @submit.prevent="saveChanges()">
                     <div class="mb-3">
                         <label for="nameHU" class="form-label">{{ t("name") }} (hu)</label>
-                        <input type="text" class="form-control" id="nameHU" v-model="modalData.name_HU" v-on:focus="() => {if(type_error.hu && type_error.en) hideError()}">
+                        <input type="text" class="form-control" id="nameHU" v-model="modalData.name" v-on:focus="() => {if(type_error.hu && type_error.en) hideError()}">
                     </div>
                     <div class="mb-3">
                         <label for="nameEN" class="form-label">{{ t("name") }} (en)</label>

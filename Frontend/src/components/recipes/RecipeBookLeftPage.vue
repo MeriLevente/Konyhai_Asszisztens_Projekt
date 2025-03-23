@@ -33,4 +33,11 @@
         width: 30rem;
         height: 30rem;
     }
+
+    @media only screen and (max-width: 580px) {
+        .recipebook-img {
+            width: 20rem;
+            height: 20rem;
+        }
+    }
 </style>

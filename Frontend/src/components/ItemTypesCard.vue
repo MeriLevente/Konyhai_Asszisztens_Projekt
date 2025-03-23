@@ -13,13 +13,11 @@
 <template>
     <div class="col-10 col-md-3 m-1 type-card" 
         :style="{backgroundImage:'url(' + type.image + ')' }"
-        v-on:click="typeClicked(type.id)"
-    >
+        v-on:click="typeClicked(type.id)">
         <div class="title w-75">
-            <h2 class="pt-1">{{ app_language == 'hu' ? type.name_HU : type.name_EN }}</h2>
+            <h2 class="pt-1">{{ app_language == 'hu' ? type.name : type.name_EN }}</h2>
         </div>    
     </div>
-    
 </template>
 
 <style lang="css" scoped>

@@ -11,6 +11,7 @@ import {defineStore} from "pinia";
 import { useAppStore } from "./appstore";
 import type IRecipe from "@/models/Recipe";
 import adminService from "@/services/adminService";
+import recipesService from "@/services/recipesService";
 
 export const useUserStore = defineStore('userStore', {
     state: () => ({
@@ -41,8 +42,8 @@ export const useUserStore = defineStore('userStore', {
                             this.status.loggedIn = true;
                             this.hideError();
                             this.user = res.data;
-                            localStorage.setItem("user", JSON.stringify(this.user));
-                            localStorage.setItem("token", JSON.stringify(this.user?.token));
+                            sessionStorage.setItem("user", JSON.stringify(this.user));
+                            sessionStorage.setItem("token", JSON.stringify(this.user?.token));
                         })
                         .catch((err: any)=>{
                             this.status.loggedIn = false
@@ -66,8 +67,8 @@ export const useUserStore = defineStore('userStore', {
                                 this.hideError();
                                 this.status.confirm_password = "";
                                 this.user = res.data;
-                                localStorage.setItem("user", JSON.stringify(this.user));
-                                localStorage.setItem("token", JSON.stringify(this.user?.token));
+                                sessionStorage.setItem("user", JSON.stringify(this.user));
+                                sessionStorage.setItem("token", JSON.stringify(this.user?.token));
                             })
                             .catch((err: any)=>{
                                 this.status.loggedIn = false;
@@ -87,14 +88,14 @@ export const useUserStore = defineStore('userStore', {
                 .then(()=>{
                     this.status.loggedIn = false;
                     this.user = undefined;
-                    DataLoader.clearLocalStorage();
+                    DataLoader.clearSessionStorage();
                 })
                 .catch((err: any)=>{
                     this.status.message = err.data.hu;
                     this.status.messageEn = err.data.en;
                     this.status.loggedIn = false;
                     this.user = undefined;
-                    DataLoader.clearLocalStorage();
+                    DataLoader.clearSessionStorage();
                     return Promise.reject();
                 })
         },
@@ -103,7 +104,7 @@ export const useUserStore = defineStore('userStore', {
                 .then((res: any)=>{
                     this.storedItems = res.data;
                 }).catch((err)=>
-                    console.error(err.data.messageEn)
+                    console.error(err.data.hu)
                 )
         },
         getStoredItemsByTypeId(typeId: number){
@@ -111,7 +112,7 @@ export const useUserStore = defineStore('userStore', {
                 .then((res: any)=>{
                     this.storedItems = res.data;
                 }).catch((err)=>
-                    console.error(err.data.messageEn)
+                    console.error(err.data.hu)
                 )
         },
         getStoredItemsBySearch(typeId: number | null, sWord: string | undefined){
@@ -121,19 +122,19 @@ export const useUserStore = defineStore('userStore', {
                 .then((res: any)=>{
                     this.storedItems = res.data;
                 }).catch((err)=>
-                    console.error(err.data.messageEn)
+                    console.error(err.data.hu)
                 )
             } else {
                 alert(useAppStore().app_language == 'hu' ? validation.message : validation.messageEn);
             }
         },
         getRecipeById(id:number){
-            return adminService.getRecipeById(id)
+            return recipesService.getRecipeById(id)
                 .then((res: any)=>{
                     this.viewedRecipe = res.data;
-                    localStorage.setItem('viewed_recipe', JSON.stringify(this.viewedRecipe));
+                    sessionStorage.setItem('viewed_recipe', JSON.stringify(this.viewedRecipe));
                 }).catch((err: any)=>
-                    console.error(err.data.messageEn)
+                    console.error(err.data.hu)
                 )
         }
     }

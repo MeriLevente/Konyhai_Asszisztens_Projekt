@@ -9,12 +9,12 @@
 </script>
 
 <template>
-    <div class="m-3">
-        <div style="float: left; border-right: 1px solid black; display: block;">
-            {{ recipe.difficulty }} / 10
+    <div class="my-3 page-content">
+        <div style="float: left;">
+            {{ `${t("difficulty")}: ${recipe.difficulty} / 10`}}
         </div>
-        <div style="float: right; display: block;">
-            {{ recipe.time }}
+        <div style="float: right;">
+            {{ `${t("time")}: ${recipe.time} `}}
         </div>
         <h3 class="pt-5">{{ t("ingredients" )}}</h3>
         <ul>
@@ -39,10 +39,14 @@
 <style lang="css" scoped>
     h3 {
         border-bottom: 2px solid black;
+        margin-top: 3.5rem;
     }
     button {
         margin-left: 40%;
         background-color: var(--ebony-clay);
         color: white;
+    }
+    .page-content {
+        padding-top: 3.1rem;
     }
 </style>

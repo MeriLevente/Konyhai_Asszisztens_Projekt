@@ -2,6 +2,7 @@ import type Item from "@/models/Item";
 import type IRecipe from "@/models/Recipe";
 import type IType from "@/models/Type";
 import adminService from "@/services/adminService";
+import recipesService from "@/services/recipesService";
 import ItemValidation from "@/utils/ItemValidation";
 import RecipeValidation from "@/utils/RecipeValidation";
 import TypeValidation from "@/utils/TypeValidation";
@@ -73,18 +74,17 @@ export const useAdminStore = defineStore('adminStore', {
             adminService.getTypes()
                 .then((res: any)=>{
                     this.types = res.data;
-                    localStorage.setItem("types", JSON.stringify(res.data))
                     return res.data;
                 }
                 )
                 .catch((err:any)=>{
-                    console.log(err);
+                    console.error(err.hu);
                     return Promise.reject();
                 })
             return Promise.reject()
         },
         saveType(data: IType){
-            let validation = TypeValidation.TypeAllFilled(data.name_HU, data.name_EN, data.image);
+            let validation = TypeValidation.TypeAllFilled(data.name, data.name_EN, data.image);
             if (!validation.isError) {
                 if (data.id) {
                     return adminService.updateType(data)
@@ -141,7 +141,7 @@ export const useAdminStore = defineStore('adminStore', {
             adminService.getItems()
                 .then((res: any)=>{
                     this.items = res.data;
-                    localStorage.setItem("items", JSON.stringify(res.data))
+                    sessionStorage.setItem("items", JSON.stringify(res.data))
                     return res.data;
                 }
                 )
@@ -217,19 +217,17 @@ export const useAdminStore = defineStore('adminStore', {
         },
 
         //RECIPES
-        getRecipes(): Promise<IRecipe[]>{
-            adminService.getRecipes()
+        getRecipes() {
+            recipesService.getRecipes()
                 .then((res: any)=>{
                     this.recipes = res.data;
-                    localStorage.setItem("recipes", JSON.stringify(res.data))
-                    return res.data;
-                }
-                )
-                .catch((err:any)=>{
-                    console.log(err);
-                    return Promise.reject();
-                })
-            return Promise.reject()
+            })
+        },
+        getRecipesByType(type: string) {
+            return recipesService.getRecipesByType(type)
+                .then((res: any)=>{
+                    this.recipes = res.data;
+            })
         },
         saveRecipes(data: IRecipe){
             let validation = RecipeValidation.RecipeIsCorrect(

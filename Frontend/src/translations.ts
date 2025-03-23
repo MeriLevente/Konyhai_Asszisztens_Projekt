@@ -104,17 +104,18 @@ const i18n = createI18n({
 
             //ItemsView
             mykitchen: "Konyhám",
-            manageitems: "Itt menedzselheted a konyhád tartalmát!",
             search: "Keresés",
             showAll: "Mutasd mind",
             titleCatchphrase: "Szerezd meg hát mind!",
             noitems: "A manóba, nem találtam semmilyen élelmiszert!",
 
             //RecipesView
+            recipesTitle: "Receptek",
             hour: "ó",
             minute: "perc",
             recipeimgtext: "A kép csak illusztráció!",
-            letmecook: "Elkészítem!"
+            letmecook: "Elkészítem!",
+            all: "Mind"
         },
         'en': {
             //HomeView
@@ -214,17 +215,18 @@ const i18n = createI18n({
 
             //ItemsView
             mykitchen: "My Kitchen",
-            manageitems: "You can manage the items in your kitchen here!",
             search: "Search",
             showAll: "Show all",
             titleCatchphrase: "Gotta catch'em all!",
             noitems: "Oh no, I couldn't find any items!",
 
             //RecipesView
+            recipesTitle: "Recipes",
             hour: "h",
             minute: "min",
             recipeimgtext: "Image is only an illustration!",
-            letmecook: "Let me cook!"
+            letmecook: "Let me cook!",
+            all: "All"
         }
     }
 });
