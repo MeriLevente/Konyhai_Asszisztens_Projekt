@@ -1,13 +1,10 @@
-import axios from "axios";
+import Axios from "axios";
 
-const instance = axios.create({
-    baseURL: import.meta.env.VITE_BACKEND_URL, //backend url-je
-    timeout: 10000,
+const instance = Axios.create({
+    baseURL: import.meta.env.VITE_BACKEND_URL,
     headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
-        // 'Authorization': `Bearer ${await sessionStorage.getItem("token") ?? ""}`,
-        // 'Accept-Language': await localStorage.getItem('lang') ?? ""
     }
 })
 
@@ -21,6 +18,15 @@ instance.interceptors.request.use((config)=>{
         config.headers['Accept-Language'] = lang;
     }
     return config;
-})
+});
+
+instance.interceptors.response.use(
+    function (response) {
+      return response;
+    },
+    function (error) {
+      return Promise.reject(error.response.data);
+    }
+  );
 
 export default instance

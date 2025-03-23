@@ -10,7 +10,7 @@ export default {
             return res
         })
         .catch((err: any)=>{
-            return Promise.reject(err.response)
+            return Promise.reject(err)
         })
     },
     addType(data: IType){
@@ -19,7 +19,7 @@ export default {
             return res
         })
         .catch((err: any)=>{
-            return Promise.reject(err.response)
+            return Promise.reject(err)
         })
     },
     updateType(data: IType){
@@ -28,7 +28,7 @@ export default {
             return res
         })
         .catch((err: any)=>{
-            return Promise.reject(err.response)
+            return Promise.reject(err)
         })
     },
     deleteType(data: IType){
@@ -37,7 +37,7 @@ export default {
             return res
         })
         .catch((err: any)=>{
-            return Promise.reject(err.response)
+            return Promise.reject(err)
         })
     },
 
@@ -48,7 +48,7 @@ export default {
             return res
         })
         .catch((err: any)=>{
-            return Promise.reject(err.response)
+            return Promise.reject(err)
         })
     },
     getItemsByType(typid: number){
@@ -57,16 +57,16 @@ export default {
             return res
         })
         .catch((err: any)=>{
-            return Promise.reject(err.response)
+            return Promise.reject(err)
         })
     },
     addItem(data: Item){
         return instance.post('/addItem', data)
         .then((res: any)=>{
-            return res //elmentet élelmiszert visszakérem és a lokális tömbhöz adom
+            return res
         })
         .catch((err: any)=>{
-            return Promise.reject(err.response)
+            return Promise.reject(err)
         })
     },
     updateItem(data: Item){
@@ -75,7 +75,7 @@ export default {
             return res
         })
         .catch((err: any)=>{
-            return Promise.reject(err.response)
+            return Promise.reject(err)
         })
     },
     deleteItem(data: Item){
@@ -84,7 +84,7 @@ export default {
             return res
         })
         .catch((err: any)=>{
-            return Promise.reject(err.response)
+            return Promise.reject(err)
         })
     },
 

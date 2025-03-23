@@ -16,7 +16,7 @@
         <div style="float: right;">
             {{ `${t("time")}: ${recipe.time} `}}
         </div>
-        <h3 class="pt-5">{{ t("ingredients" )}}</h3>
+        <h3 class="pt-1">{{ t("ingredients" )}}</h3>
         <ul>
             <li v-for="ingr in recipe?.ingredients">
                 {{ `${app_language == 'hu' ? ingr.item.name : ingr.item.name_EN}, ${ingr.quantity} ${t(ingr.item.unit)}` }}

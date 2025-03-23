@@ -9,11 +9,11 @@
     import RecipeValidation from '@/utils/RecipeValidation';
     import type IFormResponse from '@/models/FormResponse';
     import DataLoader from '@/utils/DataLoader';
-    import { useRecipesStore } from '@/stores/recipesstore';
+    import { useRecipeStore } from '@/stores/recipestore';
     const { t } = useI18n();
     const props = defineProps(["recipe"]);
     const emit = defineEmits(["editorClosed", "saveData"]);
-    const { recipe_types, recipes_error } = storeToRefs(useRecipesStore());
+    const { recipe_types, recipes_error } = storeToRefs(useRecipeStore());
     const { app_language } = storeToRefs(useAppStore());
 
     const selectedStep = ref("1");

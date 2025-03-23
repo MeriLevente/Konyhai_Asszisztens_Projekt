@@ -8,14 +8,13 @@ import UserSideHeader from '@/components/UserSideHeader.vue';
     import { ref } from 'vue';
     import { useI18n } from 'vue-i18n';
     const { t } = useI18n();
-    const searchedWord = ref<string>();
     let selectedType = ref<number | null>(null);
     let showAlltriggered = ref<boolean>(false);
 
     DataLoader.loadTypes();
 
-    const search = (): void => { 
-        useUserStore().getStoredItemsBySearch(selectedType.value, searchedWord.value)?.then(()=>{
+    const search = (searchedWord: string): void => { 
+        useUserStore().getStoredItemsBySearch(selectedType.value, searchedWord)?.then(()=>{
             showAlltriggered.value = true;
         });
     };
@@ -34,7 +33,8 @@ import UserSideHeader from '@/components/UserSideHeader.vue';
 
 <template>
     <div class="container p-3">
-        <UserSideHeader :header-title="'mykitchen'" :header-description="'titleCatchphrase'" v-on:show-all="showAllItems"/>
+        <UserSideHeader :header-title="'mykitchen'" :header-description="'titleCatchphrase'" 
+                        v-on:show-all="showAllItems" v-on:search-stored-item="search"/>
         <main id="storedItemsList" class="row d-flex justify-content-center mt-2">
             <ItemTypesCard v-for="type in useAdminStore().types" :type="type" v-on:type-clicked="typeClicked($event)"
                 v-if="!selectedType && !showAlltriggered"/>

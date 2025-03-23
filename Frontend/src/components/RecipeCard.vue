@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { useAdminStore } from '@/stores/adminstore';
   import { useAppStore } from '@/stores/appstore';
-import { useRecipesStore } from '@/stores/recipesstore';
+  import { useRecipeStore } from '@/stores/recipestore';
   import { storeToRefs } from 'pinia';
   import { useI18n } from 'vue-i18n';
   import { useRouter } from 'vue-router';
@@ -21,7 +21,7 @@ import { useRecipesStore } from '@/stores/recipesstore';
   }
 
   const setTypeTooltip = (type: string): {short: string, hu: string, en: string} => {
-    return useRecipesStore().recipe_types.find(x=> x.short == type) ?? {short: "", hu: "Típus nem található", en: "Type not found!"};
+    return useRecipeStore().recipe_types.find(x=> x.short == type) ?? {short: "", hu: "Típus nem található", en: "Type not found!"};
   }
 
   const setDiffColour = (diff: number): string => {

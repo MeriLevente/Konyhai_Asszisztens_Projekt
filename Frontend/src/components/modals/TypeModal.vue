@@ -1,11 +1,11 @@
 <script setup lang="ts">
     import type IType from '@/models/Type';
-    import { useAdminStore } from '@/stores/adminstore';
+    import { useTypeStore } from '@/stores/typestore';
     import { useAppStore } from '@/stores/appstore';
     import { storeToRefs } from 'pinia';
     import { ref } from 'vue';
     import { useI18n } from 'vue-i18n';
-    const { type_error } = storeToRefs(useAdminStore());
+    const { type_error } = storeToRefs(useTypeStore());
     const { app_language } = storeToRefs(useAppStore());
     const { t } = useI18n();
     const props = defineProps(["data"]);

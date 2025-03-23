@@ -1,12 +1,12 @@
 <script setup lang="ts">
     import RecipeEditor from '@/components/recipes/RecipeEditor.vue';
     import type IRecipe from '@/models/Recipe';
-    import { useRecipesStore } from '@/stores/recipesstore';
+    import { useRecipeStore } from '@/stores/recipestore';
     import DataLoader from '@/utils/DataLoader';
     import { ref } from 'vue';
     import { useI18n } from 'vue-i18n';
     const { t } = useI18n();
-    const store = useRecipesStore();
+    const store = useRecipeStore();
     let openEditor = ref(false);
 
     DataLoader.loadRecipes();
@@ -93,7 +93,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(recipe,index) in useRecipesStore().recipes" :key="index">
+                        <tr v-for="(recipe,index) in useRecipeStore().recipes" :key="index">
                             <td>
                                 <span class="btn btn-primary table-btn p-2 m-1"  v-on:click="editRecipe(recipe)">
                                     <i class="bi bi-pencil d-flex justify-content-center"></i>

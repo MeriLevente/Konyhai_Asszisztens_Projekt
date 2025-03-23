@@ -3,7 +3,7 @@ import recipesService from "@/services/recipesService";
 import RecipeValidation from "@/utils/RecipeValidation";
 import { defineStore } from "pinia";
 
-export const useRecipesStore = defineStore('recipesStore', {
+export const useRecipeStore = defineStore('recipeStore', {
     state: () => ({
         recipes: <IRecipe[]> [
 
@@ -35,7 +35,7 @@ export const useRecipesStore = defineStore('recipesStore', {
                     this.recipes = res.data;
             })
         },
-        getRecipesBySearcg(search: string) {
+        getRecipesBySearch(search: string) {
             return recipesService.getRecipesBySearch(search)
                 .then((res: any)=>{
                     this.recipes = res.data;

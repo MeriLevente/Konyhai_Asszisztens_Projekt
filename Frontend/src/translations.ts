@@ -71,6 +71,7 @@ const i18n = createI18n({
             close: "Bezár",
             no_data: "Nincsenek még adatok!",
             admin_reg_success: "Admin profil sikeresen regisztrálva!",
+            deleteYesNo: "Biztosan törölni szeretné a(z)",
 
             //Edit types
             id: "Id",
@@ -182,6 +183,7 @@ const i18n = createI18n({
             close: "Close",
             no_data: "No data found yet!",
             admin_reg_success: "Admin profile successfully registered!",
+            deleteYesNo: "Do you want to delete",
 
             //Edit types
             id: "Id",

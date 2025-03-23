@@ -1,12 +1,13 @@
 <script setup lang="ts">
     import TypeModal from '@/components/modals/TypeModal.vue';
     import type IType from '@/models/Type';
-    import { useAdminStore } from '@/stores/adminstore';
+import { useAppStore } from '@/stores/appstore';
+    import { useTypeStore } from '@/stores/typestore';
     import DataLoader from '@/utils/DataLoader';
     import { ref } from 'vue';
     import { useI18n } from 'vue-i18n';
     const { t } = useI18n();
-    const store = useAdminStore();
+    const store = useTypeStore();
 
     DataLoader.loadTypes();
 
@@ -32,13 +33,14 @@
     };
 
     const deleteType = (selected: IType) => {
-        store.deleteType(selected)?.then().catch();
+        if(confirm(`${t("deleteYesNo")} ${useAppStore().app_language == "hu" ? selected.name : selected.name_EN}?`) == true)
+            store.deleteType(selected)?.then(()=>{}).catch(()=>{});
     };
 
     const saveData = (type: any) => {
         store.saveType(type.value)?.then(()=>{
             closeModal();          
-        }).catch()
+        }).catch(()=>{});
     };
 
     const closeModal = () => {
@@ -88,8 +90,12 @@
                     <tbody>
                     <tr v-for="(type,index) in store.types" :key="index">
                         <td>
-                            <span class="btn btn-primary p-2 m-1 table-btn"  v-on:click="editType(type)"><i class="bi bi-pencil d-flex justify-content-center"></i></span>
-                            <span class="btn btn-danger p-2 table-btn" v-on:click="deleteType(type)"><i class="bi bi-trash d-flex justify-content-center"></i></span>
+                            <span class="btn btn-primary p-2 m-1 table-btn"  v-on:click="editType(type)">
+                                <i class="bi bi-pencil d-flex justify-content-center"></i>
+                            </span>
+                            <span class="btn btn-danger p-2 table-btn" v-on:click="deleteType(type)">
+                                <i class="bi bi-trash d-flex justify-content-center"></i>
+                            </span>
                         </td>
                         <td class="text-center pt-3">{{ type.id }}</td>
                         <td class="text-center pt-3">{{ type.name }}</td>

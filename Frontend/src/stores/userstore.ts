@@ -46,16 +46,15 @@ export const useUserStore = defineStore('userStore', {
                             sessionStorage.setItem("token", JSON.stringify(this.user?.token));
                         })
                         .catch((err: any)=>{
-                            this.status.loggedIn = false
-                            this.status.message = err.data.hu
-                            this.status.messageEn = err.data.en
-                            this.user = {name: "", token: "", id: null, role: ""}
-                            return Promise.reject()
+                            this.status.loggedIn = false;
+                            this.status.message = err.hu;
+                            this.status.messageEn = err.en;
+                            this.user = {name: "", token: "", id: null, role: ""};
+                            return Promise.reject();
                         })
             } else{
                 this.status.message = validation.message!;
                 this.status.messageEn = validation.messageEn!;
-                return Promise.reject();
             }
         },
         register(data: IUser){
@@ -72,15 +71,14 @@ export const useUserStore = defineStore('userStore', {
                             })
                             .catch((err: any)=>{
                                 this.status.loggedIn = false;
-                                this.status.message = err.data.hu;
-                                this.status.messageEn = err.data.en;
+                                this.status.message = err.hu;
+                                this.status.messageEn = err.en;
                                 this.user = {name: "", token: "", id: null, role: ""};
                                 return Promise.reject();
                             })
             } else{
                 this.status.message = validation.message!;
                 this.status.messageEn = validation.messageEn!;
-                return Promise.reject();
             }
         },
         logout(){
@@ -90,13 +88,10 @@ export const useUserStore = defineStore('userStore', {
                     this.user = undefined;
                     DataLoader.clearSessionStorage();
                 })
-                .catch((err: any)=>{
-                    this.status.message = err.data.hu;
-                    this.status.messageEn = err.data.en;
+                .catch(()=>{
                     this.status.loggedIn = false;
                     this.user = undefined;
                     DataLoader.clearSessionStorage();
-                    return Promise.reject();
                 })
         },
         getStoredItems(){
@@ -104,7 +99,7 @@ export const useUserStore = defineStore('userStore', {
                 .then((res: any)=>{
                     this.storedItems = res.data;
                 }).catch((err)=>
-                    console.error(err.data.hu)
+                    console.error(err.hu)
                 )
         },
         getStoredItemsByTypeId(typeId: number){
@@ -112,7 +107,7 @@ export const useUserStore = defineStore('userStore', {
                 .then((res: any)=>{
                     this.storedItems = res.data;
                 }).catch((err)=>
-                    console.error(err.data.hu)
+                    console.error(err.hu)
                 )
         },
         getStoredItemsBySearch(typeId: number | null, sWord: string | undefined){
@@ -122,7 +117,7 @@ export const useUserStore = defineStore('userStore', {
                 .then((res: any)=>{
                     this.storedItems = res.data;
                 }).catch((err)=>
-                    console.error(err.data.hu)
+                    console.error(err.hu)
                 )
             } else {
                 alert(useAppStore().app_language == 'hu' ? validation.message : validation.messageEn);
@@ -134,7 +129,7 @@ export const useUserStore = defineStore('userStore', {
                     this.viewedRecipe = res.data;
                     sessionStorage.setItem('viewed_recipe', JSON.stringify(this.viewedRecipe));
                 }).catch((err: any)=>
-                    console.error(err.data.hu)
+                    console.error(err.hu)
                 )
         }
     }

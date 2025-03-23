@@ -26,8 +26,7 @@ export default {
                     return
                 })
                 .catch((err: any)=>{
-                    console.error(err.data.hu)
-                    return Promise.reject(err)
+                    console.error(err)
         })
     }
 }

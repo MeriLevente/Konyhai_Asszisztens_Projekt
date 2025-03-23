@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { useRecipesStore } from '@/stores/recipesstore';
+    import { useRecipeStore } from '@/stores/recipestore';
     import { useAppStore } from '@/stores/appstore';
     import { storeToRefs } from 'pinia';
     import { useI18n } from 'vue-i18n';
@@ -18,7 +18,7 @@
     <div class="m-3">
         <span v-on:click="goBack()"><i class="bi bi-arrow-left" style="font-weight: bold; font-size: 1.5rem; cursor: pointer;"></i></span>
         <h2 class="text-center">{{ app_language == 'hu' ? recipe?.name : recipe?.name_EN }}</h2>
-        <h6 class="text-center">{{ useRecipesStore().recipe_types.find(x=> x.short == recipe.type!)?.hu }}</h6>
+        <h6 class="text-center">{{ useRecipeStore().recipe_types.find(x=> x.short == recipe.type!)?.hu }}</h6>
         <div class="d-flex justify-content-center mt-1">
             <img :src="recipe.image" :alt="recipe?.name_EN + ' image'" class="recipebook-img">
         </div>
