@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import { useAdminStore } from '@/stores/adminstore';
   import { useAppStore } from '@/stores/appstore';
   import { useRecipeStore } from '@/stores/recipestore';
   import { storeToRefs } from 'pinia';

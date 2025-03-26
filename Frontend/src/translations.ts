@@ -69,7 +69,7 @@ const i18n = createI18n({
             edit_items: "Élelmiszerek",
             add_new: "Új",
             close: "Bezár",
-            no_data: "Nincsenek még adatok!",
+            no_data: "Nem találhatóak adatok!",
             admin_reg_success: "Admin profil sikeresen regisztrálva!",
             deleteYesNo: "Biztosan törölni szeretné a(z)",
 
@@ -181,7 +181,7 @@ const i18n = createI18n({
             edit_items: "Items",
             add_new: "New",
             close: "Close",
-            no_data: "No data found yet!",
+            no_data: "No data found!",
             admin_reg_success: "Admin profile successfully registered!",
             deleteYesNo: "Do you want to delete",
 

@@ -11,6 +11,30 @@ export default {
             return Promise.reject(err)
         })
     },
+    getAllTypesLength(){
+        return instance.get('/types/length')
+        .then((res: any)=>{
+            return res
+        })
+    },
+    getPaginated(from: number, to: number){
+        return instance.get(`/types/from/${from}/to/${to}`)
+        .then((res: any)=>{
+            return res
+        })
+        .catch((err: any)=>{
+            return Promise.reject(err)
+        })
+    },
+    getSearchedTypes(search: string){
+        return instance.get(`/types/search/${search}`)
+        .then((res: any)=>{
+            return res
+        })
+        .catch((err: any)=>{
+            return Promise.reject(err)
+        })
+    },
     addType(data: IType){
         return instance.post('/types', data)
         .then((res: any)=>{

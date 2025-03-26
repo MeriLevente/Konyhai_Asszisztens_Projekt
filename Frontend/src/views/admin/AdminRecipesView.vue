@@ -1,4 +1,5 @@
 <script setup lang="ts">
+    import Paginator from '@/components/Paginator.vue';
     import RecipeEditor from '@/components/recipes/RecipeEditor.vue';
     import type IRecipe from '@/models/Recipe';
     import { useRecipeStore } from '@/stores/recipestore';
@@ -113,6 +114,7 @@
                 </div>
             </div>
         </div>
+        <Paginator/>
     </div>
     <RecipeEditor :recipe="data" v-on:editor-closed="closeEditor" v-on:save-data="saveData" v-if="openEditor == true"/>
 </template>

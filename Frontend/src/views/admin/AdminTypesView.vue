@@ -1,15 +1,16 @@
 <script setup lang="ts">
+    import Paginator from '@/components/Paginator.vue';
+    import Searchbar from '@/components/Searchbar.vue';
     import TypeModal from '@/components/modals/TypeModal.vue';
     import type IType from '@/models/Type';
-import { useAppStore } from '@/stores/appstore';
+    import { useAppStore } from '@/stores/appstore';
     import { useTypeStore } from '@/stores/typestore';
-    import DataLoader from '@/utils/DataLoader';
     import { ref } from 'vue';
     import { useI18n } from 'vue-i18n';
     const { t } = useI18n();
     const store = useTypeStore();
-
-    DataLoader.loadTypes();
+    const searchInAction = ref<boolean>(false);
+    let maxLength = ref<number>(Number(sessionStorage.getItem("typesMaxLength")) ?? useTypeStore().types.length);
 
     let data = ref<IType | null>();
 
@@ -32,14 +33,22 @@ import { useAppStore } from '@/stores/appstore';
         document.getElementsByTagName('body')[0].classList.add('disable-scrolling');
     };
 
+    if (!sessionStorage.getItem("typesMaxLength")) {
+        useTypeStore().getAllTypesLength().then((res: number)=>{
+            maxLength.value = res;
+        });
+    }
+
     const deleteType = (selected: IType) => {
-        if(confirm(`${t("deleteYesNo")} ${useAppStore().app_language == "hu" ? selected.name : selected.name_EN}?`) == true)
-            store.deleteType(selected)?.then(()=>{}).catch(()=>{});
+        if (confirm(`${t("deleteYesNo")} ${useAppStore().app_language == "hu" ? selected.name : selected.name_EN}?`) == true)
+            store.deleteType(selected)
+                .then(()=>{})
+                .catch((err: string)=>{alert(err)});
     };
 
     const saveData = (type: any) => {
         store.saveType(type.value)?.then(()=>{
-            closeModal();          
+            closeModal()
         }).catch(()=>{});
     };
 
@@ -47,9 +56,16 @@ import { useAppStore } from '@/stores/appstore';
         store.type_error.hu = "";
         store.type_error.en = "";
         data.value = null;
-        document.getElementsByTagName('body')[0].classList.remove('disable-scrolling')
+        document.getElementsByTagName('body')[0].classList.remove('disable-scrolling');
     }
 
+    const loadTypesPaginated = (paginatorValues: {from: number, to: number}) => {
+            store.loadPaginated(paginatorValues.from, paginatorValues.to).catch((err: string)=>{console.error(err)});
+    }
+
+    const search = (searchedWord: string) => {
+        store.searchTypes(searchedWord).then(()=> searchInAction.value = true).catch((err: string)=>{alert(err)});
+    }
 </script>
 
 <template>
@@ -61,17 +77,18 @@ import { useAppStore } from '@/stores/appstore';
         <div class="row">
             <h1 class="display-3 text-center">{{t('edit_type')}}</h1>
         </div>
+        <div class="row d-flex justify-content-center">
+            <Searchbar v-on:search="search" v-on:show-paginated="loadTypesPaginated({from: 0, to: 6}); searchInAction = false" 
+                class="w-50" :viewer-role="'admin'" :searchInAction="searchInAction"/>
+        </div>
         <div class="row my-2">  
             <div class="col-12">
                 <TypeModal :data="data" v-if="data" v-on:save-data="saveData" v-on:close-modal="closeModal"/>
-                <div v-if="store.types.length == 0" class="d-flex justify-content-center">
-                    <p style="font-weight: bold;color: red;">{{ t("no_data") }}</p>
+
+                <div v-if="store.types.length == 0" class="nodata-div w-50 mx-auto p-3">
+                    <h3 class="text-center">{{ t("no_data") }}</h3>
                 </div>
-                <div class="d-flex justify-content-center">
-                    <span v-if="store.types.length == 0" class="btn btn-success" v-on:click="addType">
-                        {{ t("add_new") }}
-                    </span>
-                </div>
+
                 <div class="table-responsive">
                     <table class="admin-table" v-if="store.types.length > 0">
                     <thead>
@@ -107,6 +124,7 @@ import { useAppStore } from '@/stores/appstore';
                 </div>
             </div>
         </div>
+        <Paginator v-if="!searchInAction" :max-length="useTypeStore().typesAllLength" v-on:paginator-triggered="loadTypesPaginated"/>
     </div>
 </template>
 

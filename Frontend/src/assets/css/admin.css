@@ -37,3 +37,11 @@ i {
     min-height: 100%;
     overflow: hidden;
 }
+
+.nodata-div {
+    border: var(--ebony-clay) 1px solid;
+    border-radius: 5px;
+    background-color: var(--mercury);
+    color: black;
+    font-weight: bold;
+}

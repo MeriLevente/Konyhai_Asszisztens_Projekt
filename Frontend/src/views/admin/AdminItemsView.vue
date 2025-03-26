@@ -1,14 +1,16 @@
 <script setup lang="ts">
+    import Paginator from '@/components/Paginator.vue';
+import Searchbar from '@/components/Searchbar.vue';
     import ItemModal from '@/components/modals/ItemModal.vue';
     import type Item from '@/models/Item';
-    import { useAdminStore } from '@/stores/adminstore';
+    import { useItemStore } from '@/stores/itemstore';
     import DataLoader from '@/utils/DataLoader';
     import { ref } from 'vue';
     import { useI18n } from 'vue-i18n';
     const { t } = useI18n();
-    const store = useAdminStore();
-
-    DataLoader.loadItems();
+    const store = useItemStore();
+    const searchInAction = ref<boolean>(false);
+    let maxLength = ref<number>(Number(sessionStorage.getItem("itemsMaxLength")) ?? store.items.length);
 
     let data = ref<Item | null>();
 
@@ -49,6 +51,20 @@
         data.value = null;
         document.getElementsByTagName('body')[0].classList.remove('disable-scrolling')
     };
+
+    if (!sessionStorage.getItem("itemsMaxLength")) {
+        useItemStore().getAllItemsLength().then((res: number)=>{
+            maxLength.value = res;
+        });
+    }
+
+    const search = (searchedWord: string): void => {
+        store.searchItems(searchedWord).then(()=> searchInAction.value = true).catch((err: string)=>{alert(err)});
+    };
+
+    const loadItemsPaginated = (data: {from: number, to: number}) => {
+        store.loadItemsPaginated(data.from, data.to).catch((err: string)=>{console.error(err)});
+    };
 </script>
 
 <template>
@@ -59,19 +75,20 @@
         <div class="row">
             <h1 class="display-3 text-center">{{t('edit_items')}}</h1>
         </div>
+        <div class="row d-flex justify-content-center">
+            <Searchbar v-on:search="search" v-on:show-paginated="loadItemsPaginated({from: 0, to: 6}); searchInAction = false" 
+                class="w-50" :viewer-role="'admin'" :searchInAction="searchInAction"/>
+        </div>
         <div class="row my-2">
             <div class="col-12">
                 <ItemModal :data="data" v-if="data" v-on:save-data="saveData" v-on:close-modal="closeModal"/>
-                <div v-if="useAdminStore().items.length == 0" class="d-flex justify-content-center">
-                    <p style="font-weight: bold;color: red;">{{ t("no_data") }}</p>
+                
+                <div v-if="store.items.length == 0" class="nodata-div w-50 mx-auto p-3">
+                    <h3 class="text-center">{{ t("no_data") }}</h3>
                 </div>
-                <div class="d-flex justify-content-center">
-                    <span v-if="useAdminStore().items.length == 0" class="btn btn-success" v-on:click="addItem">
-                        {{ t("add_new") }}
-                    </span>
-                </div>
+
                 <div class="table-responsive">
-                    <table class="admin-table" v-if="useAdminStore().items.length > 0">
+                    <table class="admin-table" v-if="store.items.length > 0">
                     <thead>
                         <tr>
                             <th style="width: 10%;">
@@ -87,7 +104,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(item,index) in useAdminStore().items" :key="index">
+                        <tr v-for="(item,index) in useItemStore().items" :key="index">
                             <td>
                                 <span class="btn btn-primary table-btn p-2 m-1"  v-on:click="editItem(item)">
                                     <i class="bi bi-pencil d-flex justify-content-center"></i>
@@ -107,6 +124,7 @@
                 </div>
             </div>
         </div>
+        <Paginator v-if="!searchInAction" :max-length="store.itemsAllLength" v-on:paginator-triggered="loadItemsPaginated"/>
     </div>
 </template>
 

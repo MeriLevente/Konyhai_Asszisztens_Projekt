@@ -4,20 +4,20 @@
     import { storeToRefs } from 'pinia';
     import { ref } from 'vue';
     import { useI18n } from 'vue-i18n';
+import Searchbar from './Searchbar.vue';
     const { app_language } = storeToRefs(useAppStore());
     const { t } = useI18n();
     const props = defineProps(["headerTitle", "headerDescription"]);
     const emit = defineEmits(["showAll", "searchStoredItem"])
-    const searchedWord = ref<string>();
     let showAlltriggered = ref<boolean>(false);
     const selectedType = ref<string>(sessionStorage.getItem("selectedRecipeType") ?? "0");
 
-    const search = (): void => {
+    const search = (searchedWord: string): void => {
         if(props.headerTitle == "mykitchen"){
-            emit("searchStoredItem", searchedWord.value);
+            emit("searchStoredItem", searchedWord);
         } else {
             selectedType.value = "0";
-            useRecipeStore().getRecipesBySearch(searchedWord.value!);
+            useRecipeStore().getRecipesBySearch(searchedWord);
         }
     };
 
@@ -58,16 +58,7 @@
                 <label style="font-size: 1.2rem; float: right;">{{ t("showAll") }}</label>
             </div>
             <div class="col-12 col-md-6">
-                <form @submit.prevent="search()">
-                    <div class="form-floating input-area">
-                        <input type="text" name="search" id="search" class="form-control" v-model="searchedWord">
-                            <button type="submit" class="search-icon" style="display: inline;">
-                                <span class="bi bi-search"></span>
-                            </button>
-                        </input>
-                        <label for="search">{{ t("search") }}</label>
-                    </div>
-                </form>
+                <Searchbar v-on:search="search"/>
             </div>
             </div>
         </header>

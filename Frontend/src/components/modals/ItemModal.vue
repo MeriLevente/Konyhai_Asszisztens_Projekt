@@ -66,7 +66,7 @@
                     <div class="mb-3">
                         <label for="types" class="form-label">{{ t("type") }}</label>
                         <select name="type" id="types" required v-model="modalData.typeId" class="form-control">
-                            <option v-for="(type,index) in useAdminStore().types" :value="type.id" :selected="index+1 == modalData.typeId">{{ app_language == 'hu' ? type.name : type.name_EN }}</option>
+                            <option v-for="(type,index) in types" :value="type.id" :selected="index+1 == modalData.typeId">{{ app_language == 'hu' ? type.name : type.name_EN }}</option>
                         </select>
                     </div>
                     <div class="mb-3">

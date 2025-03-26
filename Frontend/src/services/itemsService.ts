@@ -20,6 +20,33 @@ export default {
             return Promise.reject(err.response)
         })
     },
+    getAllLength(){
+        return instance.get('/items/length')
+        .then((res: any)=>{
+            return res
+        })
+        .catch((err: any)=>{
+            return Promise.reject(err)
+        })
+    },
+    getPaginated(from: number, to: number){
+        return instance.get(`/items/from/${from}/to/${to}`)
+        .then((res: any)=>{
+            return res
+        })
+        .catch((err: any)=>{
+            return Promise.reject(err)
+        })
+    },
+    getSearchedItems(search: string){
+        return instance.get(`/items/search/${search}`)
+        .then((res: any)=>{
+            return res
+        })
+        .catch((err: any)=>{
+            return Promise.reject(err)
+        })
+    },
     addItem(data: Item){
         return instance.post('/items', data)
         .then((res: any)=>{

@@ -1,8 +1,8 @@
 <script setup lang="ts">
     import ItemTypesCard from '@/components/ItemTypesCard.vue';
     import StoredItemCard from '@/components/StoredItemCard.vue';
-import UserSideHeader from '@/components/UserSideHeader.vue';
-    import { useAdminStore } from '@/stores/adminstore';
+    import UserSideHeader from '@/components/UserSideHeader.vue';
+    import { useTypeStore } from '@/stores/typestore';
     import { useUserStore } from '@/stores/userstore';
     import DataLoader from '@/utils/DataLoader';
     import { ref } from 'vue';
@@ -36,7 +36,7 @@ import UserSideHeader from '@/components/UserSideHeader.vue';
         <UserSideHeader :header-title="'mykitchen'" :header-description="'titleCatchphrase'" 
                         v-on:show-all="showAllItems" v-on:search-stored-item="search"/>
         <main id="storedItemsList" class="row d-flex justify-content-center mt-2">
-            <ItemTypesCard v-for="type in useAdminStore().types" :type="type" v-on:type-clicked="typeClicked($event)"
+            <ItemTypesCard v-for="type in useTypeStore().types" :type="type" v-on:type-clicked="typeClicked($event)"
                 v-if="!selectedType && !showAlltriggered"/>
 
             <span v-if="selectedType || showAlltriggered" v-on:click="selectedType = null; showAlltriggered = false">
