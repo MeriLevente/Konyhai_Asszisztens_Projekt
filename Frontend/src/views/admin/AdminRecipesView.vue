@@ -1,16 +1,17 @@
 <script setup lang="ts">
     import Paginator from '@/components/Paginator.vue';
     import RecipeEditor from '@/components/recipes/RecipeEditor.vue';
+    import Searchbar from '@/components/Searchbar.vue';
     import type IRecipe from '@/models/Recipe';
+    import { useAppStore } from '@/stores/appstore';
     import { useRecipeStore } from '@/stores/recipestore';
-    import DataLoader from '@/utils/DataLoader';
     import { ref } from 'vue';
     import { useI18n } from 'vue-i18n';
     const { t } = useI18n();
     const store = useRecipeStore();
+    let searchInAction = ref<boolean>(false);
     let openEditor = ref(false);
-
-    DataLoader.loadRecipes();
+    let maxLength = ref<number>(Number(sessionStorage.getItem("recipesMaxLength")) ?? store.recipes.length);
 
     let data = ref<IRecipe | null>();
 
@@ -46,7 +47,10 @@
     };
 
     const deleteRecipe = (selected: IRecipe) => {
-        store.deleteRecipe(selected).then().catch();
+        if (confirm(`${t("deleteYesNo")} ${useAppStore().app_language == "hu" ? selected.name : selected.name_EN}?`) == true)
+            store.deleteRecipe(selected)
+                .then(()=>{})
+                .catch((err: string)=>{alert(err)});
     };
 
     const saveData = (recipe: IRecipe) => {
@@ -56,6 +60,20 @@
     const closeEditor = () => {
         openEditor.value = false;
         data.value = null;
+    };
+
+    if (!sessionStorage.getItem("recipesMaxLength")) {
+        store.getAllRecipesLength().then((res: number)=>{
+            maxLength.value = res;
+        });
+    }
+
+    const search = (searchedWord: string): void => {
+        store.getRecipesBySearch(searchedWord).then(()=> searchInAction.value = true).catch((err: string)=>{alert(err)});
+    };
+
+    const loadRecipesPaginated = (paginatorValues: {from: number, to: number}): void => {
+        store.loadRecipesPaginated(paginatorValues.from, paginatorValues.to).catch((err: string)=>{console.error(err)});
     };
 </script>
 
@@ -69,14 +87,15 @@
         </div>
         <div class="row my-2">  
             <div class="col-12">
-                <div v-if="store.recipes.length == 0" class="d-flex justify-content-center">
-                    <p style="font-weight: bold;color: red;">{{ t("no_data") }}</p>
+                <div class="row d-flex justify-content-center">
+                    <Searchbar v-on:search="search" v-on:show-paginated="loadRecipesPaginated({from: 0, to: 6}); searchInAction = false" 
+                        class="w-50" :viewer-role="'admin'" :searchInAction="searchInAction"/>
                 </div>
-                <div class="d-flex justify-content-center">
-                    <span v-if="store.recipes.length == 0" class="btn btn-success" v-on:click="addRecipe">
-                        {{ t("add_new") }}
-                    </span>
+
+                <div v-if="store.recipes.length == 0" class="nodata-div w-50 mx-auto p-3">
+                    <h3 class="text-center">{{ t("no_data") }}</h3>
                 </div>
+
                 <div class="table-responsive">
                     <table class="admin-table" v-if="store.recipes.length > 0">
                     <thead>
@@ -114,7 +133,8 @@
                 </div>
             </div>
         </div>
-        <Paginator/>
+        <Paginator :page="'admin_recipes'" v-if="!searchInAction" 
+            :max-length="store.recipesAllLength" v-on:paginator-triggered="loadRecipesPaginated"/>
     </div>
     <RecipeEditor :recipe="data" v-on:editor-closed="closeEditor" v-on:save-data="saveData" v-if="openEditor == true"/>
 </template>

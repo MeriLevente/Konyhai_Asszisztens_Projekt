@@ -12,6 +12,7 @@ import AdminItemsView from '@/views/admin/AdminItemsView.vue'
 import AdminRecipesView from '@/views/admin/AdminRecipesView.vue'
 import AdminTypesView from '@/views/admin/AdminTypesView.vue'
 import { useUserStore } from '@/stores/userstore'
+import CryptoJS from 'crypto-js'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -58,8 +59,8 @@ const router = createRouter({
       component: RegisterAdminView,
     },
     {
-      path: '/add-type',
-      name: 'add-type',
+      path: '/edit-types',
+      name: 'edit-types',
       component: AdminTypesView,
     },
     {
@@ -77,11 +78,19 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (!["login", "register", "Notfound", "home"].includes(to.name?.toString()!) && !useUserStore().status.loggedIn) next({ name: 'login' });
-  if(["login", "register",].includes(to.name?.toString()!) && useUserStore().status.loggedIn) next({ name: 'home' })
-  if(["admin", "edit-recipes", "edit-items", "add-type", "register-admin"].includes(to.name?.toString()!) && useUserStore().user?.role != "admin") next({name: 'home'});
-  if(["items", "recipes", "recipe"].includes(to.name?.toString()!) && useUserStore().user?.role != "user") next({name: 'home'});
+  if (!["login", "register", "Notfound", "home"].includes(to.name?.toString()!) && !useUserStore().status.loggedIn)
+    next({ name: 'login' });
+  if (["login", "register",].includes(to.name?.toString()!) && useUserStore().status.loggedIn)
+    next({ name: 'home' })
+  if (["admin", "edit-recipes", "edit-items", "edit-types", "register-admin"].includes(to.name?.toString()!) && !isAutherizedRole("admin"))
+     next({name: 'home'});
+  if (["items", "recipes", "recipe"].includes(to.name?.toString()!) && !isAutherizedRole("user"))
+    next({name: 'home'});
   else next()
 })
+
+const isAutherizedRole = (rightRole: string): boolean => {
+  return CryptoJS.AES.decrypt(useUserStore().user?.role!, import.meta.env.VITE_SECRET_WORD).toString(CryptoJS.enc.Utf8) == rightRole;
+}
 
 export default router

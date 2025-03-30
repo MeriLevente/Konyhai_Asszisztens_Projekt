@@ -3,7 +3,7 @@
     import { storeToRefs } from 'pinia';
     import { onMounted, ref } from 'vue';
     const emit = defineEmits(["paginatorTriggered"]);
-    const props = defineProps(["maxLength"]);
+    const props = defineProps(["maxLength", "page"]);
     const { paginatorLastElementDeleted } = storeToRefs(useAppStore());
     const paginatorValue = ref<number>(6);
     let paginatorFrom = ref<number>(Number(sessionStorage.getItem("paginator-from")) ?? 0);
@@ -33,6 +33,11 @@
     };
 
     onMounted(()=> {
+        if (sessionStorage.getItem("paginator-page") != props.page.toString()) {
+            paginatorFrom.value = 0;
+            paginatorTo.value = paginatorValue.value;
+        } 
+        sessionStorage.setItem("paginator-page", props.page.toString());
         if (!sessionStorage.getItem("paginator-from") || !sessionStorage.getItem("paginator-to")) {
             paginatorFrom.value = 0;
             paginatorTo.value = paginatorValue.value;

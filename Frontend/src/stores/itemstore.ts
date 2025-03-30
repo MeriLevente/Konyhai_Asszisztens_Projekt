@@ -1,5 +1,4 @@
 import type Item from "@/models/Item";
-import adminService from "@/services/adminService";
 import itemsService from "@/services/itemsService";
 import ItemValidation from "@/utils/ItemValidation";
 import SearchValidation from "@/utils/SearchValidation";
@@ -19,19 +18,24 @@ export const useItemStore = defineStore('itemStore', {
         paginatorValues: {
             from: Number(sessionStorage.getItem("paginator-from")) ?? 0,
             to: Number(sessionStorage.getItem("paginator-to")) ?? 6
-        }
+        },
+        units: <string[]> [
+            "darab",
+            "g",
+            "ml"
+        ],
     }),
     actions: {
         getItems(){
-            adminService.getItems()
+            itemsService.getItems()
                 .then((res: any)=>{
                     this.items = res.data;
                     sessionStorage.setItem("items", JSON.stringify(res.data))
                     return res.data;
                 }
                 )
-                .catch((err:any)=>{
-                    console.log(err);
+                .catch((err: any) => {
+                    console.error(useAppStore().app_language == "hu" ? err.hu : err.en);
                 })
         },
         getAllItemsLength(){
@@ -41,18 +45,17 @@ export const useItemStore = defineStore('itemStore', {
                     sessionStorage.setItem("itemsMaxLength", `${res.data.length}`);
                     return res.data.length;
                 })
-                .catch(()=>{
-                    return Promise.reject();
+                .catch((err: any)=>{
+                    console.error(useAppStore().app_language == "hu" ? err.hu : err.en);
                 })
         },
         getItemsByTypeId(typeid: number){
-            adminService.getItemsByType(typeid)
+            itemsService.getItemsByType(typeid)
                 .then((res: any)=>{
                     this.items = res.data;
-                }
-                )
-                .catch((err:any)=>{
-                    console.error(err);
+                })
+                .catch((err: any)=>{
+                    console.error(useAppStore().app_language == "hu" ? err.hu : err.en);
                 })
         },
         loadItemsPaginated(from: number, to: number){
@@ -76,7 +79,7 @@ export const useItemStore = defineStore('itemStore', {
                         this.items = res.data;
                     })
                     .catch((err: any)=>{
-                        return Promise.reject(useAppStore().app_language == "hu" ? err.hu : err.en);
+                        return Promise.reject(err);
             })
             } else {
                 return Promise.reject(useAppStore().app_language == "hu" ? validation.message : validation.messageEn);
@@ -85,20 +88,20 @@ export const useItemStore = defineStore('itemStore', {
         saveItem(data: Item){
             let validation = ItemValidation.ItemAllFilled(data.name, data.name_EN, data.typeId, data.unit, data.image);
             if (!validation.isError) {
-                if (data.itemId) {
-                    return adminService.updateItem(data)
+                if (data.id) {
+                    return itemsService.updateItem(data)
                             .then((res: any)=>{
                                 this.items_error.hu = "";
                                 this.items_error.en = "";
-                                this.items[this.items.indexOf(data)] = res;
+                                this.items[this.items.findIndex(x=> x.id == data.id)] = res.data;
                             })
                             .catch((err: any)=>{
-                                this.items_error.hu = err.message;
-                                this.items_error.en = err.messageEn;
+                                this.items_error.hu = err.hu;
+                                this.items_error.en = err.en;
                                 return Promise.reject();
                             });;
                 } else {
-                    return adminService.addItem(data)
+                    return itemsService.addItem(data)
                             .then((res: any)=>{
                                 this.items_error.hu = "";
                                 this.items_error.en = "";
@@ -107,10 +110,11 @@ export const useItemStore = defineStore('itemStore', {
                                     this.items.push(res.data);
                                 this.itemsAllLength += 1;
                                 sessionStorage.setItem("itemsMaxLength", `${this.itemsAllLength}`);
+                                return res.data;
                             })
                             .catch((err: any)=>{
-                                this.items_error.hu = err.message;
-                                this.items_error.en = err.messageEn;
+                                this.items_error.hu = err.hu;
+                                this.items_error.en = err.en;
                                 return Promise.reject();
                             });
                 }
@@ -120,11 +124,8 @@ export const useItemStore = defineStore('itemStore', {
             }
         },
         deleteItem(data: Item){
-            if (data) {
-                return adminService.deleteItem(data)
-                .then(()=>{
-                    this.items_error.hu = "";
-                    this.items_error.en = "";
+            return itemsService.deleteItem(data)
+            .then(()=>{
                     this.itemsAllLength -= 1;
                     sessionStorage.setItem("itemsMaxLength", `${this.itemsAllLength}`);
                     this.items.splice(this.items.indexOf(data), 1);
@@ -132,17 +133,10 @@ export const useItemStore = defineStore('itemStore', {
                         this.loadItemsPaginated(0, this.paginatorValues.to - this.paginatorValues.from);
                         useAppStore().paginatorLastElementDeleted = true;
                     }
-                })
-                .catch((err: any)=>{
-                    this.items_error.hu = err.message;
-                    this.items_error.en = err.messageEn;
-                    return Promise.reject();
-                });
-            } else {
-                this.items_error.hu = "Sikertelen törlés";
-                this.items_error.en = "Delete failed!";
-                return Promise.reject();
-            }
+            })
+            .catch((err: any)=>{
+                return Promise.reject(useAppStore().app_language == "hu" ? err.hu : err.en);
+            });
         }
     }
 });

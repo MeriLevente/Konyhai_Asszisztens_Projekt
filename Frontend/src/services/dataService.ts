@@ -12,7 +12,7 @@ instance.interceptors.request.use((config)=>{
     const token: string | null = sessionStorage.getItem("token");
     const lang: string | null = localStorage.getItem('lang');
     if (token) {
-        config.headers["Authorization"] = `Bearer ${token}`;
+        config.headers["Authorization"] = `Bearer ${token.trim()}`;
     }
     if (lang) {
         config.headers['Accept-Language'] = lang;
@@ -25,7 +25,9 @@ instance.interceptors.response.use(
       return response;
     },
     function (error) {
-      return Promise.reject(error.response.data);
+      return Promise.reject(
+        error.response.data
+      );
     }
   );
 

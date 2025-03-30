@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <a class="navbar-brand" href="/">
         <img src="@\assets\images\fridgebuddy.png" alt="Lógó" width="90" height="60" class="d-inline-block align-text-center">
-        <span class="navbar-title mercury-nav-element">DiKA</span>
+        <span class="navbar-title mercury-nav-element">DiKAMON</span>
       </a>
       <button class="navbar-toggler mercury-nav-button navbar-ligth bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,7 +37,12 @@
     const { status } = storeToRefs(useUserStore());
     import { useRouter } from 'vue-router';
     import { useAppStore } from '@/stores/appstore';
+    import CryptoJS from 'crypto-js'
     const router = useRouter();
+
+    const isAutherizedRole = (rightRole: string): boolean => {
+        return CryptoJS.AES.decrypt(useUserStore().user?.role!, import.meta.env.VITE_SECRET_WORD).toString(CryptoJS.enc.Utf8) == rightRole;
+    }
     
     const menuItems = computed(()=>{
       return [
@@ -57,19 +62,19 @@
             title: "Konyhám",
             title_EN: "My Kitchen",
             to: '/items',
-            isVisible: status.value.loggedIn && useUserStore().user?.role == "user",
+            isVisible: status.value.loggedIn && useUserStore().user?.role && isAutherizedRole("user"),
         },
         {
             title: "Receptek",
             title_EN: "Recipes",
             to: '/recipes',
-            isVisible: status.value.loggedIn && useUserStore().user?.role == "user",
+            isVisible: status.value.loggedIn && useUserStore().user?.role && isAutherizedRole("user"),
         },
         {
             title: "Admin",
             title_EN: "Admin",
             to: '/admin',
-            isVisible: status.value.loggedIn && useUserStore().user?.role == "admin",
+            isVisible: status.value.loggedIn && useUserStore().user?.role && isAutherizedRole("admin"),
         },
     ]
     });

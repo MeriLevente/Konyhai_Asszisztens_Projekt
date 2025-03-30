@@ -11,6 +11,7 @@
     };
 
     const showPaginated = (): void => {
+        searchedWord.value = "";
         emit("showPaginated");
     };
 </script>

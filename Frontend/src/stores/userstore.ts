@@ -10,8 +10,8 @@ import UserValidation from "@/utils/UserValidation";
 import {defineStore} from "pinia";
 import { useAppStore } from "./appstore";
 import type IRecipe from "@/models/Recipe";
-import adminService from "@/services/adminService";
 import recipesService from "@/services/recipesService";
+import CryptoJS from 'crypto-js'
 
 export const useUserStore = defineStore('userStore', {
     state: () => ({
@@ -40,16 +40,21 @@ export const useUserStore = defineStore('userStore', {
                 return userService.login(data)
                         .then((res: any) => {
                             this.status.loggedIn = true;
-                            this.hideError();
+                            this.hideError();       
                             this.user = res.data;
-                            sessionStorage.setItem("user", JSON.stringify(this.user));
+                            const hashedRole = CryptoJS.AES.encrypt(this.user?.role!, import.meta.env.VITE_SECRET_WORD).toString();
+                            this.user!.role = hashedRole;
+                            sessionStorage.setItem("user", JSON.stringify(
+                            {
+                                id: this.user?.id,
+                                name: this.user?.name,
+                                role: hashedRole
+                            }));
                             sessionStorage.setItem("token", JSON.stringify(this.user?.token));
                         })
                         .catch((err: any)=>{
-                            this.status.loggedIn = false;
                             this.status.message = err.hu;
                             this.status.messageEn = err.en;
-                            this.user = {name: "", token: "", id: null, role: ""};
                             return Promise.reject();
                         })
             } else{
@@ -60,20 +65,27 @@ export const useUserStore = defineStore('userStore', {
         register(data: IUser){
             let validation: IFormResponse = UserValidation.RegisterIsValid(data.name!, data.email, data.password, this.status.confirm_password)
             if(!validation.isError){
-                return userService.register(data)
+                return userService.register(data, data.role)
                             .then((res: any) => {
                                 this.status.loggedIn = true;
                                 this.hideError();
                                 this.status.confirm_password = "";
-                                this.user = res.data;
-                                sessionStorage.setItem("user", JSON.stringify(this.user));
-                                sessionStorage.setItem("token", JSON.stringify(this.user?.token));
+                                if(data.role == "user"){
+                                    this.user = res.data;
+                                    const hashedRole = CryptoJS.AES.encrypt(this.user?.role!, import.meta.env.VITE_SECRET_WORD).toString();
+                                    this.user!.role = hashedRole;
+                                    sessionStorage.setItem("user", JSON.stringify(
+                                    {
+                                        id: this.user?.id,
+                                        name: this.user?.name,
+                                        role: hashedRole
+                                    }));
+                                    sessionStorage.setItem("token", JSON.stringify(this.user?.token));
+                                }
                             })
                             .catch((err: any)=>{
-                                this.status.loggedIn = false;
                                 this.status.message = err.hu;
                                 this.status.messageEn = err.en;
-                                this.user = {name: "", token: "", id: null, role: ""};
                                 return Promise.reject();
                             })
             } else{
@@ -98,16 +110,16 @@ export const useUserStore = defineStore('userStore', {
             return storageService.getStoredItems()
                 .then((res: any)=>{
                     this.storedItems = res.data;
-                }).catch((err)=>
-                    console.error(err.hu)
+                }).catch((err: any)=>
+                    console.error(useAppStore().app_language == "hu" ? err.hu : err.en)
                 )
         },
         getStoredItemsByTypeId(typeId: number){
             return storageService.getStoredItemsByTypeId(typeId)
                 .then((res: any)=>{
                     this.storedItems = res.data;
-                }).catch((err)=>
-                    console.error(err.hu)
+                }).catch((err: any)=>
+                    console.error(useAppStore().app_language == "hu" ? err.hu : err.en)
                 )
         },
         getStoredItemsBySearch(typeId: number | null, sWord: string | undefined){
@@ -116,8 +128,8 @@ export const useUserStore = defineStore('userStore', {
                 return storageService.getStoredItemsBySearch(typeId, sWord!)
                 .then((res: any)=>{
                     this.storedItems = res.data;
-                }).catch((err)=>
-                    console.error(err.hu)
+                }).catch((err: any)=>
+                    console.error(useAppStore().app_language == "hu" ? err.hu : err.en)
                 )
             } else {
                 alert(useAppStore().app_language == 'hu' ? validation.message : validation.messageEn);
@@ -127,9 +139,8 @@ export const useUserStore = defineStore('userStore', {
             return recipesService.getRecipeById(id)
                 .then((res: any)=>{
                     this.viewedRecipe = res.data;
-                    sessionStorage.setItem('viewed_recipe', JSON.stringify(this.viewedRecipe));
                 }).catch((err: any)=>
-                    console.error(err.hu)
+                    console.error(useAppStore().app_language == "hu" ? err.hu : err.en)
                 )
         }
     }

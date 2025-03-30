@@ -8,16 +8,16 @@ export default {
             return res
         })
         .catch((err: any)=>{
-            return Promise.reject(err.response)
+            return Promise.reject(err)
         })
     },
     getItemsByType(typid: number){
-        return instance.get(`/items/typeid${typid}`)
+        return instance.get(`/items/typeid/${typid}`)
         .then((res: any)=>{
             return res
         })
         .catch((err: any)=>{
-            return Promise.reject(err.response)
+            return Promise.reject(err)
         })
     },
     getAllLength(){
@@ -53,25 +53,25 @@ export default {
             return res
         })
         .catch((err: any)=>{
-            return Promise.reject(err.response)
+            return Promise.reject(err)
         })
     },
     updateItem(data: Item){
-        return instance.post(`/items`, data)
+        return instance.put(`/items`, data)
         .then((res: any)=>{
             return res
         })
         .catch((err: any)=>{
-            return Promise.reject(err.response)
+            return Promise.reject(err)
         })
     },
     deleteItem(data: Item){
-        return instance.post(`/items/${data.itemId}`)
+        return instance.delete(`/items/${data.id}`)
         .then((res: any)=>{
             return res
         })
         .catch((err: any)=>{
-            return Promise.reject(err.response)
+            return Promise.reject(err)
         })
     },
 }

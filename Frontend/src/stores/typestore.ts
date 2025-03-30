@@ -28,7 +28,8 @@ export const useTypeStore = defineStore('typeStore', {
                     return res.data;
                 }
                 )
-                .catch(()=>{
+                .catch((err: any)=>{
+                    console.error(useAppStore().app_language == "hu" ? err.hu : err.en);
                     return Promise.reject();
                 })
         },
@@ -40,8 +41,8 @@ export const useTypeStore = defineStore('typeStore', {
                     return res.data.length;
                 }
                 )
-                .catch(()=>{
-                    return Promise.reject();
+                .catch((err: any)=>{
+                    console.error(useAppStore().app_language == "hu" ? err.hu : err.en);
                 })
         },
         loadPaginated(from: number, to: number){
@@ -54,7 +55,7 @@ export const useTypeStore = defineStore('typeStore', {
                 this.types = res.data;
             })
             .catch((err: any)=>{
-                return Promise.reject(useAppStore().app_language == "hu" ? err.hu : err.en);
+                return Promise.reject(err);
             })
         },
         searchTypes(search: string){
@@ -82,8 +83,7 @@ export const useTypeStore = defineStore('typeStore', {
                                 this.types[this.types.findIndex(x=> x.id == data.id)] = res.data;
                             })
                             .catch((err: any)=>{
-                                this.type_error.hu = err.hu;
-                                this.type_error.en = err.en;
+                                this.type_error = err;
                                 return Promise.reject();
                             });;
                 } else {
@@ -109,24 +109,19 @@ export const useTypeStore = defineStore('typeStore', {
             }
         },
         deleteType(data: IType){
-            if (data) {
-                return itemTypesService.deleteType(data)
-                .then(()=>{
-                    this.typesAllLength -= 1;
-                    sessionStorage.setItem("typesMaxLength", `${this.typesAllLength}`);
-                    this.types.splice(this.types.indexOf(data), 1);
-                    if (this.types.length == 0) {
-                        this.loadPaginated(0, this.paginatorValues.to - this.paginatorValues.from);
-                        useAppStore().paginatorLastElementDeleted = true;
-                    }
-                })
-                .catch((err: any)=>{
-                    return Promise.reject(useAppStore().app_language == "hu" ? err.hu : err.en);
-                });
-            } else {
-                this.type_error.hu = "Sikertelen törlés";
-                this.type_error.en = "Delete failed!";
-                return Promise.reject();
-            }
-        }}
+            return itemTypesService.deleteType(data)
+            .then(()=>{
+                this.typesAllLength -= 1;
+                sessionStorage.setItem("typesMaxLength", `${this.typesAllLength}`);
+                 this.types.splice(this.types.indexOf(data), 1);
+                if (this.types.length == 0) {
+                    this.loadPaginated(0, this.paginatorValues.to - this.paginatorValues.from);
+                    useAppStore().paginatorLastElementDeleted = true;
+                }
+            })
+            .catch((err: any)=>{
+                return Promise.reject(useAppStore().app_language == "hu" ? err.hu : err.en);
+            })
+        }
+    }
 });

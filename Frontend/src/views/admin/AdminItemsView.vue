@@ -1,14 +1,16 @@
 <script setup lang="ts">
     import Paginator from '@/components/Paginator.vue';
-import Searchbar from '@/components/Searchbar.vue';
+    import Searchbar from '@/components/Searchbar.vue';
     import ItemModal from '@/components/modals/ItemModal.vue';
     import type Item from '@/models/Item';
+    import { useAppStore } from '@/stores/appstore';
     import { useItemStore } from '@/stores/itemstore';
-    import DataLoader from '@/utils/DataLoader';
+    import { storeToRefs } from 'pinia';
     import { ref } from 'vue';
     import { useI18n } from 'vue-i18n';
     const { t } = useI18n();
     const store = useItemStore();
+    const {items} = storeToRefs(store);
     const searchInAction = ref<boolean>(false);
     let maxLength = ref<number>(Number(sessionStorage.getItem("itemsMaxLength")) ?? store.items.length);
 
@@ -27,7 +29,7 @@ import Searchbar from '@/components/Searchbar.vue';
 
     const editItem = (selected: Item) => {
         data.value = {
-            itemId: selected.itemId,
+            id: selected.id,
             name: selected.name,
             name_EN: selected.name_EN,
             typeId: selected.typeId,
@@ -38,7 +40,10 @@ import Searchbar from '@/components/Searchbar.vue';
     };
 
     const deleteItem = (selected: Item) => {
-        store.deleteItem(selected).then(()=> closeModal()).catch();
+        if (confirm(`${t("deleteYesNo")} ${useAppStore().app_language == "hu" ? selected.name : selected.name_EN}?`) == true)
+            store.deleteItem(selected)
+                .then(()=>{})
+                .catch((err: string)=>{alert(err)});
     };
 
     const saveData = (item: any) => {
@@ -46,8 +51,8 @@ import Searchbar from '@/components/Searchbar.vue';
     };
 
     const closeModal = () => {
-        store.items_error.hu = "";
-        store.items_error.en = "";
+        useItemStore().items_error.hu = "";
+        useItemStore().items_error.hu = "";
         data.value = null;
         document.getElementsByTagName('body')[0].classList.remove('disable-scrolling')
     };
@@ -104,7 +109,7 @@ import Searchbar from '@/components/Searchbar.vue';
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(item,index) in useItemStore().items" :key="index">
+                        <tr v-for="(item,index) in items" :key="index">
                             <td>
                                 <span class="btn btn-primary table-btn p-2 m-1"  v-on:click="editItem(item)">
                                     <i class="bi bi-pencil d-flex justify-content-center"></i>
@@ -113,7 +118,7 @@ import Searchbar from '@/components/Searchbar.vue';
                                     <i class="bi bi-trash d-flex justify-content-center"></i>
                                 </span>
                             </td>
-                            <td class="text-center pt-3">{{ item.itemId }}</td>
+                            <td class="text-center pt-3">{{ item.id }}</td>
                             <td class="text-center pt-3">{{ item.name }}</td>
                             <td class="text-center pt-3">{{ item.name_EN }}</td>
                             <td class="text-center pt-3">{{ item.typeId }}</td>
@@ -124,7 +129,7 @@ import Searchbar from '@/components/Searchbar.vue';
                 </div>
             </div>
         </div>
-        <Paginator v-if="!searchInAction" :max-length="store.itemsAllLength" v-on:paginator-triggered="loadItemsPaginated"/>
+        <Paginator v-if="!searchInAction" :max-length="store.itemsAllLength" v-on:paginator-triggered="loadItemsPaginated" :page="'admin_items'"/>
     </div>
 </template>
 

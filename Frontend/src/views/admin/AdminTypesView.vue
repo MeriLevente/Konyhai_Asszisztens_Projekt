@@ -60,7 +60,7 @@
     }
 
     const loadTypesPaginated = (paginatorValues: {from: number, to: number}) => {
-            store.loadPaginated(paginatorValues.from, paginatorValues.to).catch((err: string)=>{console.error(err)});
+        store.loadPaginated(paginatorValues.from, paginatorValues.to).catch((err: string)=>{console.error(err)});
     }
 
     const search = (searchedWord: string) => {
@@ -124,7 +124,7 @@
                 </div>
             </div>
         </div>
-        <Paginator v-if="!searchInAction" :max-length="useTypeStore().typesAllLength" v-on:paginator-triggered="loadTypesPaginated"/>
+        <Paginator v-if="!searchInAction" :max-length="useTypeStore().typesAllLength" v-on:paginator-triggered="loadTypesPaginated" :page="'admin_types'"/>
     </div>
 </template>
 

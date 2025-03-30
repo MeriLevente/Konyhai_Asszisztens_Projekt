@@ -35,7 +35,8 @@
             useUserStore().register(userData)!.then(()=>{
                 if(props.role == 'user')
                     router.push("/");
-                else{
+                else
+                {
                     alert(t("admin_reg_success"));
                     formData.value = {
                         name: "",
@@ -45,11 +46,11 @@
                     };
                     confirm_password.value = "";
                 }
-            }).catch(()=>{});
+            });
         } else {
             useUserStore().login(userData)!.then(()=>{
                 router.push("/")
-            }).catch(()=>{});
+            });
         };
     };
 

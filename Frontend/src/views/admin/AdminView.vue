@@ -23,7 +23,7 @@
             <h1 class="display-3 text-center">{{t('admin_h1')}}</h1>
         </div>
         <div class="row row-content my-5 d-flex justify-content-center">
-            <div class="col-11 col-sm-5 p-2 admin-box-blue m-1" v-on:click="navigateToPage('/add-type')">
+            <div class="col-11 col-sm-5 p-2 admin-box-blue m-1" v-on:click="navigateToPage('/edit-types')">
                 <p class="text-center display-5">{{ t("edit_type") }}</p>
                 <i class="bi bi-egg d-flex justify-content-center"></i>
             </div>

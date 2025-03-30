@@ -1,15 +1,15 @@
 <script setup lang="ts">
-    import { ref } from 'vue';
+    import { onMounted, ref } from 'vue';
     import { useI18n } from 'vue-i18n';
-    import { useAdminStore } from '@/stores/adminstore';
     import { storeToRefs } from 'pinia';
     import { useAppStore } from '@/stores/appstore';
     import type Item from '@/models/Item';
     import type Ingredient from '@/models/Ingredient';
     import RecipeValidation from '@/utils/RecipeValidation';
     import type IFormResponse from '@/models/FormResponse';
-    import DataLoader from '@/utils/DataLoader';
     import { useRecipeStore } from '@/stores/recipestore';
+    import { useItemStore } from '@/stores/itemstore';
+    import { useTypeStore } from '@/stores/typestore';
     const { t } = useI18n();
     const props = defineProps(["recipe"]);
     const emit = defineEmits(["editorClosed", "saveData"]);
@@ -18,12 +18,11 @@
 
     const selectedStep = ref("1");
     const selectedLanguage = ref("hu");
-
     let selectedTypeId = ref<number | null>();
     let ingredients = ref<Ingredient[]>(props.recipe.ingredients ?? []);
     let selectedIngredient = ref<Item | null>();
     let ingredientQuantity = ref<number | null>();
-    let ingrInputError = ref<string | undefined>("");
+    let ingrInputError = ref<IFormResponse>({message: '', messageEn: ''});
 
     let descHU = ref<string[]>(props.recipe.description == "" ? [] : props.recipe.description.split("#"));
     let descEN = ref<string[]>(props.recipe.description_EN == "" ? [] : props.recipe.description_EN.split("#"));
@@ -33,8 +32,8 @@
     // let imageToSave: string | undefined = props.recipe.image;
 
     const resetRecipeError = (): void => {
-        recipes_error.value.en = '';
         recipes_error.value.hu = '';
+        recipes_error.value.en = '';
     };
 
     const closeEditor = () => {
@@ -46,9 +45,14 @@
         // imageToSave = useAdminStore().imageChange(event.target.files[0])
     };
 
+    const hideIngredientError = (): void => {
+        ingrInputError.value!.message = '';
+        ingrInputError.value!.messageEn = '';
+    };
+
     const saveIngredient = (): void => {
-        ingrInputError.value = '';
-        if(ingredients.value.length < 20){
+        hideIngredientError();
+        if(ingredients.value.length < 10){
             let ingredient: Ingredient;
             const validation = RecipeValidation.IngredientInputCorrect(selectedTypeId.value!, selectedIngredient.value!, ingredientQuantity.value!);
             if(!validation.isError){
@@ -57,31 +61,31 @@
                     item: selectedIngredient.value!,
                     quantity: ingredientQuantity.value!
                 }
-                const ingrContains = ingredients.value.find(x=> x.item.itemId == ingredient.item.itemId);
+                const ingrContains = ingredients.value.find(x=> x.item.id == ingredient.item.id);
                 if(ingrContains)
                     ingredients.value.forEach(x=> {
-                        if(x.item.itemId == ingrContains.item.itemId){
+                        if(x.item.id == ingrContains.item.id){
                             x.quantity += ingredient.quantity;
                         }
                     })
                 else
                     ingredients.value.push(ingredient);
 
-                ingrInputError.value = '';
-                selectedTypeId.value = null;
-                selectedIngredient.value = null;
-                ingredientQuantity.value = null;
+                hideIngredientError();
+                selectedTypeId.value = selectedIngredient.value = ingredientQuantity.value = null;
                 resetRecipeError();
             } else {
-                ingrInputError.value = app_language.value == 'hu' ? validation.message : validation.messageEn;
+                ingrInputError.value!.message = validation.message;
+                ingrInputError.value!.messageEn = validation.messageEn;
             }
         } else {
-            ingrInputError.value = app_language.value == 'hu' ? 'Maximum 20 elemet vehet fel!' : 'The maximum ingredient count is 20!';
+            ingrInputError.value!.message = 'Maximum 10 elemet vehet fel!';
+            ingrInputError.value!.messageEn = 'The maximum ingredient count is 10!';
         }
     };
 
     const deleteIngredient = (index: number): void => {
-        ingredients.value = ingredients.value.filter(x=> x.item.itemId != index);
+        ingredients.value = ingredients.value.filter(x=> x.item.id != index);
     };
 
     const saveStep = (): void => {
@@ -110,8 +114,8 @@
     };
 
     const stepNumberIsCorrect = (): IFormResponse => {
-        const maxStepNmb = app_language.value == 'hu' ? descHU.value.length+1 : descEN.value.length+1;
-        if(Number(selectedStep.value) <= 0 || Number(selectedStep.value) > Number(maxStepNmb)){
+        const maxStepNmb = selectedLanguage.value == 'hu' ? descHU.value.length+1 : descEN.value.length+1;
+        if(Number(selectedStep.value) <= 0 || Number(selectedStep.value) > Number(maxStepNmb) || Number(selectedStep.value) > 4){
             return {message: "Érvénytelen lépés szám!", messageEn: "Invalid step number!", isError: true};
         } else {
             return {isError: false};
@@ -126,6 +130,10 @@
         resetRecipeError();
         emit("saveData", props.recipe);
     };
+
+    onMounted((): void => {
+        useTypeStore().getTypes();
+    });
 </script>
 
 <template>
@@ -146,7 +154,8 @@
                     <label for="nameEN" class="form-label">{{ t("name") }} (en)</label>
                     <input type="text" class="form-control m-1" id="nameEN" v-model="recipe.name_EN" v-on:focus="resetRecipeError()">
                     <label for="time" class="form-label">{{ t("time") }}</label>
-                    <input type="number" class="form-control m-1" id="time" v-model="recipe.time" placeholder="min: 1, max: 10080" v-on:focus="resetRecipeError()">
+                    <input type="number" class="form-control m-1" id="time" 
+                        v-model="recipe.time" placeholder="min: 1, max: 10080" v-on:focus="resetRecipeError()">
                     <label for="type" class="form-label">{{ t("type") }}</label>
                     <select name="type" id="type" class="form-control m-1" v-model="recipe.type">
                         <option v-for="type in recipe_types" :value="type.short"
@@ -156,42 +165,43 @@
                 </div>
             </div>
 
-            <hr> <!-- HOZZÁVALÓK -->
+            <hr>
             <div class="row p-2">
                 <h5 class="text-center">{{ t("ingredients") }}</h5>
                 <div class="col-12 col-md-6 InputDiv mb-2 p-2">
                     <label for="itemtype">{{ t('type') }}</label>
-                    <select id="itemtype" name="itemtype"
-                        v-model="selectedTypeId" class="form-control"
-                        v-on:click="DataLoader.loadTypes(); useAdminStore().getItemsByTypeId(selectedTypeId!)"
-                    >
-                        <option v-for="type in useAdminStore().types" :value="type.id">
+                    <select id="itemtype" name="itemtype" v-model="selectedTypeId" class="form-control" 
+                        v-on:change="selectedIngredient = null" v-on:focus="hideIngredientError()">
+                        <option v-for="type in useTypeStore().types" :value="type.id">
                             {{ app_language == 'hu' ? type.name : type.name_EN }}
                         </option>
                      </select>
                      <label for="ingredient">{{ t('ingredients') }}</label>
                      <select id="ingredient" class="form-control"
-                        v-model="selectedIngredient" v-bind:disabled="selectedTypeId == null">
-                        <option v-for="ingr in useAdminStore().items" :value="ingr">{{app_language == 'hu' ? ingr.name : ingr.name_EN}}</option>
+                        v-model="selectedIngredient" v-bind:disabled="selectedTypeId == null" v-on:focus="hideIngredientError()"
+                        v-on:click="useItemStore().getItemsByTypeId(selectedTypeId!)">
+                        <option v-for="ingr in useItemStore().items" :value="ingr">{{app_language == 'hu' ? ingr.name : ingr.name_EN}}</option>
                      </select>
 
                      <div class="row">
                         <div class="col-8">
                             <label for="quantity">{{ t("quantity") }}</label>
-                            <input type="number" min="1" max="10000" class="form-control" v-model="ingredientQuantity"/>
+                            <input type="number" min="1" max="10000" class="form-control" v-model="ingredientQuantity" v-on:focus="hideIngredientError()"/>
                         </div>
                         <div class="col-4 py-4">
                             <span class="unitSpan" v-if="selectedIngredient">{{ t(selectedIngredient!.unit) }}</span>
                         </div>
                      </div>
-                     <p class="text-danger d-flex justify-content-center my-2">{{ ingrInputError }}</p>
+                     <p class="text-danger d-flex justify-content-center my-2">
+                        {{ app_language == "hu" ? ingrInputError?.message : ingrInputError?.messageEn }}
+                    </p>
                      <div class="d-flex justify-content-center" v-on:click="saveIngredient">
                         <button class="btn btn-success" type="button">{{ t("save") }}</button>
                      </div>
                 </div>
                 <div class="col-12 col-md-6" style="display: flex; float: left; flex-wrap: wrap;">
                     <div v-for="(ingr,index) in ingredients" :key="index" class="ingredient-div d-flex align-items-start">
-                        <i class="bi bi-trash" v-on:click="deleteIngredient(ingr.item.itemId!)"></i>
+                        <i class="bi bi-trash" v-on:click="deleteIngredient(ingr.item.id!)"></i>
                         <div>
                             {{ `${app_language == 'hu' ? ingr.item.name : ingr.item.name_EN}`}}
                             <br>
@@ -234,7 +244,7 @@
                                 <label for="desc" class="form-label">{{ t("step") }}</label>
                                 <textarea id="desc" class="form-control"
                                 v-model="stepInput"
-                                maxlength="200" :placeholder="app_language == 'hu' ? 'max 200 karakter' : 'max 200 charachter'"
+                                maxlength="90" :placeholder="app_language == 'hu' ? 'max 90 karakter' : 'max 90 charachter'"
                                 ></textarea>
                             </div>
                         </div>
@@ -253,8 +263,8 @@
                     <p v-if="descEN[0] != '' && selectedLanguage == 'en'" v-for="(step, index) in descEN">{{ `${index+1}. ${step}` }}</p>
                 </div>
             </div>
-            <div v-if="recipes_error.hu != '' && recipes_error.en != ''" class="text-danger text-center mx-5 mb-2">
-                {{ app_language == 'hu' ? recipes_error.hu : recipes_error.en }}
+            <div v-if="recipes_error.en != '' || recipes_error.hu != ''" class="text-danger text-center mx-5 mb-2">
+                {{ recipes_error }}
             </div>
             <div class="row m-3">
                 <div class="col d-flex justify-content-end">
