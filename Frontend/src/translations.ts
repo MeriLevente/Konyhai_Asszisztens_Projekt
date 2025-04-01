@@ -110,6 +110,8 @@ const i18n = createI18n({
             titleCatchphrase: "Szerezd meg hát mind!",
             noitems: "A manóba, nem találtam semmilyen élelmiszert!",
             newitem: "Vegyél fel egy új DiKAMON-t a konyhádba!",
+            QuantityChanger: "Mennyiség módosító",
+            delete: "Lenulláz",
 
             //RecipesView
             recipesTitle: "Receptek",
@@ -223,6 +225,8 @@ const i18n = createI18n({
             titleCatchphrase: "Gotta catch'em all!",
             noitems: "Oh no, I couldn't find any items!",
             newitem: "Register a new DiKAMON to your kitchen!",
+            QuantityChanger: "Quantity Changer",
+            delete: "Make it 0",
 
             //RecipesView
             recipesTitle: "Recipes",

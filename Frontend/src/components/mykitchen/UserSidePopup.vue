@@ -17,8 +17,12 @@
 
 <template>
     <div class="popup-bg">
-        <div class="popup w-75 mx-auto p-3">
-            <QuantityChanger :method="props.quantitymethod" v-if="props.popuptype == 'quantity'" :modifiedItem="props.modifiedItem"/>
+        <div class="popup w-100 mx-auto p-3">
+            <QuantityChanger
+                :method="props.quantitymethod" 
+                v-if="props.popuptype == 'quantity'" 
+                :modifiedItem="props.modifiedItem"
+                v-on:close="close"/>
             <NewItemPopup v-if="props.popuptype == 'new'" v-on:close="close"/>
         </div>
     </div>
@@ -36,6 +40,6 @@
         color: white;
         background-color: var(--barley);
         border-radius: 5px;
-        border: var(--ebony-clay) 3px solid;
+        border: var(--ebony-clay) 10px solid;
     }
 </style>

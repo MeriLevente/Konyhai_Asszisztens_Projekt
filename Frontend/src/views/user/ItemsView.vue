@@ -52,10 +52,12 @@
 
 <template>
     <div class="container p-3">
-        <UserSidePopup v-if="popupType" :popuptype="popupType" :quantitymethod="quantityMethod" :modified-item="modifyItem" v-on:close="closePopUp"/>
-        <UserSideHeader v-if="!popupType" :header-title="'mykitchen'" :header-description="'titleCatchphrase'" 
+        <div class="background disable-scrolling" v-if="popupType"></div>
+        <UserSidePopup style="position: absolute; z-index: 1; right: 33%;" 
+            v-if="popupType" :popuptype="popupType" :quantitymethod="quantityMethod" :modified-item="modifyItem" v-on:close="closePopUp"/>
+        <UserSideHeader :header-title="'mykitchen'" :header-description="'titleCatchphrase'" 
                         v-on:show-all="showAllItems" v-on:search-stored-item="search" v-on:show-new="showNew"/>
-        <main v-if="!popupType" id="storedItemsList" class="row d-flex justify-content-center mt-2">
+        <main id="storedItemsList" class="row d-flex justify-content-center mt-2">
             <ItemTypesCard v-for="type in useTypeStore().types" :type="type" v-on:type-clicked="typeClicked($event)"
                 v-if="!selectedType && !showAlltriggered"/>
 
