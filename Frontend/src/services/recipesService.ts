@@ -37,7 +37,6 @@ export default {
             return res
         })
         .catch((err: any)=>{
-            console.error(err)
             return Promise.reject(err);
         })
     },

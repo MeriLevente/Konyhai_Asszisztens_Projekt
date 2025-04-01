@@ -140,7 +140,7 @@ export const useUserStore = defineStore('userStore', {
                 .then((res: any)=>{
                     this.viewedRecipe = res.data;
                 }).catch((err: any)=>
-                    console.error(useAppStore().app_language == "hu" ? err.hu : err.en)
+                    Promise.reject(useAppStore().app_language == "hu" ? err.hu : err.en)
                 )
         }
     }

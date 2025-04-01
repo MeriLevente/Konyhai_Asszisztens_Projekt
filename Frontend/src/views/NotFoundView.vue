@@ -4,8 +4,8 @@
 </script>
 
 <template>
-    <div class="container">
-        <div class="py-5">
+    <div class="container mx-auto">
+        <div class="py-5 mx-auto w-75">
             <img src="@/assets/images/sadfridge.png" class="notfound-img" alt="Not found!">
             <div class="notfound-div">
                 <h1>404 - {{ t("notfound_h1") }}</h1>

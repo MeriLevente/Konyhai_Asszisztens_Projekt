@@ -4,11 +4,11 @@
     import { storeToRefs } from 'pinia';
     import { ref } from 'vue';
     import { useI18n } from 'vue-i18n';
-import Searchbar from './Searchbar.vue';
+    import Searchbar from './Searchbar.vue';
     const { app_language } = storeToRefs(useAppStore());
     const { t } = useI18n();
     const props = defineProps(["headerTitle", "headerDescription"]);
-    const emit = defineEmits(["showAll", "searchStoredItem"])
+    const emit = defineEmits(["showAll", "searchStoredItem", "typeChangedDisablePagi", "showNew"])
     let showAlltriggered = ref<boolean>(false);
     const selectedType = ref<string>(sessionStorage.getItem("selectedRecipeType") ?? "0");
 
@@ -17,20 +17,33 @@ import Searchbar from './Searchbar.vue';
             emit("searchStoredItem", searchedWord);
         } else {
             selectedType.value = "0";
-            useRecipeStore().getRecipesBySearch(searchedWord);
+            emit("typeChangedDisablePagi", false);
+            useRecipeStore().getRecipesBySearch(searchedWord).catch((err:string)=> alert(err));
         }
     };
 
     const showAll = (): void => {
         emit("showAll");
+        if(props.headerTitle != "mykithcen"){
+            emit("typeChangedDisablePagi", true);
+            useRecipeStore().loadRecipesPaginated(0, 6);
+        }
     };
 
     const recipeTypeChanged = (): void => {
         sessionStorage.setItem("selectedRecipeType", selectedType.value)
-        if (selectedType.value != "0")
+        if (selectedType.value != "0"){
+            emit("typeChangedDisablePagi", false);
             useRecipeStore().getRecipesByType(selectedType.value);
-        else
-            useRecipeStore().getRecipes();
+        }
+        else {
+            emit("typeChangedDisablePagi", true);
+            useRecipeStore().loadRecipesPaginated(0, 6);
+        }   
+    };
+
+    const showNewPopUp = (): void => {
+        emit("showNew");
     };
 </script>
 
@@ -40,7 +53,7 @@ import Searchbar from './Searchbar.vue';
         <p class="text-center mt-0 p-catchphrase">{{ t(headerDescription) }}</p>
         <div class="row filtering">
             <div class="col-6 col-md-3 d-flex justify-content-center" v-if="props.headerTitle == 'mykitchen'">
-                <button class="btn w-100" id="newItemBtn">
+                <button class="btn w-100" id="newItemBtn" v-on:click="showNewPopUp">
                     <span style="font-size: 1.2rem;">{{ t("add_new") }}</span>
                 </button>  
             </div>

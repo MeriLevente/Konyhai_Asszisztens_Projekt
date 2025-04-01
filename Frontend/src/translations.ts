@@ -109,6 +109,7 @@ const i18n = createI18n({
             showAll: "Mutasd mind",
             titleCatchphrase: "Szerezd meg hát mind!",
             noitems: "A manóba, nem találtam semmilyen élelmiszert!",
+            newitem: "Vegyél fel egy új DiKAMON-t a konyhádba!",
 
             //RecipesView
             recipesTitle: "Receptek",
@@ -221,6 +222,7 @@ const i18n = createI18n({
             showAll: "Show all",
             titleCatchphrase: "Gotta catch'em all!",
             noitems: "Oh no, I couldn't find any items!",
+            newitem: "Register a new DiKAMON to your kitchen!",
 
             //RecipesView
             recipesTitle: "Recipes",

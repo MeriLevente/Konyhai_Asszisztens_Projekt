@@ -33,6 +33,7 @@
     };
 
     onMounted(()=> {
+        
         if (sessionStorage.getItem("paginator-page") != props.page.toString()) {
             paginatorFrom.value = 0;
             paginatorTo.value = paginatorValue.value;

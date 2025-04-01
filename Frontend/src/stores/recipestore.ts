@@ -4,6 +4,7 @@ import RecipeValidation from "@/utils/RecipeValidation";
 import { defineStore } from "pinia";
 import { useAppStore } from "./appstore";
 import type Ingredient from "@/models/Ingredient";
+import SearchValidation from "@/utils/SearchValidation";
 
 export const useRecipeStore = defineStore('recipeStore', {
     state: () => ({
@@ -60,13 +61,18 @@ export const useRecipeStore = defineStore('recipeStore', {
                 })
         },
         getRecipesBySearch(search: string) {
-            return recipesService.getRecipesBySearch(search)
-                .then((res: any)=>{
-                    this.recipes = res.data;
-                })
-                .catch((err: any) => {
-                    console.error(useAppStore().app_language == "hu" ? err.hu : err.en);
-                })
+            let validation = SearchValidation.SearchedWordIsValid(search);
+            if(!validation.isError){
+                return recipesService.getRecipesBySearch(search)
+                    .then((res: any)=>{
+                        this.recipes = res.data;
+                    })
+                    .catch((err: any) => {
+                        console.error(useAppStore().app_language == "hu" ? err.hu : err.en);
+                    })
+            } else {
+                return Promise.reject(useAppStore().app_language == "hu" ? validation.message : validation.messageEn);
+            }
         },
         loadRecipesPaginated(from: number, to: number){
             return recipesService.getRecipesPaginated(from, to).

@@ -3,6 +3,11 @@
     import { storeToRefs } from 'pinia';
     const { app_language } = storeToRefs(useAppStore());
     const props = defineProps(["item"]);
+    const emit = defineEmits(["showpopup"])
+
+    const showPopup = (method: string): void => {
+        emit("showpopup", method, props.item)
+    }
 </script>
 
 <template>
@@ -14,8 +19,8 @@
                 <p class="card-text">{{ `${item.quantity} ${item.storedItem.unit}` }}</p>
             </div>
             <div class="align-self-end">
-                <span class="qty-btn"><i class="bi bi-arrow-up"></i></span>
-                <span class="qty-btn"><i class="bi-arrow-down"></i></span>
+                <span class="qty-btn" v-on:click="showPopup('add')"><i class="bi bi-arrow-up"></i></span>
+                <span class="qty-btn" v-on:click="showPopup('reduce')"><i class="bi-arrow-down"></i></span>
             </div>
         </div>
     </div>
