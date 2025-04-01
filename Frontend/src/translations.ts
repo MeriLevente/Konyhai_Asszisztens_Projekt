@@ -69,8 +69,9 @@ const i18n = createI18n({
             edit_items: "Élelmiszerek",
             add_new: "Új",
             close: "Bezár",
-            no_data: "Nincsenek még adatok!",
+            no_data: "Nem találhatóak adatok!",
             admin_reg_success: "Admin profil sikeresen regisztrálva!",
+            deleteYesNo: "Biztosan törölni szeretné a(z)",
 
             //Edit types
             id: "Id",
@@ -93,6 +94,7 @@ const i18n = createI18n({
             hu: "Magyar",
             en: "Angol",
             ingredients: "Hozzávalók",
+            prep: "Elkészítés",
 
             quantity: "Mennyiség",
             darab: "darab",
@@ -100,6 +102,22 @@ const i18n = createI18n({
             ml: "ml",
 
             toHome: "Vissza a főoldalra",
+
+            //ItemsView
+            mykitchen: "Konyhám",
+            search: "Keresés",
+            showAll: "Mutasd mind",
+            titleCatchphrase: "Szerezd meg hát mind!",
+            noitems: "A manóba, nem találtam semmilyen élelmiszert!",
+            newitem: "Vegyél fel egy új DiKAMON-t a konyhádba!",
+
+            //RecipesView
+            recipesTitle: "Receptek",
+            hour: "ó",
+            minute: "perc",
+            recipeimgtext: "A kép csak illusztráció!",
+            letmecook: "Elkészítem!",
+            all: "Mind"
         },
         'en': {
             //HomeView
@@ -164,8 +182,9 @@ const i18n = createI18n({
             edit_items: "Items",
             add_new: "New",
             close: "Close",
-            no_data: "No data found yet!",
+            no_data: "No data found!",
             admin_reg_success: "Admin profile successfully registered!",
+            deleteYesNo: "Do you want to delete",
 
             //Edit types
             id: "Id",
@@ -188,6 +207,7 @@ const i18n = createI18n({
             hu: "Hungarian",
             en: "English",
             ingredients: "Ingredients",
+            prep: "Directions",
 
             quantity: "Quantity",
             darab: "piece",
@@ -195,6 +215,22 @@ const i18n = createI18n({
             ml: "ml",
 
             toHome: "Back to the homepage",
+
+            //ItemsView
+            mykitchen: "My Kitchen",
+            search: "Search",
+            showAll: "Show all",
+            titleCatchphrase: "Gotta catch'em all!",
+            noitems: "Oh no, I couldn't find any items!",
+            newitem: "Register a new DiKAMON to your kitchen!",
+
+            //RecipesView
+            recipesTitle: "Recipes",
+            hour: "h",
+            minute: "min",
+            recipeimgtext: "Image is only an illustration!",
+            letmecook: "Let me cook!",
+            all: "All"
         }
     }
 });

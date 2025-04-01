@@ -1,7 +1,7 @@
 import type Item from "./Item";
 
 export default interface Ingredient {
-    recipe_id?: number
+    recipeId: number
     item: Item
     quantity: number
 }

@@ -1,6 +1,6 @@
 export default interface IType{
     id?: number
-    nameHU: string
-    nameEN: string,
+    name: string
+    name_EN: string,
     image: string
 };

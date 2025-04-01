@@ -1,44 +1,49 @@
 <script setup lang="ts">
+    import Paginator from '@/components/Paginator.vue';
+    import Searchbar from '@/components/Searchbar.vue';
     import ItemModal from '@/components/modals/ItemModal.vue';
     import type Item from '@/models/Item';
-    import type IType from '@/models/Type';
-    import { useAdminStore } from '@/stores/adminstore';
-    import { computed, ref } from 'vue';
+    import { useAppStore } from '@/stores/appstore';
+    import { useItemStore } from '@/stores/itemstore';
+    import { storeToRefs } from 'pinia';
+    import { ref } from 'vue';
     import { useI18n } from 'vue-i18n';
     const { t } = useI18n();
-    const store = useAdminStore();
-
-    const items = computed((): Item[] => {
-        return store.storeItems
-    });
+    const store = useItemStore();
+    const {items} = storeToRefs(store);
+    const searchInAction = ref<boolean>(false);
+    let maxLength = ref<number>(Number(sessionStorage.getItem("itemsMaxLength")) ?? store.items.length);
 
     let data = ref<Item | null>();
 
     const addItem = () => {
         data.value = {
             name: "",
-            nameEN: "",
+            name_EN: "",
             typeId: 1,
             unit: "darab",
             image: ""
         };
-        document.getElementsByTagName('body')[0].classList.add('disable-scrolling')
+        document.getElementsByTagName('body')[0].classList.add('disable-scrolling');
     };
 
     const editItem = (selected: Item) => {
         data.value = {
             id: selected.id,
             name: selected.name,
-            nameEN: selected.nameEN,
+            name_EN: selected.name_EN,
             typeId: selected.typeId,
             unit: selected.unit,
             image: selected.image
         }
-        document.getElementsByTagName('body')[0].classList.add('disable-scrolling')
+        document.getElementsByTagName('body')[0].classList.add('disable-scrolling');
     };
 
     const deleteItem = (selected: Item) => {
-        store.deleteItem(selected).then(()=> closeModal()).catch();
+        if (confirm(`${t("deleteYesNo")} ${useAppStore().app_language == "hu" ? selected.name : selected.name_EN}?`) == true)
+            store.deleteItem(selected)
+                .then(()=>{})
+                .catch((err: string)=>{alert(err)});
     };
 
     const saveData = (item: any) => {
@@ -46,16 +51,28 @@
     };
 
     const closeModal = () => {
-        store.items_error.hu = "";
-        store.items_error.en = "";
+        useItemStore().items_error.hu = "";
+        useItemStore().items_error.hu = "";
         data.value = null;
         document.getElementsByTagName('body')[0].classList.remove('disable-scrolling')
+    };
+
+    if (!sessionStorage.getItem("itemsMaxLength")) {
+        useItemStore().getAllItemsLength().then((res: number)=>{
+            maxLength.value = res;
+        });
+    }
+
+    const search = (searchedWord: string): void => {
+        store.searchItems(searchedWord).then(()=> searchInAction.value = true).catch((err: string)=>{alert(err)});
+    };
+
+    const loadItemsPaginated = (data: {from: number, to: number}) => {
+        store.loadItemsPaginated(data.from, data.to).catch((err: string)=>{console.error(err)});
     };
 </script>
 
 <template>
-    <div class="background" v-if="data"></div>
-    
     <div class="container my-5 justify-center" style="font-family: Funnel Sans, sans-serif;">
         <div class="row">
             <RouterLink class="back-to-admin" to="/admin">Admin >> {{ t('edit_items') }}</RouterLink>
@@ -63,18 +80,20 @@
         <div class="row">
             <h1 class="display-3 text-center">{{t('edit_items')}}</h1>
         </div>
+        <div class="row d-flex justify-content-center">
+            <Searchbar v-on:search="search" v-on:show-paginated="loadItemsPaginated({from: 0, to: 6}); searchInAction = false" 
+                class="w-50" :viewer-role="'admin'" :searchInAction="searchInAction"/>
+        </div>
         <div class="row my-2">
             <div class="col-12">
-                <div v-if="items.length == 0" class="d-flex justify-content-center">
-                    <p style="font-weight: bold;color: red;">{{ t("no_data") }}</p>
+                <ItemModal :data="data" v-if="data" v-on:save-data="saveData" v-on:close-modal="closeModal"/>
+                
+                <div v-if="store.items.length == 0" class="nodata-div w-50 mx-auto p-3">
+                    <h3 class="text-center">{{ t("no_data") }}</h3>
                 </div>
-                <div class="d-flex justify-content-center">
-                    <span v-if="items.length == 0" class="btn btn-success" v-on:click="addItem">
-                        {{ t("add_new") }}
-                    </span>
-                </div>
+
                 <div class="table-responsive">
-                    <table class="admin-table" v-if="items.length > 0">
+                    <table class="admin-table" v-if="store.items.length > 0">
                     <thead>
                         <tr>
                             <th style="width: 10%;">
@@ -101,17 +120,16 @@
                             </td>
                             <td class="text-center pt-3">{{ item.id }}</td>
                             <td class="text-center pt-3">{{ item.name }}</td>
-                            <td class="text-center pt-3">{{ item.nameEN }}</td>
+                            <td class="text-center pt-3">{{ item.name_EN }}</td>
                             <td class="text-center pt-3">{{ item.typeId }}</td>
                             <td><img class="tdImage" v-bind:src="item.image" alt="Img"></td>
                         </tr>
                     </tbody>
                     </table>
                 </div>
-                
-            <ItemModal :data="data" v-if="data" v-on:save-data="saveData" v-on:close-modal="closeModal"/>
             </div>
         </div>
+        <Paginator v-if="!searchInAction" :max-length="store.itemsAllLength" v-on:paginator-triggered="loadItemsPaginated" :page="'admin_items'"/>
     </div>
 </template>
 

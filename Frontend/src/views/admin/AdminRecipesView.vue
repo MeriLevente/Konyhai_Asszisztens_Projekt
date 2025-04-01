@@ -1,25 +1,26 @@
 <script setup lang="ts">
-    import RecipeEditor from '@/components/RecipeEditor.vue';
-import type IRecipe from '@/models/Recipe';
-    import { useAdminStore } from '@/stores/adminstore';
-    import { computed, ref } from 'vue';
+    import Paginator from '@/components/Paginator.vue';
+    import RecipeEditor from '@/components/recipes/RecipeEditor.vue';
+    import Searchbar from '@/components/Searchbar.vue';
+    import type IRecipe from '@/models/Recipe';
+    import { useAppStore } from '@/stores/appstore';
+    import { useRecipeStore } from '@/stores/recipestore';
+    import { ref } from 'vue';
     import { useI18n } from 'vue-i18n';
     const { t } = useI18n();
-    const store = useAdminStore();
+    const store = useRecipeStore();
+    let searchInAction = ref<boolean>(false);
     let openEditor = ref(false);
-
-    const recipes = computed((): IRecipe[] => {
-        return store.storeRecipes
-    });
+    let maxLength = ref<number>(Number(sessionStorage.getItem("recipesMaxLength")) ?? store.recipes.length);
 
     let data = ref<IRecipe | null>();
 
     const addRecipe = () => {
         data.value = {
-            nameHU: "",
-            nameEN: "",
-            descriptionHU: "",
-            descriptionEN: "",
+            name: "",
+            name_EN: "",
+            description: "",
+            description_EN: "",
             type: "AME",
             difficulty: 0,
             time: 0,
@@ -32,10 +33,10 @@ import type IRecipe from '@/models/Recipe';
     const editRecipe = (selected: IRecipe) => {
         data.value = {
             id: selected.id,
-            nameHU: selected.nameHU,
-            nameEN: selected.nameEN,
-            descriptionHU: selected.descriptionHU,
-            descriptionEN: selected.descriptionEN,
+            name: selected.name,
+            name_EN: selected.name_EN,
+            description: selected.description,
+            description_EN: selected.description_EN,
             type: selected.type,
             difficulty: selected.difficulty,
             time: selected.time,
@@ -46,7 +47,10 @@ import type IRecipe from '@/models/Recipe';
     };
 
     const deleteRecipe = (selected: IRecipe) => {
-        store.deleteRecipe(selected).then().catch();
+        if (confirm(`${t("deleteYesNo")} ${useAppStore().app_language == "hu" ? selected.name : selected.name_EN}?`) == true)
+            store.deleteRecipe(selected)
+                .then(()=>{})
+                .catch((err: string)=>{alert(err)});
     };
 
     const saveData = (recipe: IRecipe) => {
@@ -56,6 +60,20 @@ import type IRecipe from '@/models/Recipe';
     const closeEditor = () => {
         openEditor.value = false;
         data.value = null;
+    };
+
+    if (!sessionStorage.getItem("recipesMaxLength")) {
+        store.getAllRecipesLength().then((res: number)=>{
+            maxLength.value = res;
+        });
+    }
+
+    const search = (searchedWord: string): void => {
+        store.getRecipesBySearch(searchedWord).then(()=> searchInAction.value = true).catch((err: string)=>{alert(err)});
+    };
+
+    const loadRecipesPaginated = (paginatorValues: {from: number, to: number}): void => {
+        store.loadRecipesPaginated(paginatorValues.from, paginatorValues.to).catch((err: string)=>{console.error(err)});
     };
 </script>
 
@@ -69,16 +87,17 @@ import type IRecipe from '@/models/Recipe';
         </div>
         <div class="row my-2">  
             <div class="col-12">
-                <div v-if="recipes.length == 0" class="d-flex justify-content-center">
-                    <p style="font-weight: bold;color: red;">{{ t("no_data") }}</p>
+                <div class="row d-flex justify-content-center">
+                    <Searchbar v-on:search="search" v-on:show-paginated="loadRecipesPaginated({from: 0, to: 6}); searchInAction = false" 
+                        class="w-50" :viewer-role="'admin'" :searchInAction="searchInAction"/>
                 </div>
-                <div class="d-flex justify-content-center">
-                    <span v-if="recipes.length == 0" class="btn btn-success" v-on:click="addRecipe">
-                        {{ t("add_new") }}
-                    </span>
+
+                <div v-if="store.recipes.length == 0" class="nodata-div w-50 mx-auto p-3">
+                    <h3 class="text-center">{{ t("no_data") }}</h3>
                 </div>
+
                 <div class="table-responsive">
-                    <table class="admin-table" v-if="recipes.length > 0">
+                    <table class="admin-table" v-if="store.recipes.length > 0">
                     <thead>
                         <tr>
                             <th style="width: 10%;">
@@ -94,7 +113,7 @@ import type IRecipe from '@/models/Recipe';
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(recipe,index) in recipes" :key="index">
+                        <tr v-for="(recipe,index) in useRecipeStore().recipes" :key="index">
                             <td>
                                 <span class="btn btn-primary table-btn p-2 m-1"  v-on:click="editRecipe(recipe)">
                                     <i class="bi bi-pencil d-flex justify-content-center"></i>
@@ -104,8 +123,8 @@ import type IRecipe from '@/models/Recipe';
                                 </span>
                             </td>
                             <td class="text-center pt-3">{{ recipe.id }}</td>
-                            <td class="text-center pt-3">{{ recipe.nameHU }}</td>
-                            <td class="text-center pt-3">{{ recipe.nameEN }}</td>
+                            <td class="text-center pt-3">{{ recipe.name }}</td>
+                            <td class="text-center pt-3">{{ recipe.name_EN }}</td>
                             <td class="text-center pt-3">{{ recipe.type }}</td>
                             <td><img class="tdImage" v-bind:src="recipe.image"></img></td>
                         </tr>
@@ -114,6 +133,8 @@ import type IRecipe from '@/models/Recipe';
                 </div>
             </div>
         </div>
+        <Paginator :page="'admin_recipes'" v-if="!searchInAction" 
+            :max-length="store.recipesAllLength" v-on:paginator-triggered="loadRecipesPaginated"/>
     </div>
     <RecipeEditor :recipe="data" v-on:editor-closed="closeEditor" v-on:save-data="saveData" v-if="openEditor == true"/>
 </template>

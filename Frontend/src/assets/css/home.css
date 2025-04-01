@@ -1,0 +1,70 @@
+.greeting {
+    font-weight: bold;
+    color: var(--charade);
+}
+
+h1.greeting {
+    font-size: 2.5rem;
+}
+
+h5.greeting {
+    font-size: 1.2rem;
+}
+
+.logo-img {
+    width: 13rem;
+    height: 13rem;
+}
+
+.home-div {
+    background-color: rgba(128, 206, 245, 0.5);
+    border: 0.2rem solid var(--ebony-clay);
+    border-radius: 20px;
+}
+
+.info-toggler {
+    background-color: var(--mercury);
+    color: var(--charade);
+    border: 2.5px solid var(--charade);
+    border-radius: 10px;
+    width: 90%;
+    font-weight: bold;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.fridge-image {
+    display: inline-block;
+    width: 10rem;
+    height: 10rem;
+    margin-top: 5%;
+}
+
+@media only screen and (max-width: 600px) {
+    .logo-img {
+        width: 7rem;
+        height: 7rem;
+        margin-top: 2rem;
+    }
+    h1.greeting {
+        font-size: 1.8rem;
+    }
+    h5.greeting {
+        font-size: 0.7rem;
+    } 
+    .fridge-image{
+        width: 7rem;
+        height: 7rem;
+    }
+    .recipebook-btn{
+        font-size: 0.9rem;
+    }
+}
+
+.toggler-inline {
+    display: inline;
+}
+
+.dotted-bottom {
+    border-bottom: dotted var(--charade) 4px;
+}

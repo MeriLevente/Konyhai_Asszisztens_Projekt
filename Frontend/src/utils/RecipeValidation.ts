@@ -4,8 +4,8 @@ import type Item from "@/models/Item"
 
 export default class RecipeValidation {
     private static RecipeAllFilled
-        (name: string, nameEn: string, image: string, type: string, steps: string, stepsEn: string) : IFormResponse {
-            if(!name || !nameEn || !image || !type || !steps || !stepsEn)
+        (name: string, nameEn: string, type: string, steps: string, stepsEn: string) : IFormResponse {
+            if(!name || !nameEn || !type || !steps || !stepsEn)
                 return {isError: true, message: "Töltsön ki minden mezőt!", messageEn: "Fill out all fields!"}
             return {isError: false}
     };
@@ -22,26 +22,15 @@ export default class RecipeValidation {
         return {isError: false}
     };
 
-    private static IngredientsIsCorrect(ingredients: Ingredient[]): IFormResponse {
-        if(ingredients.length == 0 || ingredients.length > 20)
-            return {
-                isError: true, 
-                message: "Hozzávalók felvétetele kötelző és maximum 20 lehet!", 
-                messageEn: "Adding ingredients is required and it must be less than 20!"
-            }
-        return {isError: false}
-    };
-
     public static RecipeIsCorrect
     (name: string, nameEn: string, difficulty: number, time: number,
      image: string, type: string, steps: string, stepsEn: string, ingredients: Ingredient[]
     ) : IFormResponse 
     {
         const validationMethods: IFormResponse[] = [
-            this.RecipeAllFilled(name, nameEn, image, type, steps, stepsEn),
+            this.RecipeAllFilled(name, nameEn, type, steps, stepsEn),
             this.DifficultyIsCorrect(difficulty),
-            this.TimeIsCorrect(time),
-            this.IngredientsIsCorrect(ingredients)
+            this.TimeIsCorrect(time)
         ]
         for (let i = 0; i < validationMethods.length; i++) {
             if(validationMethods[i].isError)

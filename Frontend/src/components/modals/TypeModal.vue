@@ -1,12 +1,11 @@
 <script setup lang="ts">
     import type IType from '@/models/Type';
-    import { useAdminStore } from '@/stores/adminstore';
-    import { useAppStore } from '@/stores/appstore';
+import { useAppStore } from '@/stores/appstore';
+    import { useTypeStore } from '@/stores/typestore';
     import { storeToRefs } from 'pinia';
     import { ref } from 'vue';
     import { useI18n } from 'vue-i18n';
-    const { type_error } = storeToRefs(useAdminStore());
-    const { app_language } = storeToRefs(useAppStore());
+    const { type_error } = storeToRefs(useTypeStore());
     const { t } = useI18n();
     const props = defineProps(["data"]);
     const emit = defineEmits(["saveData", "closeModal"]);
@@ -21,14 +20,14 @@
 
     let modalData = ref<IType>({
         id: props.data.id,
-        nameHU: props.data.nameHU,
-        nameEN: props.data.nameEN,
+        name: props.data.name,
+        name_EN: props.data.name_EN,
         image: props.data.image
     });
 
     const hideError = (): void => {
-        type_error.value.hu = '';
         type_error.value.en = '';
+        type_error.value.hu = '';
     };
 
     const imageChanged = (event: any) => {
@@ -40,10 +39,10 @@
         };
         reader.readAsDataURL(selectedImage);
     };
-
 </script>
 
 <template>
+    <div class="background" v-if="data"></div>
    <div class="modal" tabindex="-1" style="display: block;" v-if="data">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -55,17 +54,22 @@
                 <form @submit.prevent="saveChanges()">
                     <div class="mb-3">
                         <label for="nameHU" class="form-label">{{ t("name") }} (hu)</label>
-                        <input type="text" class="form-control" id="nameHU" v-model="modalData.nameHU" v-on:focus="() => {if(type_error.hu && type_error.en) hideError()}">
+                        <input type="text" class="form-control" id="nameHU" v-model="modalData.name"
+                            v-on:focus="() => {if(type_error) hideError()}">
                     </div>
                     <div class="mb-3">
                         <label for="nameEN" class="form-label">{{ t("name") }} (en)</label>
-                        <input type="text" class="form-control" id="nameEN" v-model="modalData.nameEN" v-on:focus="() => {if(type_error.hu && type_error.en) hideError()}">
+                        <input type="text" class="form-control" id="nameEN" v-model="modalData.name_EN"
+                            v-on:focus="() => {if(type_error) hideError()}">
                     </div>
                     <div class="mb-3">
                         <label for="image" class="form-label">{{ t("image") }}</label>
-                        <input type="file" class="form-control" id="image" accept="images/*,.png,.jpg,.jpeg,.svg" v-on:change="imageChanged" v-on:focus="() => {if(type_error.hu && type_error.en) hideError()}">
+                        <input type="file" class="form-control" id="image" accept="images/*,.png,.jpg,.jpeg,.svg" v-on:change="imageChanged" 
+                            v-on:focus="() => {if(type_error) hideError()}">
                     </div>
-                    <div v-if="type_error.hu != '' && type_error.en != ''" class="text-danger text-center mx-5 mb-2">{{ app_language == 'hu' ? type_error.hu : type_error.en }}</div>
+                    <div v-if="type_error" class="text-danger text-center mx-5 mb-2">
+                        {{ useAppStore().app_language == "hu" ? type_error.hu : type_error.en }}
+                    </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-success">{{ t("save") }}</button>
                     </div>
@@ -76,9 +80,6 @@
     </div>
 </template>
 
-<style lang="css" scoped>
-    .modal{
-        position: absolute;
-        top: 20%;
-    }
+<style lang="css">
+    
 </style>

@@ -9,7 +9,6 @@
     const { status } = storeToRefs(useUserStore());
     const { app_language } = storeToRefs(useAppStore());
     const { t } = useI18n();
-    const { login, register } = useUserStore();
     const props = defineProps(["method", "role"]);
 
     let confirm_password = ref<string>();
@@ -33,10 +32,11 @@
         }
         if(props.method == "register"){
             status.value.confirm_password = confirm_password.value!;
-            register(userData).then(()=>{
+            useUserStore().register(userData)!.then(()=>{
                 if(props.role == 'user')
                     router.push("/");
-                else{
+                else
+                {
                     alert(t("admin_reg_success"));
                     formData.value = {
                         name: "",
@@ -46,11 +46,11 @@
                     };
                     confirm_password.value = "";
                 }
-            }).catch();
+            });
         } else {
-            login(userData).then(()=>{
+            useUserStore().login(userData)!.then(()=>{
                 router.push("/")
-            }).catch();
+            });
         };
     };
 

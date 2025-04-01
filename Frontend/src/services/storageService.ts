@@ -1,4 +1,3 @@
-
 import { useUserStore } from "@/stores/userstore";
 import instance from "./dataService";
 
@@ -9,7 +8,26 @@ export default {
                     return res
                 })
                 .catch((err: any)=>{
-                    return Promise.reject(err.response)
+                    return Promise.reject(err)
+        })
+    },
+    getStoredItemsByTypeId(typeId: number){
+        return instance.get(`/storage/${useUserStore().user?.id}/${typeId}`)
+                .then((res: any)=>{
+                    return res;
                 })
+                .catch((err: any)=>{
+                    return Promise.reject(err);
+        });
+    },
+    getStoredItemsBySearch(typeId: number | null, sWord: string){
+        const routeEnd: string = `${!typeId ? `search/${sWord}` : `${typeId}/search/${sWord}`}`
+        return instance.get(`/storage/${useUserStore().user?.id}/${routeEnd}`)
+                .then((res: any)=>{
+                    return res;
+                })
+                .catch((err: any)=>{
+                    return Promise.reject(err);
+        });
     }
 }
