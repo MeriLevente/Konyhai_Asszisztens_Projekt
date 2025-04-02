@@ -27,7 +27,9 @@ export const useUserStore = defineStore('userStore', {
         storedItems: <StoredItem[]> [
 
         ],
-        viewedRecipe: <IRecipe>{}
+        viewedRecipe: <IRecipe>{},
+        selectedItemtype: 0,
+        storedItemsAllLength: 0
     }),
     actions: {
         hideError() {
@@ -114,6 +116,17 @@ export const useUserStore = defineStore('userStore', {
                     console.error(useAppStore().app_language == "hu" ? err.hu : err.en)
                 )
         },
+        getStorageLength(){
+            return storageService.getStorageLength()
+                .then((res: any)=>{
+                    this.storedItemsAllLength = res.data.length
+                    sessionStorage.setItem("storageMaxLength", `${res.data.length}`);
+                    return res.data.length;
+                })
+                .catch((err: any)=>{
+                    console.error(useAppStore().app_language == "hu" ? err.hu : err.en);
+                })
+        },
         getStoredItemsByTypeId(typeId: number){
             return storageService.getStoredItemsByTypeId(typeId)
                 .then((res: any)=>{
@@ -142,6 +155,36 @@ export const useUserStore = defineStore('userStore', {
                 }).catch((err: any)=>
                     Promise.reject(useAppStore().app_language == "hu" ? err.hu : err.en)
                 )
+        },
+        updateQuantity(data: StoredItem, method: string){
+            if (data.quantity == 0) {
+                return storageService.deleteItemFromStorage(data)
+                .then((res: any)=>{
+                    this.status.message = "";
+                    this.status.messageEn = "";
+                    this.storedItems.splice(this.storedItems.findIndex(x=>  x.userId == data.userId && x.itemId == data.itemId), 1);
+                    this.storedItemsAllLength--;
+                })
+                .catch((err: any)=> {
+                    this.status.message = err.hu;
+                    this.status.message = err.en;
+                })
+            }
+            return storageService.updateStoredItemQuantity(data)
+                .then((res: any)=>{
+                    this.status.message = "";
+                    this.status.messageEn = "";
+                    if(method == "add" && (res.data.storedItem.typeId == this.selectedItemtype || this.selectedItemtype == 0)){
+                        this.storedItems.push(res.data);
+                        this.storedItemsAllLength++;
+                    } else {
+                        this.storedItems[this.storedItems.findIndex(x=>  x.userId == data.userId && x.itemId == data.itemId)] = res.data;
+                    }
+                })
+                .catch((err: any)=> {
+                    this.status.message = err.hu;
+                    this.status.message = err.en;
+                })
         }
     }
 });

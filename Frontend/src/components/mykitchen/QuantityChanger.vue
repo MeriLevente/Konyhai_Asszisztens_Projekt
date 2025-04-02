@@ -1,5 +1,7 @@
 <script setup lang="ts">
+    import type StoredItem from '@/models/StoredItem';
     import { useAppStore } from '@/stores/appstore';
+    import { useUserStore } from '@/stores/userstore';
     import { storeToRefs } from 'pinia';
     import { computed, ref } from 'vue';
     import { useI18n } from 'vue-i18n';
@@ -30,7 +32,14 @@
     };
 
     const save = (): void => {
-
+        const request: StoredItem = {
+            userId: useUserStore().user!.id!,
+            itemId: props.modifiedItem.storedItem.id,
+            quantity: newQuantity.value
+        };
+        useUserStore().updateQuantity(request, "update").then(()=>{
+            emit("close")
+        });
     };
 </script>
 
@@ -48,6 +57,9 @@
         <span class="align-self-center ms-1 unitSpanQty" style="height: 3rem;">{{ t(props.modifiedItem.storedItem.unit) }}</span>
     </div>
     <div class="d-flex justify-content-center">
+        <span v-if="useUserStore().status.message || useUserStore().status.messageEn" class="text-center text-danger">
+            {{ app_language == "hu" ? useUserStore().status.message : useUserStore().status.messageEn}}
+        </span>
         <button class="btn" v-on:click="zerofier" v-if="props.method == 'reduce'">{{ t("delete") }}</button>
         <button class="btn" v-on:click="save">{{ t("save") }}</button>
         <button class="btn" v-on:click="close">{{ t("cancel") }}</button>

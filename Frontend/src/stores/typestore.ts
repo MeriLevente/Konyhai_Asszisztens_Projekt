@@ -113,7 +113,7 @@ export const useTypeStore = defineStore('typeStore', {
             .then(()=>{
                 this.typesAllLength -= 1;
                 sessionStorage.setItem("typesMaxLength", `${this.typesAllLength}`);
-                 this.types.splice(this.types.indexOf(data), 1);
+                this.types.splice(this.types.indexOf(data), 1);
                 if (this.types.length == 0) {
                     this.loadPaginated(0, this.paginatorValues.to - this.paginatorValues.from);
                     useAppStore().paginatorLastElementDeleted = true;

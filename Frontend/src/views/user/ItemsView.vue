@@ -4,19 +4,26 @@
     import UserSidePopup from '@/components/mykitchen/UserSidePopup.vue';
     import UserSideHeader from '@/components/UserSideHeader.vue';
     import type StoredItem from '@/models/StoredItem';
+    import { useItemStore } from '@/stores/itemstore';
     import { useTypeStore } from '@/stores/typestore';
     import { useUserStore } from '@/stores/userstore';
     import DataLoader from '@/utils/DataLoader';
-    import { ref } from 'vue';
+    import { storeToRefs } from 'pinia';
+    import { onMounted, ref } from 'vue';
     import { useI18n } from 'vue-i18n';
+    const { storedItems } = storeToRefs(useUserStore());
     const { t } = useI18n();
     let selectedType = ref<number | null>(null);
     let showAlltriggered = ref<boolean>(false);
     let popupType = ref<string | null>();
     let quantityMethod = ref<string | null>();
     let modifyItem = ref<StoredItem | undefined>();
-
-    DataLoader.loadTypes();
+    
+    onMounted(()=> {
+        DataLoader.loadTypes();
+        useItemStore().getAllItemsLength()
+        useUserStore().getStorageLength()
+    })
 
     const search = (searchedWord: string): void => { 
         useUserStore().getStoredItemsBySearch(selectedType.value, searchedWord)?.then(()=>{
@@ -28,6 +35,7 @@
         selectedType.value = id;
         showAlltriggered.value = false;
         useUserStore().getStoredItemsByTypeId(selectedType.value);
+        useUserStore().selectedItemtype = id;
     };
 
     const showAllItems = (): void => {
@@ -61,15 +69,15 @@
             <ItemTypesCard v-for="type in useTypeStore().types" :type="type" v-on:type-clicked="typeClicked($event)"
                 v-if="!selectedType && !showAlltriggered"/>
 
-            <span v-if="selectedType || showAlltriggered" v-on:click="selectedType = null; showAlltriggered = false">
+            <span v-if="selectedType || showAlltriggered" v-on:click="selectedType = null; showAlltriggered = false;">
                 <i class="bi bi-arrow-left" style="font-weight: bold; font-size: 1.5rem; cursor: pointer;"></i>
             </span>
 
-            <div class="col-12 col-sm-6 col-md-5 col-xl-3 mb-1" v-for="item in useUserStore().storedItems" v-if="selectedType || showAlltriggered">
+            <div class="col-12 col-sm-6 col-md-5 col-xl-3 mb-1" v-for="item in storedItems" v-if="selectedType || showAlltriggered">
                 <StoredItemCard :item="item" data-cy="stored-item" v-on:showpopup="showQuantityPopup"/>
             </div>
 
-            <div v-if="useUserStore().storedItems.length == 0 && (selectedType || showAlltriggered)" class="d-flex row justify-content-center">
+            <div v-if="storedItems.length == 0 && (selectedType || showAlltriggered)" class="d-flex row justify-content-center">
                 <img class="no-items" src="@/assets/images/poorfridge.png" alt="Image not loaded!">
                 <h3 class="text-center" v-on:load="showAlltriggered = false">{{ t("noitems") }}</h3>
             </div>

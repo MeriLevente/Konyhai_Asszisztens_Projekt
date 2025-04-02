@@ -5,6 +5,8 @@
     import { ref } from 'vue';
     import { useI18n } from 'vue-i18n';
     import Searchbar from './Searchbar.vue';
+    import { useItemStore } from '@/stores/itemstore';
+    import { useUserStore } from '@/stores/userstore';
     const { app_language } = storeToRefs(useAppStore());
     const { t } = useI18n();
     const props = defineProps(["headerTitle", "headerDescription"]);
@@ -27,6 +29,8 @@
         if(props.headerTitle != "mykithcen"){
             emit("typeChangedDisablePagi", true);
             useRecipeStore().loadRecipesPaginated(0, 6);
+        } else {
+            useUserStore().selectedItemtype = 0;
         }
     };
 
@@ -53,9 +57,11 @@
         <p class="text-center mt-0 p-catchphrase">{{ t(headerDescription) }}</p>
         <div class="row filtering">
             <div class="col-6 col-md-3 d-flex justify-content-center" v-if="props.headerTitle == 'mykitchen'">
+                <span class="my-score-span">{{ useItemStore().itemsAllLength }}/{{ useUserStore().storedItemsAllLength }}</span> 
                 <button class="btn w-100" id="newItemBtn" v-on:click="showNewPopUp">
                     <span style="font-size: 1.2rem;">{{ t("add_new") }}</span>
-                </button>  
+                </button>
+                
             </div>
             <div class="col-5 col-md-2 form-floating p-1 ms-1" v-if="props.headerTitle == 'recipesTitle'">
                     <select class="form-control input-area" id="typeselect" v-on:change="recipeTypeChanged()" v-model="selectedType">
@@ -78,5 +84,16 @@
 </template>
 
 <style lang="css">
-    
+    .my-score-span{
+        background-color: greenyellow;
+        color: black;
+        border-radius: 10rem;
+        padding-top: 3.8%;
+        padding-left: 3%;
+        padding-right: 3%;
+        border: 2px solid var(--ebony-clay);
+        height: 3.5rem;
+        width: 3.5rem;
+        margin-right: 1rem;
+    }
 </style>

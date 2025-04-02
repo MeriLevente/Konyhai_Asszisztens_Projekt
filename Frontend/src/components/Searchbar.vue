@@ -25,7 +25,7 @@
                             <span class="bi bi-search"></span>
                         </button>
                     </input>
-                <label for="search">{{ t("search") }}</label>
+                <label for="search" style="z-index: 0;">{{ t("search") }}</label>
             </div>
         </form>
         <div class="d-flex justify-content-center" v-if="searchInAction">

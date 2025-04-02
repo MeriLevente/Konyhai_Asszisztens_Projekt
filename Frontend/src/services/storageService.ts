@@ -1,9 +1,19 @@
 import { useUserStore } from "@/stores/userstore";
 import instance from "./dataService";
+import type StoredItem from "@/models/StoredItem";
 
 export default {
     getStoredItems(){
         return instance.get(`/storage/${useUserStore().user?.id}`)
+                .then((res: any)=>{
+                    return res
+                })
+                .catch((err: any)=>{
+                    return Promise.reject(err)
+        })
+    },
+    getStorageLength(){
+        return instance.get(`/storage/${useUserStore().user?.id}/length`)
                 .then((res: any)=>{
                     return res
                 })
@@ -29,5 +39,23 @@ export default {
                 .catch((err: any)=>{
                     return Promise.reject(err);
         });
+    },
+    updateStoredItemQuantity(data: StoredItem){
+        return instance.post("storage", data)
+                .then((res: any)=>{
+                    return res;
+                })
+                .catch((err: any)=>{
+                    return Promise.reject(err);
+                })
+    },
+    deleteItemFromStorage(data: StoredItem){
+        return instance.delete("storage", {data})
+                .then((res: any)=>{
+                    return res;
+                })
+                .catch((err: any)=>{
+                    return Promise.reject(err);
+                })
     }
 }

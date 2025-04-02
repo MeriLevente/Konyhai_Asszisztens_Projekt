@@ -1,12 +1,6 @@
 <script setup lang="ts">
-    import { useAppStore } from '@/stores/appstore';
-    import { storeToRefs } from 'pinia';
-    import { ref } from 'vue';
-    import { useI18n } from 'vue-i18n';
     import QuantityChanger from './QuantityChanger.vue';
     import NewItemPopup from './NewItemPopup.vue';
-    const { app_language } = storeToRefs(useAppStore());
-    const { t } = useI18n();
     const props = defineProps(["popuptype", "quantitymethod", "modifiedItem"]);
     const emit = defineEmits(["close"]);
 
@@ -19,14 +13,14 @@
     <div class="popup-bg">
         <div class="popup w-100 mx-auto p-3">
             <QuantityChanger
-                :method="props.quantitymethod" 
-                v-if="props.popuptype == 'quantity'" 
+                :method="props.quantitymethod"
+                v-if="props.popuptype == 'quantity'"
                 :modifiedItem="props.modifiedItem"
                 v-on:close="close"/>
             <NewItemPopup v-if="props.popuptype == 'new'" v-on:close="close"/>
         </div>
     </div>
-    
+
 </template>
 
 <style lang="css">
@@ -34,7 +28,7 @@
         min-height: 85vh;
     }
     .popup {
-        transform: translateY(50%);
+        transform: translateY(15%);
         position: relative;
         min-height: 40vh;
         color: white;
