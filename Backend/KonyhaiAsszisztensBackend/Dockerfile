@@ -11,10 +11,10 @@ EXPOSE 8080
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["KonyhaiAsszisztensBackend.csproj", "."]
-RUN dotnet restore "./KonyhaiAsszisztensBackend.csproj"
+COPY ["KonyhaiAsszisztensBackend/KonyhaiAsszisztensBackend.csproj", "KonyhaiAsszisztensBackend/"]
+RUN dotnet restore "./KonyhaiAsszisztensBackend/KonyhaiAsszisztensBackend.csproj"
 COPY . .
-WORKDIR "/src/."
+WORKDIR "/src/KonyhaiAsszisztensBackend"
 RUN dotnet build "./KonyhaiAsszisztensBackend.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
@@ -26,4 +26,4 @@ RUN dotnet publish "./KonyhaiAsszisztensBackend.csproj" -c $BUILD_CONFIGURATION 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "./KonyhaiAsszisztensBackend.dll"]
+ENTRYPOINT ["dotnet", "KonyhaiAsszisztensBackend.dll"]
