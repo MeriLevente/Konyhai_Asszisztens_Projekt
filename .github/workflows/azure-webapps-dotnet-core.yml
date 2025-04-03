@@ -1,0 +1,23 @@
+name: Docker Image CI
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build the Docker image
+      run: |
+        docker build . --file Backend/KonyhaiAsszisztensBackend/Dockerfile --tag ghcr.io/dikamon:0.1        
+        docker login ghcr.io -u floppa_kaplon -p ${{secrets.BACKEND_TOKEN}}
+        docker push ghcr.io/dikamon:0.1
