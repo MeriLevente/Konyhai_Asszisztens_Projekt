@@ -15,7 +15,7 @@ COPY ["Backend/KonyhaiAsszisztensBackend/KonyhaiAsszisztensBackend.csproj", "Kon
 RUN dotnet restore "./KonyhaiAsszisztensBackend/KonyhaiAsszisztensBackend.csproj"
 COPY . .
 WORKDIR "/src/KonyhaiAsszisztensBackend"
-RUN dotnet build "./Backend/KonyhaiAsszisztensBackend/KonyhaiAsszisztensBackend.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./KonyhaiAsszisztensBackend.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
