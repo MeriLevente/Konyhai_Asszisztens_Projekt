@@ -11,9 +11,9 @@ EXPOSE 8080
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Backend/KonyhaiAsszisztensBackend/KonyhaiAsszisztensBackend.csproj", "KonyhaiAsszisztensBackend"]
+COPY ["Backend/KonyhaiAsszisztensBackend/KonyhaiAsszisztensBackend.csproj", "KonyhaiAsszisztensBackend/"]
 RUN dotnet restore "./KonyhaiAsszisztensBackend/KonyhaiAsszisztensBackend.csproj"
-COPY ./Backend .
+COPY . .
 WORKDIR "/src/KonyhaiAsszisztensBackend"
 RUN dotnet build "./KonyhaiAsszisztensBackend.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
