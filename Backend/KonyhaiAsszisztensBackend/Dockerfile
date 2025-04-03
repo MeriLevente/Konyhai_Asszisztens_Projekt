@@ -13,9 +13,9 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Backend/KonyhaiAsszisztensBackend/KonyhaiAsszisztensBackend.csproj", "KonyhaiAsszisztensBackend/"]
 RUN dotnet restore "./KonyhaiAsszisztensBackend/KonyhaiAsszisztensBackend.csproj"
-COPY . ./
+COPY . .
 WORKDIR "/src/KonyhaiAsszisztensBackend"
-RUN dotnet build "./KonyhaiAsszisztensBackend.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./KonyhaiAsszisztensBackend.csproj" --ignore-engines -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
