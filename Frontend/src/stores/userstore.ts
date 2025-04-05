@@ -1,6 +1,6 @@
 import type IFormResponse from "@/models/FormResponse";
 import type ILoggedInUser from "@/models/LoggedInUser";
-import type StoredItem from "@/models/StoredItem";
+import type IStoredItem from "@/models/StoredItem";
 import type IUser from "@/models/User";
 import storageService from "@/services/storageService";
 import userService from "@/services/userService";
@@ -24,12 +24,18 @@ export const useUserStore = defineStore('userStore', {
             messageEn: '',
             confirm_password: ''
         },
-        storedItems: <StoredItem[]> [
+        storedItems: <IStoredItem[]> [
 
         ],
         viewedRecipe: <IRecipe>{},
         selectedItemtype: 0,
-        storedItemsAllLength: 0
+        storedItemsAllLength: 0,
+        showAllTrig: false,
+        searchStorageInAction: false,
+        paginatorValues: {
+            from: 0,
+            to: 6
+        }
     }),
     actions: {
         hideError() {
@@ -108,9 +114,24 @@ export const useUserStore = defineStore('userStore', {
                     DataLoader.clearSessionStorage();
                 })
         },
-        getStoredItems(){
+        getStoredItems(loadIntoStore: boolean){
             return storageService.getStoredItems()
                 .then((res: any)=>{
+                    if(loadIntoStore)
+                        this.storedItems = res.data;
+                    else
+                        return res.data;
+                }).catch((err: any)=>
+                    console.error(useAppStore().app_language == "hu" ? err.hu : err.en)
+                )
+        },
+        loadStoredItemsPaginated(from: number, to: number){
+            return storageService.getStoredItemsPaginated(from, to)
+                .then((res: any)=>{
+                    this.paginatorValues.to = to;
+                    this.paginatorValues.from = from;
+                    sessionStorage.setItem("paginator-from", `${Number(from)}`);
+                    sessionStorage.setItem("paginator-to", `${Number(to)}`);
                     this.storedItems = res.data;
                 }).catch((err: any)=>
                     console.error(useAppStore().app_language == "hu" ? err.hu : err.en)
@@ -156,7 +177,7 @@ export const useUserStore = defineStore('userStore', {
                     Promise.reject(useAppStore().app_language == "hu" ? err.hu : err.en)
                 )
         },
-        updateQuantity(data: StoredItem, method: string){
+        updateQuantity(data: IStoredItem, method: string){
             if (data.quantity == 0) {
                 return storageService.deleteItemFromStorage(data)
                 .then((res: any)=>{
@@ -164,6 +185,11 @@ export const useUserStore = defineStore('userStore', {
                     this.status.messageEn = "";
                     this.storedItems.splice(this.storedItems.findIndex(x=>  x.userId == data.userId && x.itemId == data.itemId), 1);
                     this.storedItemsAllLength--;
+                    sessionStorage.setItem("storageMaxLength", `${this.storedItemsAllLength}`);
+                    if (this.storedItems.length == 0) {
+                        this.loadStoredItemsPaginated(0, this.paginatorValues.to - this.paginatorValues.from);
+                        useAppStore().paginatorLastElementDeleted = true;
+                    }
                 })
                 .catch((err: any)=> {
                     this.status.message = err.hu;
@@ -175,8 +201,17 @@ export const useUserStore = defineStore('userStore', {
                     this.status.message = "";
                     this.status.messageEn = "";
                     if(method == "add" && (res.data.storedItem.typeId == this.selectedItemtype || this.selectedItemtype == 0)){
-                        this.storedItems.push(res.data);
+                        if(this.storedItems.length != 0){
+                            const pagiDiff: number = this.paginatorValues.to - this.paginatorValues.from;
+                            if(this.storedItems.length < pagiDiff)
+                                this.storedItems.push(res.data);
+                        } else
+                            this.storedItems.push(res.data);
+                        if (this.paginatorValues.from == 0 && this.paginatorValues.to >= this.storedItemsAllLength){
+                            window.location.reload();
+                        }
                         this.storedItemsAllLength++;
+                        sessionStorage.setItem("storageMaxLength", `${this.storedItemsAllLength}`);
                     } else {
                         this.storedItems[this.storedItems.findIndex(x=>  x.userId == data.userId && x.itemId == data.itemId)] = res.data;
                     }

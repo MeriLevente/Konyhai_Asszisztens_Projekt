@@ -1,4 +1,6 @@
 import type IFormResponse from "@/models/FormResponse";
+import { useUserStore } from "@/stores/userstore";
+import CryptoJS from 'crypto-js'
 
 export default class UserValidation {
     private static LoginAllFilled(email: string, password: string) : IFormResponse  {
@@ -38,7 +40,6 @@ export default class UserValidation {
             return {isError: false}
     }
 
-    // Validation
     public static LoginIsValid(email: string, password: string): IFormResponse{
         const validationMethods: IFormResponse[] = [this.LoginAllFilled(email, password), this.EmailIsValid(email), this.PasswordInCorrectForm(password)]
         for (let i = 0; i < validationMethods.length; i++) {
@@ -60,5 +61,9 @@ export default class UserValidation {
                 return validationMethods[i]
         }
         return {isError: false}
+    }
+
+    public static isAutherizedRole(rightRole: string): boolean {
+        return CryptoJS.AES.decrypt(useUserStore().user?.role!, import.meta.env.VITE_SECRET_WORD).toString(CryptoJS.enc.Utf8) == rightRole;
     }
 }

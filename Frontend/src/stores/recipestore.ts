@@ -116,6 +116,9 @@ export const useRecipeStore = defineStore('recipeStore', {
                                     this.recipes.push(res.data);
                                 }
                                 this.clearAndAddIngredient(res.data.id, ingredients);
+                                if (this.paginatorValues.from == 0 && this.paginatorValues.to >= this.recipesAllLength){
+                                    window.location.reload();
+                                }
                                 this.recipesAllLength += 1;
                                 sessionStorage.setItem("recipesMaxLength", `${this.recipesAllLength}`);
                                 

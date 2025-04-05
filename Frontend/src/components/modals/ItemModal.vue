@@ -38,11 +38,6 @@
         items_error.value.hu = "";
         items_error.value.en = "";
     };
-
-    // const imageChanged = (event: any) => {
-    //     useAdminStore().imageChange(event.target)
-    // };
-
 </script>
 
 <template>

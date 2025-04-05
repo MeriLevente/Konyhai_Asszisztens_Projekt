@@ -11,7 +11,7 @@
 
 <template>
     <div class="popup-bg">
-        <div class="popup w-100 mx-auto p-3">
+        <div class="popup w-100 p-3">
             <QuantityChanger
                 :method="props.quantitymethod"
                 v-if="props.popuptype == 'quantity'"
@@ -26,9 +26,13 @@
 <style lang="css">
     .popup-bg {
         min-height: 85vh;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        margin-left: -30vh;
+        margin-top: -20vh;
     }
     .popup {
-        transform: translateY(15%);
         position: relative;
         min-height: 40vh;
         color: white;

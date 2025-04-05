@@ -3,11 +3,11 @@
     import { useTypeStore } from '@/stores/typestore';
     import { useItemStore } from '@/stores/itemstore';
     import { storeToRefs } from 'pinia';
-    import { ref } from 'vue';
+    import { onMounted, ref } from 'vue';
     import { useI18n } from 'vue-i18n';
     import type Item from '@/models/Item';
     import { useUserStore } from '@/stores/userstore';
-    import type StoredItem from '@/models/StoredItem';
+    import type IStoredItem from '@/models/StoredItem';
     const { app_language } = storeToRefs(useAppStore());
     const { t } = useI18n();
     const props = defineProps(["method"]);
@@ -15,19 +15,26 @@
     const selectedTypeId = ref<number | null>();
     const selectedItem = ref<Item | null>();
     const itemQuantity = ref<number | null>();
+    let usersItems: IStoredItem[] = [];
     let errorMessage = ref<string | null>("");
+
+    onMounted(() => {
+        useUserStore().getStoredItems(false).then((res: IStoredItem[]) => {
+            usersItems = res;
+        });
+    });
 
     const closePopUp = (): void => {
         emit("close");
     };
 
     const save = (): void => {
-        const request: StoredItem = {
+        const request: IStoredItem = {
             userId: useUserStore().user!.id!,
             itemId: selectedItem.value?.id,
             quantity: itemQuantity.value!
         };
-        if(!useUserStore().storedItems.find(x=> x.itemId == request.itemId)){
+        if(!usersItems.find(x=> x.itemId == request.itemId)){
             if (request.quantity > 0 && request.quantity <= 10000) {
                 useUserStore().updateQuantity(request, "add").then(()=>{
                     errorMessage.value = ""
@@ -45,7 +52,8 @@
 <template>
     <h2 class="text-center popup-h2 mb-3">{{ t("newitem") }}</h2>
     <div class="form-floating mb-3">
-        <select name="types" id="types" class="form-control" v-model="selectedTypeId" v-on:change="selectedItem = null; itemQuantity = null" v-on:focus="errorMessage = ''">
+        <select name="types" id="types" class="form-control" 
+        v-model="selectedTypeId" v-on:change="selectedItem = null; itemQuantity = null" v-on:focus="errorMessage = ''">
             <option v-for="type in useTypeStore().types" :value="type.id!">
                 {{ app_language == "hu" ? type.name : type.name_EN }}
             </option>
@@ -66,7 +74,8 @@
             <div class="row">
                 <div class="col-10">
                     <div class="form-floating mb-2">
-                        <input type="number" min="1" max="10000" class="form-control" v-model="itemQuantity" v-bind:disabled="!selectedItem" v-on:focus="errorMessage = ''"/>
+                        <input type="number" min="1" max="10000" class="form-control"
+                        v-model="itemQuantity" v-bind:disabled="!selectedItem" v-on:focus="errorMessage = ''"/>
                         <label for="quantity">{{ t("quantity") }}</label>
                     </div> 
                 </div>

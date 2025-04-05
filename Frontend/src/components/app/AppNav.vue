@@ -37,13 +37,9 @@
     const { status } = storeToRefs(useUserStore());
     import { useRouter } from 'vue-router';
     import { useAppStore } from '@/stores/appstore';
-    import CryptoJS from 'crypto-js'
+import UserValidation from '@/utils/UserValidation';
     const router = useRouter();
 
-    const isAutherizedRole = (rightRole: string): boolean => {
-        return CryptoJS.AES.decrypt(useUserStore().user?.role!, import.meta.env.VITE_SECRET_WORD).toString(CryptoJS.enc.Utf8) == rightRole;
-    }
-    
     const menuItems = computed(()=>{
       return [
         {
@@ -62,19 +58,19 @@
             title: "Konyhám",
             title_EN: "My Kitchen",
             to: '/items',
-            isVisible: status.value.loggedIn && useUserStore().user?.role && isAutherizedRole("user"),
+            isVisible: status.value.loggedIn && useUserStore().user?.role && UserValidation.isAutherizedRole("user"),
         },
         {
             title: "Receptek",
             title_EN: "Recipes",
             to: '/recipes',
-            isVisible: status.value.loggedIn && useUserStore().user?.role && isAutherizedRole("user"),
+            isVisible: status.value.loggedIn && useUserStore().user?.role && UserValidation.isAutherizedRole("user"),
         },
         {
             title: "Admin",
             title_EN: "Admin",
             to: '/admin',
-            isVisible: status.value.loggedIn && useUserStore().user?.role && isAutherizedRole("admin"),
+            isVisible: status.value.loggedIn && useUserStore().user?.role && UserValidation.isAutherizedRole("admin"),
         },
     ]
     });

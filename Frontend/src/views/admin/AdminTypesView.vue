@@ -5,11 +5,13 @@
     import type IType from '@/models/Type';
     import { useAppStore } from '@/stores/appstore';
     import { useTypeStore } from '@/stores/typestore';
+    import { storeToRefs } from 'pinia';
     import { ref } from 'vue';
     import { useI18n } from 'vue-i18n';
     const { t } = useI18n();
     const store = useTypeStore();
     const searchInAction = ref<boolean>(false);
+    const { typesAllLength } = storeToRefs(store);
     let maxLength = ref<number>(Number(sessionStorage.getItem("typesMaxLength")) ?? useTypeStore().types.length);
 
     let data = ref<IType | null>();
@@ -124,7 +126,7 @@
                 </div>
             </div>
         </div>
-        <Paginator v-if="!searchInAction" :max-length="useTypeStore().typesAllLength" v-on:paginator-triggered="loadTypesPaginated" :page="'admin_types'"/>
+        <Paginator v-if="!searchInAction" :max-length="typesAllLength" v-on:paginator-triggered="loadTypesPaginated" :page="'admin_types'"/>
     </div>
 </template>
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import type IType from '@/models/Type';
-import { useAppStore } from '@/stores/appstore';
+    import { useAppStore } from '@/stores/appstore';
     import { useTypeStore } from '@/stores/typestore';
     import { storeToRefs } from 'pinia';
     import { ref } from 'vue';
@@ -29,16 +29,6 @@ import { useAppStore } from '@/stores/appstore';
         type_error.value.en = '';
         type_error.value.hu = '';
     };
-
-    const imageChanged = (event: any) => {
-        const selectedImage = event.target.files[0];
-        const reader = new FileReader();
-
-        reader.onload = (e) => {
-            modalData.value.image = e.target!.result!.toString();
-        };
-        reader.readAsDataURL(selectedImage);
-    };
 </script>
 
 <template>
@@ -64,7 +54,7 @@ import { useAppStore } from '@/stores/appstore';
                     </div>
                     <div class="mb-3">
                         <label for="image" class="form-label">{{ t("image") }}</label>
-                        <input type="file" class="form-control" id="image" accept="images/*,.png,.jpg,.jpeg,.svg" v-on:change="imageChanged" 
+                        <input type="file" class="form-control" id="image" accept="images/*,.png,.jpg,.jpeg,.svg"
                             v-on:focus="() => {if(type_error) hideError()}">
                     </div>
                     <div v-if="type_error" class="text-danger text-center mx-5 mb-2">

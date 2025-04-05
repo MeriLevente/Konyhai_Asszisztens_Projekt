@@ -29,8 +29,6 @@
     let stepInput = ref<string>("");
     let stepInputError = ref<string | undefined>("");
 
-    // let imageToSave: string | undefined = props.recipe.image;
-
     const resetRecipeError = (): void => {
         recipes_error.value.hu = '';
         recipes_error.value.en = '';
@@ -39,10 +37,6 @@
     const closeEditor = () => {
         resetRecipeError();
         emit("editorClosed");
-    };
-
-    const imageChanged = (event: any) => {
-        // imageToSave = useAdminStore().imageChange(event.target.files[0])
     };
 
     const hideIngredientError = (): void => {
@@ -126,7 +120,6 @@
         props.recipe.description = descHU.value.join("#");
         props.recipe.description_EN = descEN.value.join("#");
         props.recipe.ingredients = ingredients.value;
-        //props.recipe.image = imageToSave;
         resetRecipeError();
         emit("saveData", props.recipe);
     };
@@ -146,9 +139,10 @@
                     <label for="nameHU" class="form-label">{{ t("name") }} (hu)</label>
                     <input type="text" class="form-control m-1" id="nameHU" v-model="recipe.name" v-on:focus="resetRecipeError()">
                     <label for="difficulty" class="form-label">{{ t("difficulty") }}</label>
-                    <input type="number" class="form-control m-1" id="difficulty" v-model="recipe.difficulty" placeholder="min: 1, max: 10" v-on:focus="resetRecipeError()">
+                    <input type="number" class="form-control m-1" id="difficulty" v-model="recipe.difficulty" 
+                        placeholder="min: 1, max: 10" v-on:focus="resetRecipeError()">
                     <label for="image" class="form-label">{{ t("image") }}</label>
-                    <input type="file" class="form-control" id="image" accept="images/*,.png,.jpg,.jpeg,.svg" v-on:change="imageChanged" v-on:focus="resetRecipeError()">
+                    <input type="file" class="form-control" id="image" accept="images/*,.png,.jpg,.jpeg,.svg" v-on:focus="resetRecipeError()">
                 </div>
                 <div class="col-12 col-md-6 mb">
                     <label for="nameEN" class="form-label">{{ t("name") }} (en)</label>
@@ -186,7 +180,8 @@
                      <div class="row">
                         <div class="col-8">
                             <label for="quantity">{{ t("quantity") }}</label>
-                            <input type="number" min="1" max="10000" class="form-control" v-model="ingredientQuantity" v-on:focus="hideIngredientError()"/>
+                            <input type="number" min="1" max="10000" class="form-control" v-model="ingredientQuantity"
+                                v-on:focus="hideIngredientError()"/>
                         </div>
                         <div class="col-4 py-4">
                             <span class="unitSpan" v-if="selectedIngredient">{{ t(selectedIngredient!.unit) }}</span>

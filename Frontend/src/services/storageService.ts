@@ -1,10 +1,19 @@
 import { useUserStore } from "@/stores/userstore";
 import instance from "./dataService";
-import type StoredItem from "@/models/StoredItem";
+import type IStoredItem from "@/models/StoredItem";
 
 export default {
     getStoredItems(){
         return instance.get(`/storage/${useUserStore().user?.id}`)
+                .then((res: any)=>{
+                    return res
+                })
+                .catch((err: any)=>{
+                    return Promise.reject(err)
+        })
+    },
+    getStoredItemsPaginated(from: number, to: number){
+        return instance.get(`/storage/${useUserStore().user?.id}/from/${from}/to/${to}`)
                 .then((res: any)=>{
                     return res
                 })
@@ -40,7 +49,7 @@ export default {
                     return Promise.reject(err);
         });
     },
-    updateStoredItemQuantity(data: StoredItem){
+    updateStoredItemQuantity(data: IStoredItem){
         return instance.post("storage", data)
                 .then((res: any)=>{
                     return res;
@@ -49,7 +58,7 @@ export default {
                     return Promise.reject(err);
                 })
     },
-    deleteItemFromStorage(data: StoredItem){
+    deleteItemFromStorage(data: IStoredItem){
         return instance.delete("storage", {data})
                 .then((res: any)=>{
                     return res;

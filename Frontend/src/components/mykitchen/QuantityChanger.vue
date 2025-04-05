@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import type StoredItem from '@/models/StoredItem';
+    import type IStoredItem from '@/models/StoredItem';
     import { useAppStore } from '@/stores/appstore';
     import { useUserStore } from '@/stores/userstore';
     import { storeToRefs } from 'pinia';
@@ -32,7 +32,7 @@
     };
 
     const save = (): void => {
-        const request: StoredItem = {
+        const request: IStoredItem = {
             userId: useUserStore().user!.id!,
             itemId: props.modifiedItem.storedItem.id,
             quantity: newQuantity.value

@@ -1,6 +1,7 @@
 <script setup lang="ts">
     import { useUserStore } from '@/stores/userstore';
     import { useI18n } from 'vue-i18n';
+    import UserValidation from '@/utils/UserValidation';
     const { t } = useI18n();
 </script>
 
@@ -14,7 +15,7 @@
             <li><p class="about-p">{{ t('about_recipesParag4') }}</p></li>
             <div class="d-flex justify-content-start" v-if="useUserStore().user?.role != 'admin'">
                 <RouterLink to="/login" v-if="!useUserStore().status.loggedIn" class="about-p btn btn-warning">{{ t('clickmeRegisterFirst') }}</RouterLink>
-                <RouterLink to="/recipes" v-if="useUserStore().status.loggedIn" class="recipebook-btn">{{ t('about_recipesLink') }}</RouterLink>
+                <RouterLink to="/recipes" v-if="useUserStore().status.loggedIn && UserValidation.isAutherizedRole('user')" class="recipebook-btn">{{ t('about_recipesLink') }}</RouterLink>
             </div>
         </ul>
         <img src="@/assets/images/fridgebuddy_chef.png" alt="Chef fridge" class="fridge-image">

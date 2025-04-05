@@ -2,7 +2,7 @@ import {defineStore} from "pinia";
 
 export const useAppStore = defineStore('appStore', {
     state: () => ({
-        app_language : '',
+        app_language : "",
         paginatorLastElementDeleted: false
     })
 });
