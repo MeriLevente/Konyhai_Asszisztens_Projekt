@@ -12,6 +12,7 @@ import { useAppStore } from "./appstore";
 import type IRecipe from "@/models/Recipe";
 import recipesService from "@/services/recipesService";
 import CryptoJS from 'crypto-js'
+import type Ingredient from "@/models/Ingredient";
 
 export const useUserStore = defineStore('userStore', {
     state: () => ({
@@ -236,6 +237,19 @@ export const useUserStore = defineStore('userStore', {
                     this.status.message = err.hu;
                     this.status.message = err.en;
                 })
+        },
+        getRecipeIngredientsInMyKitchen(ingredients: IStoredItem[]){
+            this.storageLoading = true;
+            let myIngredients: IStoredItem[] = [];
+            ingredients.forEach(x=> {
+                const myItem: IStoredItem | undefined = this.storedItems.find(y=> y.storedItem?.id == x.itemId);
+                if(myItem){
+                    myIngredients.push(myItem)
+                } else {
+                    myIngredients.push({itemId: x.itemId, quantity: 0, userId: this.user!.id!})
+                }
+            });
+            return myIngredients;
         }
     }
 });

@@ -14,6 +14,7 @@ export const useTypeStore = defineStore('typeStore', {
             hu: "",
             en: ""
         },
+        loadingTypes: false,
         typesAllLength: Number(sessionStorage.getItem("typesMaxLength")) ?? 0,
         paginatorValues: {
             from: Number(sessionStorage.getItem("paginator-from")) ?? 0,
@@ -22,13 +23,16 @@ export const useTypeStore = defineStore('typeStore', {
     }),
     actions: {
         getTypes(){
+            this.loadingTypes = true;
             itemTypesService.getTypes()
                 .then((res: any)=>{
                     this.types = res.data;
+                    this.loadingTypes = false;
                     return res.data;
                 }
                 )
                 .catch((err: any)=>{
+                    this.loadingTypes = false;
                     console.error(useAppStore().app_language == "hu" ? err.hu : err.en);
                     return Promise.reject();
                 })

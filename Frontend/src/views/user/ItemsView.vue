@@ -13,6 +13,7 @@
     import { onMounted, ref } from 'vue';
     import { useI18n } from 'vue-i18n';
     const { storedItems, showAllTrig, searchStorageInAction, storedItemsAllLength, storageLoading } = storeToRefs(useUserStore());
+    const { loadingTypes } = storeToRefs(useTypeStore());
     const { t } = useI18n();
     let selectedType = ref<number | null>(null);
     let popupType = ref<string | null>();
@@ -90,7 +91,7 @@
             <Paginator :page="'mykitchen'" 
                 :max-length="storedItemsAllLength" v-on:paginator-triggered="loadItemsPaginated"/>
         </div>
-        <main v-if="!storageLoading" id="storedItemsList" class="row d-flex justify-content-center">
+        <main v-if="!storageLoading && !loadingTypes" id="storedItemsList" class="row d-flex justify-content-center">
             <ItemTypesCard v-for="type in useTypeStore().types" :type="type" v-on:type-clicked="typeClicked($event)"
                 v-if="!selectedType && !showAllTrig"/>
 
@@ -107,7 +108,7 @@
                 <h3 class="text-center" v-on:load="showAllTrig = false">{{ t("noitems") }}</h3>
             </div>
         </main>
-        <div class="d-flex justify-content-center mt-5" v-if="storageLoading">
+        <div class="d-flex justify-content-center mt-5" v-if="storageLoading || loadingTypes">
             <span class="spinner-border spinner-border-bg text-center"></span>
         </div>
     </div>

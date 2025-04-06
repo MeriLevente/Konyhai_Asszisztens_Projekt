@@ -141,8 +141,9 @@
                     <label for="difficulty" class="form-label">{{ t("difficulty") }}</label>
                     <input type="number" class="form-control m-1" id="difficulty" v-model="recipe.difficulty" 
                         placeholder="min: 1, max: 10" v-on:focus="resetRecipeError()">
-                    <label for="image" class="form-label">{{ t("image") }}</label>
-                    <input type="file" class="form-control" id="image" accept="images/*,.png,.jpg,.jpeg,.svg" v-on:focus="resetRecipeError()">
+                    <label for="image" class="form-label">{{ t("image") + " Url" }}</label>
+                    <input type="text" class="form-control" id="image" v-model="recipe.image"
+                            v-on:focus="() => {if(recipes_error) resetRecipeError()}">
                 </div>
                 <div class="col-12 col-md-6 mb">
                     <label for="nameEN" class="form-label">{{ t("name") }} (en)</label>

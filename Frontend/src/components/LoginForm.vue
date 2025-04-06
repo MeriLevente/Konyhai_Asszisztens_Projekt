@@ -10,6 +10,7 @@
     const { app_language } = storeToRefs(useAppStore());
     const { t } = useI18n();
     const props = defineProps(["method", "role"]);
+    let loading = ref<boolean>(false);
 
     let confirm_password = ref<string>();
     let see_password = ref<boolean>(false);
@@ -32,6 +33,7 @@
         }
         if(props.method == "register"){
             status.value.confirm_password = confirm_password.value!;
+            loading.value = true;
             useUserStore().register(userData)!.then(()=>{
                 if(props.role == 'user')
                     router.push("/");
@@ -46,11 +48,16 @@
                     };
                     confirm_password.value = "";
                 }
-            });
+                loading.value = false;
+            })
+            .catch(()=> loading.value = false);
         } else {
+            loading.value = true;
             useUserStore().login(userData)!.then(()=>{
-                router.push("/")
-            });
+                loading.value = false;
+                router.push("/");
+            })
+            .catch(()=> loading.value = false);
         };
     };
 
@@ -116,7 +123,10 @@
                     {{ app_language == "hu" ? status.message : status.messageEn }}
                 </div>
                 <div class="mb-1">
-                    <button id="submit" type="submit" class="btn btn-primary w-100 p-2 my-3">{{ t(method) }}</button>
+                    <button id="submit" type="submit" class="btn btn-primary w-100 p-2 my-3">
+                        {{ t(method) }}
+                        <span v-if="loading" class="spinner-border spinner-border-sm text-center"></span>
+                    </button>
                 </div>
             </form>
         </div>

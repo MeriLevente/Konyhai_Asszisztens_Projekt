@@ -1,7 +1,6 @@
 <script setup lang="ts">
     import RecipeBookLeftPage from '@/components/recipes/RecipeBookLeftPage.vue';
     import RecipeBookRightPage from '@/components/recipes/RecipeBookRightPage.vue';
-    import type IFormResponse from '@/models/FormResponse';
     import type IRecipe from '@/models/Recipe';
     import router from '@/router';
     import { useAppStore } from '@/stores/appstore';

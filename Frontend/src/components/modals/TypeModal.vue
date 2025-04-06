@@ -53,8 +53,8 @@
                             v-on:focus="() => {if(type_error) hideError()}">
                     </div>
                     <div class="mb-3">
-                        <label for="image" class="form-label">{{ t("image") }}</label>
-                        <input type="file" class="form-control" id="image" accept="images/*,.png,.jpg,.jpeg,.svg"
+                        <label for="image" class="form-label">{{ t("image") + " Url" }}</label>
+                        <input type="text" class="form-control" id="image" v-model="modalData.image"
                             v-on:focus="() => {if(type_error) hideError()}">
                     </div>
                     <div v-if="type_error" class="text-danger text-center mx-5 mb-2">

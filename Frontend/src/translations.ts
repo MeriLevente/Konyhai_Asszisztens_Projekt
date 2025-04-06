@@ -120,7 +120,8 @@ const i18n = createI18n({
             minute: "perc",
             recipeimgtext: "A kép csak illusztráció!",
             letmecook: "Elkészítem!",
-            all: "Mind"
+            all: "Mind",
+            inmystore: "a konyhámban"
         },
         'en': {
             //HomeView
@@ -235,7 +236,8 @@ const i18n = createI18n({
             minute: "min",
             recipeimgtext: "Image is only an illustration!",
             letmecook: "Let me cook!",
-            all: "All"
+            all: "All",
+            inmystore: "my items"
         }
     }
 });
