@@ -108,7 +108,7 @@ export const useItemStore = defineStore('itemStore', {
                                 const pagiDiff: number = this.paginatorValues.to - this.paginatorValues.from;
                                 if(this.items.length < pagiDiff)
                                     this.items.push(res.data);
-                                if (this.paginatorValues.from == 0 && this.paginatorValues.to >= this.itemsAllLength){
+                                if (this.paginatorValues.from == 0 && this.paginatorValues.to == this.itemsAllLength){
                                     window.location.reload();
                                 }
                                 this.itemsAllLength += 1;

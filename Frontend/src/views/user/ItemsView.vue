@@ -12,10 +12,9 @@
     import { storeToRefs } from 'pinia';
     import { onMounted, ref } from 'vue';
     import { useI18n } from 'vue-i18n';
-    const { storedItems, showAllTrig, searchStorageInAction, storedItemsAllLength } = storeToRefs(useUserStore());
+    const { storedItems, showAllTrig, searchStorageInAction, storedItemsAllLength, storageLoading } = storeToRefs(useUserStore());
     const { t } = useI18n();
     let selectedType = ref<number | null>(null);
-    
     let popupType = ref<string | null>();
     let quantityMethod = ref<string | null>();
     let modifyItem = ref<StoredItem | undefined>();
@@ -27,7 +26,15 @@
     })
 
     const loadItemsPaginated = (data: {from: number, to: number}) => {
-        useUserStore().loadStoredItemsPaginated(data.from, data.to).catch((err: string)=>{console.error(err)});
+        storageLoading.value = true;
+        useUserStore().loadStoredItemsPaginated(data.from, data.to)
+            .then(()=>{
+                storageLoading.value = false;
+            })
+            .catch((err: string)=>{
+                storageLoading.value = false;
+                console.error(err);
+            });
     };
 
     const search = (searchedWord: string): void => { 
@@ -44,8 +51,8 @@
     };
 
     const showAllItems = (): void => {
+        searchStorageInAction.value = false;
         showAllTrig.value = !showAllTrig.value;
-        loadItemsPaginated({from: 0, to: 6});
     };
 
     const showQuantityPopup = (method: string, modifiedItem: StoredItem): void => {
@@ -79,9 +86,11 @@
             v-if="popupType" :popuptype="popupType" :quantitymethod="quantityMethod" :modified-item="modifyItem" v-on:close="closePopUp"/>
         <UserSideHeader :header-title="'mykitchen'" :header-description="'titleCatchphrase'"
                         v-on:show-all="showAllItems" v-on:search-stored-item="search" v-on:show-new="showNew"/>
-        <main id="storedItemsList" class="row d-flex justify-content-center mt-2">
-            <Paginator v-if="showAllTrig && !searchStorageInAction" :page="'mykitchen'" 
+        <div class="row d-flex justify-content-center mt-2" v-if="showAllTrig && !searchStorageInAction">
+            <Paginator :page="'mykitchen'" 
                 :max-length="storedItemsAllLength" v-on:paginator-triggered="loadItemsPaginated"/>
+        </div>
+        <main v-if="!storageLoading" id="storedItemsList" class="row d-flex justify-content-center">
             <ItemTypesCard v-for="type in useTypeStore().types" :type="type" v-on:type-clicked="typeClicked($event)"
                 v-if="!selectedType && !showAllTrig"/>
 
@@ -98,6 +107,9 @@
                 <h3 class="text-center" v-on:load="showAllTrig = false">{{ t("noitems") }}</h3>
             </div>
         </main>
+        <div class="d-flex justify-content-center mt-5" v-if="storageLoading">
+            <span class="spinner-border spinner-border-bg text-center"></span>
+        </div>
     </div>
 </template>
 

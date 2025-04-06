@@ -1,11 +1,13 @@
 <script setup lang="ts">
     import RecipeBookLeftPage from '@/components/recipes/RecipeBookLeftPage.vue';
     import RecipeBookRightPage from '@/components/recipes/RecipeBookRightPage.vue';
+    import type IFormResponse from '@/models/FormResponse';
     import type IRecipe from '@/models/Recipe';
     import router from '@/router';
+    import { useAppStore } from '@/stores/appstore';
     import { useUserStore } from '@/stores/userstore';
-    import DataLoader from '@/utils/DataLoader';
     import { storeToRefs } from 'pinia';
+    const { storageLoading } = storeToRefs(useUserStore());
     import { onMounted, ref } from 'vue';
 
     const recipe_id: number = Number(router.currentRoute.value.query.id);
@@ -14,17 +16,21 @@
         router.push('/incorrect-id')
 
     onMounted(()=> {
-      DataLoader.loadViewedRecipe(recipe_id).then(()=>{
+        useUserStore().getRecipeById(recipe_id).then(()=>{
             recipe.value = useUserStore().viewedRecipe;
-        }).catch((err: any)=>{
-            router.push('/error');
-        });
+        })
     })
 </script>
 
 <template>
   <div class="recipe-content-box">
-    <div class="container rec-container my-3 mt-5">
+    <div class="container d-flex justify-content-center mt-5" v-if="storageLoading || useUserStore().status.message">
+        <span v-if="storageLoading" class="spinner-border spinner-border-bg text-center"></span>
+        <span v-if="useUserStore().status.message" class="text-center">
+          {{ useAppStore().app_language == "hu" ? useUserStore().status!.message : useUserStore().status!.messageEn }}
+        </span>
+    </div>
+    <div class="container rec-container my-3 mt-5" v-if="!storageLoading && !useUserStore().status.message">
       <div class="row">
         <div class="col-12 col-lg-6 left-col pt-3">
           <RecipeBookLeftPage :recipe="recipe" v-if="recipe"/>

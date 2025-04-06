@@ -15,6 +15,7 @@ export const useRecipeStore = defineStore('recipeStore', {
             hu: "",
             en: ""
         },
+        recipesLoading: false,
         recipesAllLength: Number(sessionStorage.getItem("recipesMaxLength")) ?? 0,
         paginatorValues: {
             from: Number(sessionStorage.getItem("paginator-from")) ?? 0,
@@ -32,11 +33,14 @@ export const useRecipeStore = defineStore('recipeStore', {
     }),
     actions: {
         getRecipes() {
+            this.recipesLoading = true;
             recipesService.getRecipes()
                 .then((res: any)=>{
+                    this.recipesLoading = false;
                     this.recipes = res.data;
                 })
                 .catch((err: any) => {
+                    this.recipesLoading = false;
                     console.error(useAppStore().app_language == "hu" ? err.hu : err.en);
                 })
         },
@@ -52,36 +56,37 @@ export const useRecipeStore = defineStore('recipeStore', {
                         })
         },
         getRecipesByType(type: string) {
+            this.recipesLoading = true;
             return recipesService.getRecipesByType(type)
                 .then((res: any)=>{
+                    this.recipesLoading = false;
                     this.recipes = res.data;
                 })
                 .catch((err: any) => {
+                    this.recipesLoading = false;
                     console.error(useAppStore().app_language == "hu" ? err.hu : err.en);
                 })
         },
         getRecipesBySearch(search: string) {
-            let validation = SearchValidation.SearchedWordIsValid(search);
-            if(!validation.isError){
-                return recipesService.getRecipesBySearch(search)
-                    .then((res: any)=>{
-                        this.recipes = res.data;
-                    })
-                    .catch((err: any) => {
-                        console.error(useAppStore().app_language == "hu" ? err.hu : err.en);
-                    })
-            } else {
-                return Promise.reject(useAppStore().app_language == "hu" ? validation.message : validation.messageEn);
-            }
+            this.recipesLoading = true;
+            return recipesService.getRecipesBySearch(search)
+            .then((res: any)=>{
+                this.recipesLoading = false;
+                this.recipes = res.data;
+            })
+            .catch((err: any) => {
+                this.recipesLoading = false;
+                console.error(useAppStore().app_language == "hu" ? err.hu : err.en);
+            })
         },
         loadRecipesPaginated(from: number, to: number){
             return recipesService.getRecipesPaginated(from, to).
                 then((res: any)=>{
-                            this.paginatorValues.to = to;
-                            this.paginatorValues.from = from;
-                            sessionStorage.setItem("paginator-from", `${Number(from)}`);
-                            sessionStorage.setItem("paginator-to", `${Number(to)}`);
-                            this.recipes = res.data;
+                    this.paginatorValues.to = to;
+                    this.paginatorValues.from = from;
+                    sessionStorage.setItem("paginator-from", `${Number(from)}`);
+                    sessionStorage.setItem("paginator-to", `${Number(to)}`);
+                    this.recipes = res.data;
                 })
                 .catch((err: any) => {
                     console.error(useAppStore().app_language == "hu" ? err.hu : err.en);
@@ -116,7 +121,7 @@ export const useRecipeStore = defineStore('recipeStore', {
                                     this.recipes.push(res.data);
                                 }
                                 this.clearAndAddIngredient(res.data.id, ingredients);
-                                if (this.paginatorValues.from == 0 && this.paginatorValues.to >= this.recipesAllLength){
+                                if (this.paginatorValues.from == 0 && this.paginatorValues.to == this.recipesAllLength){
                                     window.location.reload();
                                 }
                                 this.recipesAllLength += 1;

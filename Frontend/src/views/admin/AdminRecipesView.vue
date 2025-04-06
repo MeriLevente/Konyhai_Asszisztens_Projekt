@@ -12,6 +12,7 @@
     let searchInAction = ref<boolean>(false);
     let openEditor = ref(false);
     let maxLength = ref<number>(Number(sessionStorage.getItem("recipesMaxLength")) ?? store.recipes.length);
+    let loading = ref<boolean>(false);
 
     let data = ref<IRecipe | null>();
 
@@ -69,11 +70,16 @@
     }
 
     const search = (searchedWord: string): void => {
-        store.getRecipesBySearch(searchedWord).then(()=> searchInAction.value = true).catch((err: string)=>{alert(err)});
+        loading.value = true;
+        store.getRecipesBySearch(searchedWord)
+            .then(()=> {searchInAction.value = true; loading.value = false;}).catch((err: string)=>{alert(err); loading.value = false;});
     };
 
     const loadRecipesPaginated = (paginatorValues: {from: number, to: number}): void => {
-        store.loadRecipesPaginated(paginatorValues.from, paginatorValues.to).catch((err: string)=>{console.error(err)});
+        loading.value = true;
+        store.loadRecipesPaginated(paginatorValues.from, paginatorValues.to)
+            .then(()=> loading.value = false)
+            .catch((err: string)=>{console.error(err); loading.value = false});
     };
 </script>
 
@@ -85,17 +91,18 @@
         <div class="row">
             <h1 class="display-3 text-center">{{t('edit_recipes')}}</h1>
         </div>
-        <div class="row my-2">  
+        <div class="row d-flex justify-content-center">
+            <Searchbar v-on:search="search" v-on:show-paginated="loadRecipesPaginated({from: 0, to: 6}); searchInAction = false" 
+                class="w-50" :viewer-role="'admin'" :searchInAction="searchInAction"/>
+        </div>
+        <div class="row my-5 d-flex justify-content-center" v-if="loading">
+            <span class="spinner-border spinner-border-bg text-center"></span>
+        </div>
+        <div class="row my-2" v-if="!loading">  
             <div class="col-12">
-                <div class="row d-flex justify-content-center">
-                    <Searchbar v-on:search="search" v-on:show-paginated="loadRecipesPaginated({from: 0, to: 6}); searchInAction = false" 
-                        class="w-50" :viewer-role="'admin'" :searchInAction="searchInAction"/>
-                </div>
-
                 <div v-if="store.recipes.length == 0" class="nodata-div w-50 mx-auto p-3">
                     <h3 class="text-center">{{ t("no_data") }}</h3>
                 </div>
-
                 <div class="table-responsive">
                     <table class="admin-table" v-if="store.recipes.length > 0">
                     <thead>

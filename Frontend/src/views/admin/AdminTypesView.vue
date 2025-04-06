@@ -13,7 +13,7 @@
     const searchInAction = ref<boolean>(false);
     const { typesAllLength } = storeToRefs(store);
     let maxLength = ref<number>(Number(sessionStorage.getItem("typesMaxLength")) ?? useTypeStore().types.length);
-
+    let loading = ref<boolean>(false);
     let data = ref<IType | null>();
 
     const addType = () => {
@@ -62,11 +62,17 @@
     }
 
     const loadTypesPaginated = (paginatorValues: {from: number, to: number}) => {
-        store.loadPaginated(paginatorValues.from, paginatorValues.to).catch((err: string)=>{console.error(err)});
+        loading.value = true;
+        store.loadPaginated(paginatorValues.from, paginatorValues.to)
+            .then(()=> loading.value = false)
+            .catch((err: string)=>{console.error(err); loading.value = false});
     }
 
     const search = (searchedWord: string) => {
-        store.searchTypes(searchedWord).then(()=> searchInAction.value = true).catch((err: string)=>{alert(err)});
+        loading.value = true;
+        store.searchTypes(searchedWord)
+            .then(()=>{searchInAction.value = true; loading.value = false})
+            .catch((err: string)=>{alert(err); loading.value = false});
     }
 </script>
 
@@ -83,7 +89,10 @@
             <Searchbar v-on:search="search" v-on:show-paginated="loadTypesPaginated({from: 0, to: 6}); searchInAction = false" 
                 class="w-50" :viewer-role="'admin'" :searchInAction="searchInAction"/>
         </div>
-        <div class="row my-2">  
+        <div class="row my-5 d-flex justify-content-center" v-if="loading">
+            <span class="spinner-border spinner-border-bg text-center"></span>
+        </div>
+        <div class="row my-2" v-if="!loading">  
             <div class="col-12">
                 <TypeModal :data="data" v-if="data" v-on:save-data="saveData" v-on:close-modal="closeModal"/>
 

@@ -7,8 +7,11 @@
 
 <template>
     <h2 class="display-6 about-h2">{{ t('about_itemsh2') }}</h2>
-    <div class="d-flex justify-content-between">
-        <ul style="display: inline;">
+    <div class="home-yellow-div p-2">
+            <h6 class="about-h6">{{ t("titleCatchphrase") }}</h6>
+    </div>
+    <div class="d-flex justify-content-between mt-3">
+        <ul>
             <li><p class="about-p">{{ t('about_itemsParag') }}</p></li>
             <li><p class="about-p">{{ t('about_itemsParag2') }}</p></li>
             <div class="d-flex justify-content-start" v-if="useUserStore().user?.role != 'admin'">

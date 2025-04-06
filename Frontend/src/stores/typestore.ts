@@ -94,7 +94,7 @@ export const useTypeStore = defineStore('typeStore', {
                                 const pagiDiff: number = this.paginatorValues.to - this.paginatorValues.from;
                                 if(this.types.length < pagiDiff)
                                     this.types.push(res.data);
-                                if (this.paginatorValues.from == 0 && this.paginatorValues.to >= this.typesAllLength){
+                                if (this.paginatorValues.from == 0 && this.paginatorValues.to == this.typesAllLength){
                                     window.location.reload();
                                 }
                                 this.typesAllLength += 1;

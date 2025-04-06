@@ -12,6 +12,7 @@
     const store = useItemStore();
     const {items} = storeToRefs(store);
     const searchInAction = ref<boolean>(false);
+    let loading = ref<boolean>(false);
     let maxLength = ref<number>(Number(sessionStorage.getItem("itemsMaxLength")) ?? store.items.length);
 
     let data = ref<Item | null>();
@@ -64,11 +65,17 @@
     }
 
     const search = (searchedWord: string): void => {
-        store.searchItems(searchedWord).then(()=> searchInAction.value = true).catch((err: string)=>{alert(err)});
+        loading.value = true;
+        store.searchItems(searchedWord)
+            .then(()=>{searchInAction.value = true; loading.value = false})
+            .catch((err: string)=>{alert(err); loading.value = false});
     };
 
     const loadItemsPaginated = (data: {from: number, to: number}) => {
-        store.loadItemsPaginated(data.from, data.to).catch((err: string)=>{console.error(err)});
+        loading.value = true;
+        store.loadItemsPaginated(data.from, data.to)
+            .then(()=> loading.value = false)
+            .catch((err: string)=>{console.error(err); loading.value = false});
     };
 </script>
 
@@ -84,7 +91,10 @@
             <Searchbar v-on:search="search" v-on:show-paginated="loadItemsPaginated({from: 0, to: 6}); searchInAction = false" 
                 class="w-50" :viewer-role="'admin'" :searchInAction="searchInAction"/>
         </div>
-        <div class="row my-2">
+        <div class="row my-5 d-flex justify-content-center" v-if="loading">
+            <span class="spinner-border spinner-border-bg text-center"></span>
+        </div>
+        <div class="row my-2" v-if="!loading">
             <div class="col-12">
                 <ItemModal :data="data" v-if="data" v-on:save-data="saveData" v-on:close-modal="closeModal"/>
                 

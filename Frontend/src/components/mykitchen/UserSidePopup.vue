@@ -34,10 +34,16 @@
     }
     .popup {
         position: relative;
-        min-height: 40vh;
         color: white;
         background-color: var(--barley);
         border-radius: 5px;
         border: var(--ebony-clay) 10px solid;
+    }
+
+    @media only screen and (max-width: 990px) {
+        .popup-bg {
+            margin-left: -48vw;
+            margin-top: -25vh;
+        }
     }
 </style>

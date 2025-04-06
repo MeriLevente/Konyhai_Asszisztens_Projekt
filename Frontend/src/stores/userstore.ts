@@ -35,7 +35,8 @@ export const useUserStore = defineStore('userStore', {
         paginatorValues: {
             from: 0,
             to: 6
-        }
+        },
+        storageLoading: false
     }),
     actions: {
         hideError() {
@@ -133,9 +134,9 @@ export const useUserStore = defineStore('userStore', {
                     sessionStorage.setItem("paginator-from", `${Number(from)}`);
                     sessionStorage.setItem("paginator-to", `${Number(to)}`);
                     this.storedItems = res.data;
-                }).catch((err: any)=>
+                }).catch((err: any)=>{
                     console.error(useAppStore().app_language == "hu" ? err.hu : err.en)
-                )
+                })
         },
         getStorageLength(){
             return storageService.getStorageLength()
@@ -149,33 +150,38 @@ export const useUserStore = defineStore('userStore', {
                 })
         },
         getStoredItemsByTypeId(typeId: number){
+            this.storageLoading = true;
             return storageService.getStoredItemsByTypeId(typeId)
                 .then((res: any)=>{
+                    this.storageLoading = false;
                     this.storedItems = res.data;
-                }).catch((err: any)=>
+                }).catch((err: any)=>{
+                    this.storageLoading = false;
                     console.error(useAppStore().app_language == "hu" ? err.hu : err.en)
-                )
+                })
         },
         getStoredItemsBySearch(typeId: number | null, sWord: string | undefined){
-            let validation: IFormResponse = SearchValidation.SearchedWordIsValid(sWord);
-            if(!validation.isError){
-                return storageService.getStoredItemsBySearch(typeId, sWord!)
-                .then((res: any)=>{
-                    this.storedItems = res.data;
-                }).catch((err: any)=>
-                    console.error(useAppStore().app_language == "hu" ? err.hu : err.en)
-                )
-            } else {
-                alert(useAppStore().app_language == 'hu' ? validation.message : validation.messageEn);
-            }
+            this.storageLoading = true;
+            return storageService.getStoredItemsBySearch(typeId, sWord!)
+            .then((res: any)=>{
+                this.storageLoading = false;
+                this.storedItems = res.data.filter((x: IStoredItem) => x.userId == this.user?.id);
+            }).catch((err: any)=>{
+                this.storageLoading = false;
+                console.error(useAppStore().app_language == "hu" ? err.hu : err.en)
+            })
         },
         getRecipeById(id:number){
+            this.storageLoading = true;
             return recipesService.getRecipeById(id)
                 .then((res: any)=>{
+                    this.storageLoading = false;
                     this.viewedRecipe = res.data;
-                }).catch((err: any)=>
-                    Promise.reject(useAppStore().app_language == "hu" ? err.hu : err.en)
-                )
+                }).catch((err: any)=>{
+                    this.storageLoading = false;
+                    this.status.message = err.hu;
+                    this.status.messageEn = err.en;
+                })
         },
         updateQuantity(data: IStoredItem, method: string){
             if (data.quantity == 0) {
@@ -186,9 +192,15 @@ export const useUserStore = defineStore('userStore', {
                     this.storedItems.splice(this.storedItems.findIndex(x=>  x.userId == data.userId && x.itemId == data.itemId), 1);
                     this.storedItemsAllLength--;
                     sessionStorage.setItem("storageMaxLength", `${this.storedItemsAllLength}`);
-                    if (this.storedItems.length == 0) {
-                        this.loadStoredItemsPaginated(0, this.paginatorValues.to - this.paginatorValues.from);
-                        useAppStore().paginatorLastElementDeleted = true;
+                    if (this.storedItems.length == 0 && this.showAllTrig) {
+                        this.loadStoredItemsPaginated(0, this.paginatorValues.to - this.paginatorValues.from)
+                            .then((res: any)=>{
+                                useAppStore().paginatorLastElementDeleted = true;
+                                window.location.reload();
+                            }).
+                            catch((err: any)=>{
+                                console.error(useAppStore().app_language == "hu" ? err.hu : err.en)
+                            });
                     }
                 })
                 .catch((err: any)=> {
@@ -203,15 +215,19 @@ export const useUserStore = defineStore('userStore', {
                     if(method == "add" && (res.data.storedItem.typeId == this.selectedItemtype || this.selectedItemtype == 0)){
                         if(this.storedItems.length != 0){
                             const pagiDiff: number = this.paginatorValues.to - this.paginatorValues.from;
-                            if(this.storedItems.length < pagiDiff)
+                            if(this.storedItems.length < pagiDiff){
                                 this.storedItems.push(res.data);
-                        } else
+                            }
+                            this.storedItemsAllLength++;
+                            sessionStorage.setItem("storageMaxLength", `${this.storedItemsAllLength}`);
+                        } else {
                             this.storedItems.push(res.data);
-                        if (this.paginatorValues.from == 0 && this.paginatorValues.to >= this.storedItemsAllLength){
+                            this.storedItemsAllLength++;
+                            sessionStorage.setItem("storageMaxLength", `${this.storedItemsAllLength}`);
+                        }    
+                        if (this.paginatorValues.from == 0 && this.paginatorValues.to == this.storedItemsAllLength){
                             window.location.reload();
-                        }
-                        this.storedItemsAllLength++;
-                        sessionStorage.setItem("storageMaxLength", `${this.storedItemsAllLength}`);
+                        } 
                     } else {
                         this.storedItems[this.storedItems.findIndex(x=>  x.userId == data.userId && x.itemId == data.itemId)] = res.data;
                     }

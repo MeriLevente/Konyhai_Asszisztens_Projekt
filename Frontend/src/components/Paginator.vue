@@ -33,7 +33,6 @@
     };
 
     onMounted(()=> {
-        
         if (sessionStorage.getItem("paginator-page") != props.page.toString()) {
             paginatorFrom.value = 0;
             paginatorTo.value = paginatorValue.value;
@@ -44,9 +43,6 @@
             paginatorTo.value = paginatorValue.value;
         }
         emit("paginatorTriggered", {from: paginatorFrom.value, to: paginatorTo.value});
-        console.log(props.maxLength)
-        console.log(paginatorFrom)
-        console.log(paginatorValue)
     })
 </script>
 

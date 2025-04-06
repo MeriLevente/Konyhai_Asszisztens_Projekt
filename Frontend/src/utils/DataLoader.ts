@@ -23,7 +23,4 @@ export default class DataLoader{
         else
             useRecipeStore().getRecipesByType(selectedType);
     }
-    public static async loadViewedRecipe(id: number){
-        await useUserStore().getRecipeById(id).catch((err: any)=>Promise.reject(err));
-    }
 }

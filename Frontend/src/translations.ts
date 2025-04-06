@@ -22,10 +22,10 @@ const i18n = createI18n({
             //About me
             abouth2: "Szia, DiKA vagyok!",
             abouth6: "Te sem vagy a konyhaördöge? Se baj, engem, azért készítettek, hogy segítsek neked!",
-            aboutParag: "Menedzseld a konyhádban lévő élelmiszereket. Bárhol, és bármikor elérheted a konyhád tartalmát, és nem kell tálalgatnod, hogy mi" +
+            aboutParag: "Menedzseld a konyhádban lévő élelmiszereket. Bárhol, és bármikor elérheted a konyhád tartalmát, és nem kell találgatnod, hogy mi" +
                         " is van otthon?! Így megkönnyítve a dolgodat a boltban.",
             aboutParag2: "Segítek, hogy konyhádat modernizáld. Otthon tárolt élelmiszereidet megtekintheted weboldalunkon vagy mobilalkalmazásunkban," +
-                         "új dolgaidat rögzítheted, illetve kitörölheted adatbázisunkról. Így teljes irányításod lehet konyhád tartalma felet.",
+                         "új dolgaidat rögzítheted, illetve kitörölheted adatbázisunkból. Így teljes irányításod lehet konyhád tartalma felett.",
 
             //About profile
             about_profileh2: "Csatlakozz most!",
@@ -35,16 +35,17 @@ const i18n = createI18n({
 
             //About items
             about_itemsh2: "Menedzseld a konyhád!",
-            about_itemsParag: "Virtuális konyhádban tárolhatod élelmiszereidet. Add meg a valódi konyhád tartalmát és menedzseld élelmiszereidet.",
-            about_itemsParag2: "Ha nem tudnád milyen termékeid vannak otthon, itt bármikor rá nézhetsz, így megkönnyítve az életedet.",
+            about_itemsParag: "Termékeidet mágikus DiKAMON-okként gyűjtheted. Gyűjtsd össze az összeset és légy a DiKAMON bajnok!",
+            about_itemsParag2: "A konyhád tartalmának menedzselése sosem volt ilyen mókás és egyszerű. " + 
+                                "Nem unalmas, mint a valóságban, hanem olyan ,mint egy videójátékban!",
             clickmeTakeMeThere: "Vigyél oda",
             clickmeRegisterFirst: "Először regisztrálj",
 
             //About recipes
             about_recipesh2: "Egyszerű receptek kezdőknek!",
             about_recipesParag: "Nem vagy Gordon Ramsey? Ne félj, a tehetséges fejlesztőink több egyszerű és gyors receptet írtak számodra!",
-            about_recipesParag2: "A receptek csak olyan élelmiszereket tartalmaznak, amelyeket DiKA-ban tudsz tárolni vagy könnyen beszerezheted",
-            about_recipesParag3: "A receptek 4 lépésből állnak, négy egyszerű lépésből, amit bárki tud követni",
+            about_recipesParag2: "A receptek csak olyan élelmiszereket tartalmaznak, amelyeket DiKA-ban tudsz tárolni vagy könnyen beszerezheted.",
+            about_recipesParag3: "A receptek 4 lépésből állnak, négy egyszerű lépésből, amit bárki tud követni.",
             about_recipesParag4: "Tehát mire vársz? Meg tudod csinálni!, főzzünk/süssünk együtt!",
             about_recipesLink: "Recept könyv",
 
@@ -150,8 +151,8 @@ const i18n = createI18n({
 
             //About items
             about_itemsh2: "Manage your kitchen!",
-            about_itemsParag: "You can store your items in your virtual kitchen. Upload the content of your real kitchen and manage your items here.",
-            about_itemsParag2: "If you can't remember what's in your kitchen, worry not, you can always check here. Making your life easier.",
+            about_itemsParag: "You can store your items as magical creatures, called DiKAMONs. Collect all of them and be the DiKAMON champion!",
+            about_itemsParag2: "Managing your kitchen was never this easy and fun! Unlike in real life, it's not boring. It feels like a videogame.",
             clickmeTakeMeThere: "Take me there",
             clickmeRegisterFirst: "Register first",
 

@@ -7,34 +7,37 @@
     import Searchbar from './Searchbar.vue';
     import { useItemStore } from '@/stores/itemstore';
     import { useUserStore } from '@/stores/userstore';
+    import type IFormResponse from '@/models/FormResponse';
+    import SearchValidation from '@/utils/SearchValidation';
     const { app_language } = storeToRefs(useAppStore());
     const { itemsAllLength } = storeToRefs(useItemStore());
     const { storedItemsAllLength, showAllTrig, searchStorageInAction } = storeToRefs(useUserStore());
     const { t } = useI18n();
     const props = defineProps(["headerTitle", "headerDescription"]);
-    const emit = defineEmits(["showAll", "searchStoredItem", "typeChangedDisablePagi", "showNew"]);
+    const emit = defineEmits(["showAll","searchStoredItem", "typeChangedDisablePagi", "showNew"]);
     const selectedType = ref<string>(sessionStorage.getItem("selectedRecipeType") ?? "0");
 
     const search = (searchedWord: string): void => {
-        if(props.headerTitle == "mykitchen"){
-            searchStorageInAction.value = true;
-            showAllTrig.value = true;
-            emit("searchStoredItem", searchedWord);
+        let validation: IFormResponse = SearchValidation.SearchedWordIsValid(searchedWord);
+        if (!validation.isError) {
+            if(props.headerTitle == "mykitchen"){
+                searchStorageInAction.value = true;
+                showAllTrig.value = true;
+                emit("searchStoredItem", searchedWord);
+            }
+            else {
+                selectedType.value = "0";
+                emit("typeChangedDisablePagi", false);
+                useRecipeStore().getRecipesBySearch(searchedWord);
+            }
         } else {
-            selectedType.value = "0";
-            emit("typeChangedDisablePagi", false);
-            useRecipeStore().getRecipesBySearch(searchedWord).catch((err:string)=> alert(err));
+            alert(useAppStore().app_language == 'hu' ? validation.message : validation.messageEn);
         }
     };
 
     const showAll = (): void => {
         emit("showAll");
-        if(props.headerTitle != "mykithcen"){
-            emit("typeChangedDisablePagi", true);
-            useRecipeStore().loadRecipesPaginated(0, 6);
-        } else {
-            useUserStore().selectedItemtype = 0;
-        }
+        useUserStore().selectedItemtype = 0;
     };
 
     const recipeTypeChanged = (): void => {
@@ -45,7 +48,6 @@
         }
         else {
             emit("typeChangedDisablePagi", true);
-            useRecipeStore().loadRecipesPaginated(0, 6);
         }   
     };
 
