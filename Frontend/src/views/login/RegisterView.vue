@@ -19,7 +19,7 @@
         justify-content: center;
         align-items: center;
     }
-    .container{
+    .container {
         background-color: var(--mercury);
         border: 3px solid var(--ebony-clay);
         border-radius: 5px;

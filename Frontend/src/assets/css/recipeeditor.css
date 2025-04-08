@@ -1,23 +1,23 @@
 .content-box {
-    font-family: Funnel Sans, sans-serif;
+    font-family: "Funnel Sans", sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.container{
+.container {
     background-color: var(--mercury);
     border: 3px solid var(--ebony-clay);
     border-radius: 5px;
 }
-.InputDiv{
+.input-div {
     border: 0.5px solid gray;
     border-radius: 5px;
 }
-textarea{
+textarea {
     height: 12vh;
     resize: none;
 }
-.ingredient-div{
+.ingredient-div {
     border: 0.5px var(--ebony-clay) solid;
     border-radius: 20px;
     height: 3rem;
@@ -31,7 +31,7 @@ i {
     cursor: pointer;
     padding: 0.5rem;
 }
-.unitSpan {
+.unit-span {
     border: 0.5px white solid;
     background-color: var(--ebony-clay);
     color: white;

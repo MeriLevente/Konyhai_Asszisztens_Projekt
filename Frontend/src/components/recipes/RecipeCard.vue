@@ -4,41 +4,40 @@
   import { storeToRefs } from 'pinia';
   import { useI18n } from 'vue-i18n';
   import { useRouter } from 'vue-router';
-  const { app_language } = storeToRefs(useAppStore());
+  const { appLanguage } = storeToRefs(useAppStore());
   const props = defineProps(["recipe"]);
   const { t } = useI18n();
   const router = useRouter();
 
   const navigateToRecipe = (id: number): void => {
     router.push(`recipe?id=${id}`);
-  }
+  };
 
   const convertRecipeTime = (time: number): string => {
     const hours: number = Math.floor(time / 60);
     const minutes: number = time % 60;
     return `${hours > 0 ? `${hours} ${t("hour")} ` : ''}${minutes > 0 ? `${minutes} ${t("minute")}` : ''}`;
-  }
+  };
 
   const setTypeTooltip = (type: string): {short: string, hu: string, en: string} => {
-    return useRecipeStore().recipe_types.find(x=> x.short == type) ?? {short: "", hu: "Típus nem található", en: "Type not found!"};
-  }
+    return useRecipeStore().recipeTypes.find(x=> x.short == type) ?? {short: "", hu: "Típus nem található", en: "Type not found!"};
+  };
 
   const setDiffColour = (diff: number): string => {
     let colour: string = "hard";
-    if(diff <= 4)
+    if (diff <= 4)
       colour = "easy";
-    if(diff >= 5 && diff <= 7)
+    if (diff >= 5 && diff <= 7)
       colour = "normal";
     return `diff-span-${colour}`;
-  }
-
+  };
 </script>
 
 <template>
     <div class="stored-card card" style="cursor: pointer;" v-on:click="navigateToRecipe(recipe.id)">
         <img class="card-img-top" :src="recipe.image" :alt="`${recipe.name_EN} image`">
         <div class="card-body">
-          <h2 class="card-title" style="font-size: 1.1rem;">{{ app_language == 'hu' ? recipe.name : recipe.name_EN }}</h2>
+          <h2 class="card-title" style="font-size: 1.1rem;">{{ appLanguage == 'hu' ? recipe.name : recipe.name_EN }}</h2>
           <div style="position: relative;">
             <div style="float: left;">
               <p class="card-text">{{ convertRecipeTime(recipe.time) }}</p>
@@ -48,7 +47,7 @@
 
               <span class="recipe-rounded-span"
                 data-toggle="tooltip" data-placement="top"
-                :title="app_language == 'hu' ? setTypeTooltip(recipe.type).hu : setTypeTooltip(recipe.type).en">
+                :title="appLanguage == 'hu' ? setTypeTooltip(recipe.type).hu : setTypeTooltip(recipe.type).en">
                 {{ recipe.type }}
               </span>
             </div>
@@ -66,13 +65,13 @@
     font-weight: bold;
     margin-right: 2px;
   }
-  .diff-span-easy{
+  .diff-span-easy {
     background-color: green;
   }
-  .diff-span-normal{
+  .diff-span-normal {
     background-color: orange;
   }
-  .diff-span-hard{
+  .diff-span-hard {
     background-color: red;
   }
 </style>

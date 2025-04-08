@@ -4,4 +4,4 @@ export default interface Ingredient {
     recipeId: number
     item: Item
     quantity: number
-}
+};

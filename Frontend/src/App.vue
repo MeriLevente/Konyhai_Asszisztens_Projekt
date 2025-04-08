@@ -1,14 +1,12 @@
 <script setup lang="ts">
-  import { watch } from 'vue';
-import AppNav from './components/app/AppNav.vue';
+  import AppNav from './components/app/AppNav.vue';
   import type ILoggedInUser from './models/LoggedInUser';
-import router from './router';
   import { useAppStore } from './stores/appstore';
   import { useUserStore } from './stores/userstore';
   import i18n from './translations';
   
   const startupLang: string | null = localStorage.getItem("lang");
-  useAppStore().app_language = startupLang ?? "hu";
+  useAppStore().appLanguage = startupLang ?? "hu";
   i18n.global.locale.value = startupLang == "en" ? "en" : "hu";
 
   if (sessionStorage.getItem('user')) {
@@ -22,12 +20,12 @@ import router from './router';
   <RouterView/>
 </template>
 
-<style>
+<style lang="css">
   @import url('https://fonts.googleapis.com/css2?family=Funnel+Sans:ital,wght@0,300..800;1,300..800&family=Tiny5&display=swap');
-  body{
+  body {
     font-family: "Tiny5", sans-serif;
   }
-  input{
+  input {
     font-family: Funnel Sans, sans-serif;
   }
 </style>

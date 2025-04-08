@@ -19,7 +19,7 @@
     font-size: 1.4rem;
 }
 
-#newItemBtn {
+#new-item-btn {
     background-color: var(--ebony-clay);
     color: white;
     transform: translateY(30%);

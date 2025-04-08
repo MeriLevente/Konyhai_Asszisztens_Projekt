@@ -5,13 +5,13 @@
 
 <template>
     <h2 class="display-6 about-h2">{{ t('abouth2') }}</h2>
-    <div class="question-div p-2">
+    <div class="home-yellow-div p-2">
         <h6 class="about-h6">
             <i class="bi bi-question-circle-fill"></i>
             {{ t('abouth6') }}
             <i class="bi bi-question-circle-fill"></i></h6>
     </div>
-    <ul>
+    <ul class="mt-3">
         <li><p class="about-p">{{ t('aboutParag') }}</p></li>
         <li><p class="about-p">{{ t('aboutParag2') }}</p></li>
     </ul>
@@ -22,7 +22,7 @@
         text-align: center;
         font-weight: bold;
     }
-    .question-div {
+    .home-yellow-div {
         border: var(--charade) 1px solid;
         border-radius: 20px;
         background-color: yellow; 

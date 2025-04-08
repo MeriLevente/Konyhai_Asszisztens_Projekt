@@ -6,26 +6,26 @@
     import { useI18n } from 'vue-i18n';
     import { useItemStore } from '@/stores/itemstore';
     import { useTypeStore } from '@/stores/typestore';
-    const { items_error, units } = storeToRefs(useItemStore());
+    const { itemsError, units } = storeToRefs(useItemStore());
     const { types } = storeToRefs(useTypeStore());
-    const { app_language } = storeToRefs(useAppStore());
+    const { appLanguage } = storeToRefs(useAppStore());
     const { t } = useI18n();
     const props = defineProps(["data"]);
     const emit = defineEmits(["saveData", "closeModal"]);
     
-    onMounted(() => {
+    onMounted((): void => {
         useTypeStore().getTypes();
     });
 
-    const closeModal = () => {
-        emit('closeModal')
-    }
+    const closeModal = (): void => {
+        emit('closeModal');
+    };
 
-    const saveChanges = () => {
-        emit('saveData', modalData)
-    }
+    const saveChanges = (): void => {
+        emit('saveData', modalData);
+    };
 
-    let modalData = ref<Item>({
+    const modalData = ref<Item>({
         id: props.data.id,
         name: props.data.name,
         name_EN: props.data.name_EN,
@@ -34,15 +34,10 @@
         image: props.data.image
     });
 
-    const hideError = (): void =>{
-        items_error.value.hu = "";
-        items_error.value.en = "";
+    const hideError = (): void => {
+        itemsError.value.hu = "";
+        itemsError.value.en = "";
     };
-
-    // const imageChanged = (event: any) => {
-    //     useAdminStore().imageChange(event.target)
-    // };
-
 </script>
 
 <template>
@@ -56,43 +51,43 @@
             </div>
             <div class="modal-body">
                 <form @submit.prevent="saveChanges()">
-                    <div class="mb-3">
-                        <label for="nameHU" class="form-label">{{ t("name") }} (hu)</label>
-                        <input type="text" class="form-control" id="nameHU" v-model="modalData.name" 
-                            v-on:focus="() => {if(items_error) hideError()}">
-                    </div>
-                    <div class="mb-3">
-                        <label for="nameEN" class="form-label">{{ t("name") }} (en)</label>
-                        <input type="text" class="form-control" id="nameEN" v-model="modalData.name_EN" 
-                            v-on:focus="() => {if(items_error) hideError()}">
-                    </div>
-                    <div class="mb-3">
-                        <label for="types" class="form-label">{{ t("type") }}</label>
-                        <select name="type" id="types" required v-model="modalData.typeId" class="form-control">
-                            <option v-for="(type,index) in types" :value="type.id" :selected="index+1 == modalData.typeId">
-                                {{ app_language == 'hu' ? type.name : type.name_EN }}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="units" class="form-label">{{ t("unit") }}</label>
-                        <select name="unit" id="units" required v-model="modalData.unit" class="form-control">
-                            <option v-for="(unit,index) in units" :value="unit" :selected="index == units.indexOf(modalData.unit)">
-                                {{ unit }}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="image" class="form-label">{{ t("image") }}</label>
-                        <input type="file" class="form-control" id="image" accept="images/*,.png,.jpg,.jpeg,.svg" 
-                            v-on:focus="() => {if(items_error) hideError()}">
-                    </div>
-                    <div v-if="items_error" class="text-danger text-center mx-5 mb-2">
-                        {{ app_language == "hu" ? items_error.hu : items_error.en }}
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">{{ t("save") }}</button>
-                    </div>
+                        <div class="mb-3">
+                            <label for="nameHU" class="form-label">{{ t("name") }} (hu)</label>
+                            <input type="text" class="form-control" id="nameHU" v-model="modalData.name" 
+                                v-on:focus="() => {if (itemsError) hideError()}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="nameEN" class="form-label">{{ t("name") }} (en)</label>
+                            <input type="text" class="form-control" id="nameEN" v-model="modalData.name_EN" 
+                                v-on:focus="() => {if (itemsError) hideError()}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="types" class="form-label">{{ t("type") }}</label>
+                            <select name="type" id="types" required v-model="modalData.typeId" class="form-control">
+                                <option v-for="(type,index) in types" :value="type.id" :selected="index+1 == modalData.typeId">
+                                    {{ appLanguage == 'hu' ? type.name : type.name_EN }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="units" class="form-label">{{ t("unit") }}</label>
+                            <select name="unit" id="units" required v-model="modalData.unit" class="form-control">
+                                <option v-for="(unit,index) in units" :value="unit" :selected="index == units.indexOf(modalData.unit)">
+                                    {{ unit }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="image" class="form-label">{{ t("image")+ " Url" }}</label>
+                            <input type="text" class="form-control" id="image" v-model="modalData.image"
+                                v-on:focus="() => {if (itemsError) hideError()}">
+                        </div>
+                        <div v-if="itemsError" class="text-danger text-center mx-5 mb-2">
+                            {{ appLanguage == "hu" ? itemsError.hu : itemsError.en }}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">{{ t("save") }}</button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -104,6 +99,7 @@
    .modal {
         transform: translateY(15%);
         display: block;
+        font-family: "Funnel Sans", sans-serif;
    }
    .background {
         width: 100%;

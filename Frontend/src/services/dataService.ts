@@ -6,16 +6,16 @@ const instance = Axios.create({
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
     }
-})
+});
 
-instance.interceptors.request.use((config)=>{
+instance.interceptors.request.use((config) => {
     const token: string | null = sessionStorage.getItem("token");
     const lang: string | null = localStorage.getItem('lang');
     if (token) {
-        config.headers["Authorization"] = `Bearer ${token.trim()}`;
+      config.headers["Authorization"] = `Bearer ${token.trim()}`;
     }
     if (lang) {
-        config.headers['Accept-Language'] = lang;
+      config.headers['Accept-Language'] = lang;
     }
     return config;
 });
@@ -25,10 +25,8 @@ instance.interceptors.response.use(
       return response;
     },
     function (error) {
-      return Promise.reject(
-        error.response.data
-      );
+      return Promise.reject(error.response.data);
     }
-  );
+);
 
-export default instance
+export default instance;

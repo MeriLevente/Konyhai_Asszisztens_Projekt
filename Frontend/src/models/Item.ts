@@ -1,5 +1,5 @@
 export default interface Item {
-    id?: number,
+    id?: number | undefined
     name: string
     name_EN: string
     typeId: number

@@ -4,23 +4,25 @@
     import { storeToRefs } from 'pinia';
     import { useI18n } from 'vue-i18n';
     import { useRouter } from 'vue-router';
-    const { app_language } = storeToRefs(useAppStore());
+    const { appLanguage } = storeToRefs(useAppStore());
     const { t } = useI18n();
     const props = defineProps(["recipe"]);
     const router = useRouter();
-    const type = useRecipeStore().recipe_types.find(x=> x.short == props.recipe.type!);
+    const type = useRecipeStore().recipeTypes.find(x=> x.short == props.recipe.type!);
 
     const goBack = (): void => {
         router.back();
-    }
+    };
 </script>
 
 <template>
     <div class="m-3">
-        <span v-on:click="goBack()"><i class="bi bi-arrow-left" style="font-weight: bold; font-size: 1.5rem; cursor: pointer;"></i></span>
-        <h2 class="text-center">{{ app_language == 'hu' ? recipe?.name : recipe?.name_EN }}</h2>
+        <span v-on:click="goBack()">
+            <i class="bi bi-arrow-left" style="font-weight: bold; font-size: 1.5rem; cursor: pointer;"></i>
+        </span>
+        <h2 class="text-center">{{ appLanguage == 'hu' ? recipe?.name : recipe?.name_EN }}</h2>
         <h6 class="text-center" v-if="type">
-            {{ app_language == "hu" ? type.hu : type.en }}
+            {{ appLanguage == "hu" ? type.hu : type.en }}
         </h6>
         <div class="d-flex justify-content-center mt-1">
             <img :src="recipe.image" :alt="recipe?.name_EN + ' image'" class="recipebook-img">

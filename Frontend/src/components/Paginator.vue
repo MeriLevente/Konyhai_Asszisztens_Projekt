@@ -6,8 +6,8 @@
     const props = defineProps(["maxLength", "page"]);
     const { paginatorLastElementDeleted } = storeToRefs(useAppStore());
     const paginatorValue = ref<number>(6);
-    let paginatorFrom = ref<number>(Number(sessionStorage.getItem("paginator-from")) ?? 0);
-    let paginatorTo = ref<number>(Number(sessionStorage.getItem("paginator-to")) ?? 6);
+    const paginatorFrom = ref<number>(Number(sessionStorage.getItem("paginator-from")) ?? 0);
+    const paginatorTo = ref<number>(Number(sessionStorage.getItem("paginator-to")) ?? 6);
 
     const goBack = (): void => {
         if (paginatorFrom.value - Number(paginatorValue.value) > 0) {
@@ -29,22 +29,21 @@
 
     const paginatorValueChanged = (): void => {
         if (paginatorFrom.value == 0)
-            emit('paginatorTriggered', {from: paginatorFrom.value, to: paginatorFrom.value + paginatorValue.value})
+            emit('paginatorTriggered', {from: paginatorFrom.value, to: paginatorFrom.value + paginatorValue.value});
     };
 
-    onMounted(()=> {
-        
+    onMounted((): void => {
         if (sessionStorage.getItem("paginator-page") != props.page.toString()) {
             paginatorFrom.value = 0;
             paginatorTo.value = paginatorValue.value;
-        } 
+        };
         sessionStorage.setItem("paginator-page", props.page.toString());
         if (!sessionStorage.getItem("paginator-from") || !sessionStorage.getItem("paginator-to")) {
             paginatorFrom.value = 0;
             paginatorTo.value = paginatorValue.value;
-        }
+        };
         emit("paginatorTriggered", {from: paginatorFrom.value, to: paginatorTo.value});
-    })
+    });
 </script>
 
 <template>
