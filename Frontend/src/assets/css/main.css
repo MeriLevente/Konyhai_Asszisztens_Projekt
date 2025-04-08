@@ -2,6 +2,6 @@
 @import 'bootstrap-icons/font/bootstrap-icons.min.css';
 @import 'colours.css';
 
-body{
+body {
     background-color: var(--bermuda);
 }

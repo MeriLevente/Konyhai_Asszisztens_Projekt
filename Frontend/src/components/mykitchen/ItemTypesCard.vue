@@ -1,11 +1,11 @@
 <script setup lang="ts">
     import { useAppStore } from '@/stores/appstore';
     import { storeToRefs } from 'pinia';
-    const { app_language } = storeToRefs(useAppStore());
+    const { appLanguage } = storeToRefs(useAppStore());
     const props = defineProps(["type"]);
     const emit = defineEmits(["typeClicked"]);
 
-    const typeClicked = (id: number):void => {
+    const typeClicked = (id: number): void => {
         emit("typeClicked", id);
     };
 </script>
@@ -15,7 +15,7 @@
         :style="{backgroundImage:'url(' + type.image + ')' }"
         v-on:click="typeClicked(type.id)">
         <div class="title w-75">
-            <h2 class="pt-1">{{ app_language == 'hu' ? type.name : type.name_EN }}</h2>
+            <h2 class="pt-1">{{ appLanguage == 'hu' ? type.name : type.name_EN }}</h2>
         </div>    
     </div>
 </template>

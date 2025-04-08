@@ -13,9 +13,11 @@
             <li><p class="about-p">{{ t('about_recipesParag2') }}</p></li>
             <li><p class="about-p">{{ t('about_recipesParag3') }}</p></li>
             <li><p class="about-p">{{ t('about_recipesParag4') }}</p></li>
-            <div class="d-flex justify-content-start" v-if="useUserStore().user?.role != 'admin'">
-                <RouterLink to="/login" v-if="!useUserStore().status.loggedIn" class="about-p btn btn-warning">{{ t('clickmeRegisterFirst') }}</RouterLink>
-                <RouterLink to="/recipes" v-if="useUserStore().status.loggedIn && UserValidation.isAutherizedRole('user')" class="recipebook-btn">{{ t('about_recipesLink') }}</RouterLink>
+            <div class="d-flex justify-content-start">
+                <RouterLink to="/login" v-if="!useUserStore().status.loggedIn"
+                    class="about-p btn btn-warning">{{ t('clickmeRegisterFirst') }}</RouterLink>
+                <RouterLink to="/recipes" v-if="useUserStore().status.loggedIn && UserValidation.isAutherizedRole('user')"
+                    class="recipebook-btn">{{ t('about_recipesLink') }}</RouterLink>
             </div>
         </ul>
         <img src="@/assets/images/fridgebuddy_chef.png" alt="Chef fridge" class="fridge-image">
@@ -33,5 +35,4 @@
         text-decoration: none;
         padding: 0.3rem;
     }
-    
 </style>

@@ -9,10 +9,10 @@
     <ul>
         <li><p class="about-p">{{ t('about_profileParag') }}</p></li>
         <li><p class="about-p">{{ t('about_profileParag2') }}</p></li>
-        <li v-if="!useUserStore().status.loggedIn"><RouterLink to="/login" class="about-p">{{ t('clickme') }}</RouterLink></li>
+        <li v-if="!useUserStore().status.loggedIn">
+            <RouterLink to="/login" class="about-p">{{ t('clickme') }}</RouterLink>
+        </li>
     </ul>
 </template>
 
-<style lang="css">
-    
-</style>
+<style lang="css"/>

@@ -1,13 +1,13 @@
 <script setup lang="ts">
     import { useAppStore } from '@/stores/appstore';
     import { storeToRefs } from 'pinia';
-    const { app_language } = storeToRefs(useAppStore());
+    const { appLanguage } = storeToRefs(useAppStore());
     const props = defineProps(["item"]);
-    const emit = defineEmits(["showpopup"])
+    const emit = defineEmits(["showpopup"]);
 
     const showPopup = (method: string): void => {
-        emit("showpopup", method, props.item)
-    }
+        emit("showpopup", method, props.item);
+    };
 </script>
 
 <template>
@@ -15,7 +15,7 @@
         <img class="card-img-top" :src="item.storedItem.image" :alt="`${item.storedItem.name_EN} image`">
         <div class="card-body d-flex justify-content-between">
             <div>
-                <h2 class="card-title">{{ app_language == 'hu' ? item.storedItem.name : item.storedItem.name_EN }}</h2>
+                <h2 class="card-title">{{ appLanguage == 'hu' ? item.storedItem.name : item.storedItem.name_EN }}</h2>
                 <p class="card-text">{{ `${item.quantity} ${item.storedItem.unit}` }}</p>
             </div>
             <div class="align-self-end">
@@ -24,18 +24,17 @@
             </div>
         </div>
     </div>
-    
 </template>
 
 <style lang="css">
-    .stored-card{
+    .stored-card {
         border: 2px solid var(--ebony-clay);
         border-radius: 20px;
         background-color: white;
         color: var(--ebony-clay);
         font-weight: bold;
     }
-    .card-img-top{
+    .card-img-top {
         border-radius: 20px 20px 0 0;
         height: 15rem;
         border-bottom: 2px solid var(--ebony-clay);

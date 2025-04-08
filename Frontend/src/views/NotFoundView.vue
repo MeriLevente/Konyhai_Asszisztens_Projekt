@@ -4,7 +4,7 @@
 </script>
 
 <template>
-    <div class="container mx-auto">
+    <div class="container">
         <div class="py-5 mx-auto w-75">
             <img src="@/assets/images/sadfridge.png" class="notfound-img" alt="Not found!">
             <div class="notfound-div">

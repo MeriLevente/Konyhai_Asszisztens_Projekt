@@ -1,4 +1,4 @@
-th{
+th {
     background-color: var(--ebony-clay);
     color: var(--mercury);
 }
@@ -9,11 +9,11 @@ th{
     background-color: var(--mercury);
 }
 
-tr{
+tr {
     border: var(--ebony-clay) 0.30px solid;
 }
 
-.tdImage {
+.td-image {
     width: 6vh;
     height: 5vh;
 }
@@ -44,4 +44,46 @@ i {
     background-color: var(--mercury);
     color: black;
     font-weight: bold;
+}
+
+.row-content {
+    height: 60vh;
+}
+
+.admin-box-blue {
+    height: 25vh;
+    background-color: var(--ebony-clay);
+    border: 1px solid var(--mercury);
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.admin-box-blue > p {
+    text-decoration: none;
+    font-size: 5vh;
+    color: var(--mercury);
+}
+
+.admin-box-blue > i {
+    font-size: 8.5vh;
+    color: var(--mercury);
+}
+
+.admin-box-white {
+    height: 25vh;
+    background-color: var(--mercury);
+    border: 3px solid var(--ebony-clay);
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.admin-box-white > p {
+    text-decoration: none;
+    font-size: 5vh;
+    color: var(--ebony-clay);
+}
+
+.admin-box-white > i {
+    font-size: 8.5vh;
+    color: var(--ebony-clay);
 }

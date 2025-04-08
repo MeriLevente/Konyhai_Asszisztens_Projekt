@@ -5,7 +5,8 @@
         <img src="@\assets\images\fridgebuddy.png" alt="Lógó" width="90" height="60" class="d-inline-block align-text-center">
         <span class="navbar-title mercury-nav-element">DiKAMON</span>
       </a>
-      <button class="navbar-toggler mercury-nav-button navbar-ligth bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      <button class="navbar-toggler mercury-nav-button navbar-ligth bg-light" type="button"
+        data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -14,7 +15,7 @@
           <div v-for="(menuItem, index) in menuItems" :key="index">
             <li class="nav-item">
               <router-link class="nav-link mercury-nav-element d-flex justify-content-center"
-                :to="menuItem.to" v-if="menuItem.isVisible">{{ i18n.global.locale.value == "hu" ? menuItem.title : menuItem.title_EN }}
+                :to="menuItem.to" v-if="menuItem.isVisible">{{ i18n.global.locale.value == "hu" ? menuItem.title : menuItem.titleEn }}
               </router-link>
             </li>
           </div>
@@ -37,84 +38,83 @@
     const { status } = storeToRefs(useUserStore());
     import { useRouter } from 'vue-router';
     import { useAppStore } from '@/stores/appstore';
-import UserValidation from '@/utils/UserValidation';
+    import UserValidation from '@/utils/UserValidation';
     const router = useRouter();
 
-    const menuItems = computed(()=>{
+    const menuItems = computed(() => {
       return [
         {
             title: "Nyitó oldal",
-            title_EN: "Home",
+            titleEn: "Home",
             to: '/',
             isVisible: true,
         },
         {
             title: "Bejelentkezés",
-            title_EN: "Login",
+            titleEn: "Login",
             to: '/login',
             isVisible: !status.value.loggedIn,
         },
         {
             title: "Konyhám",
-            title_EN: "My Kitchen",
+            titleEn: "My Kitchen",
             to: '/items',
             isVisible: status.value.loggedIn && useUserStore().user?.role && UserValidation.isAutherizedRole("user"),
         },
         {
             title: "Receptek",
-            title_EN: "Recipes",
+            titleEn: "Recipes",
             to: '/recipes',
             isVisible: status.value.loggedIn && useUserStore().user?.role && UserValidation.isAutherizedRole("user"),
         },
         {
             title: "Admin",
-            title_EN: "Admin",
+            titleEn: "Admin",
             to: '/admin',
             isVisible: status.value.loggedIn && useUserStore().user?.role && UserValidation.isAutherizedRole("admin"),
         },
-    ]
-    });
+    ]});
 
-    const changeLanguage = () : void => {
+    const changeLanguage = (): void => {
       const lang: string = i18n.global.locale.value;
-      if(lang == "hu"){
+      if (lang == "hu") {
         i18n.global.locale.value = 'en';
-        useAppStore().app_language = 'en';
+        useAppStore().appLanguage = 'en';
         localStorage.setItem('lang', 'en');
       }
-      else{
+      else {
         i18n.global.locale.value = 'hu';
-        useAppStore().app_language = 'hu';
+        useAppStore().appLanguage = 'hu';
         localStorage.setItem('lang', 'hu');
       }
     };
 
-    const onLogout = () : void => {
-      logout().then(()=>router.push('/'))
+    const onLogout = (): void => {
+      logout().then(()=>router.push('/'));
     };
 </script>
 
 <style scoped>
-nav{
+nav {
     background-color: var(--ebony-clay);
     border-bottom: 0.5rem solid white;
 }
 
-.mercury-nav-element{
+.mercury-nav-element {
     color: var(--mercury);
 }
 
-.mercury-nav-button{
+.mercury-nav-button {
     border-color: var(--mercury);
 }
 
-.bg-hu{
+.bg-hu {
   background-image: url('@/assets/images/huflag.png');
   background-size: cover;
   background-repeat: no-repeat;
 }
 
-.bg-en{
+.bg-en {
   background-image: url('@/assets/images/enflag.png');
   background-size: cover;
   background-repeat: no-repeat;

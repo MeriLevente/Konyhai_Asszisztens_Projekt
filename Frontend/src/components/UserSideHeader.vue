@@ -9,7 +9,7 @@
     import { useUserStore } from '@/stores/userstore';
     import type IFormResponse from '@/models/FormResponse';
     import SearchValidation from '@/utils/SearchValidation';
-    const { app_language } = storeToRefs(useAppStore());
+    const { appLanguage } = storeToRefs(useAppStore());
     const { itemsAllLength } = storeToRefs(useItemStore());
     const { storedItemsAllLength, showAllTrig, searchStorageInAction } = storeToRefs(useUserStore());
     const { t } = useI18n();
@@ -18,9 +18,9 @@
     const selectedType = ref<string>(sessionStorage.getItem("selectedRecipeType") ?? "0");
 
     const search = (searchedWord: string): void => {
-        let validation: IFormResponse = SearchValidation.SearchedWordIsValid(searchedWord);
+        let validation: IFormResponse = SearchValidation.searchedWordIsValid(searchedWord);
         if (!validation.isError) {
-            if(props.headerTitle == "mykitchen"){
+            if (props.headerTitle == "mykitchen") {
                 searchStorageInAction.value = true;
                 showAllTrig.value = true;
                 emit("searchStoredItem", searchedWord);
@@ -29,9 +29,9 @@
                 selectedType.value = "0";
                 emit("typeChangedDisablePagi", false);
                 useRecipeStore().getRecipesBySearch(searchedWord);
-            }
+            };
         } else {
-            alert(useAppStore().app_language == 'hu' ? validation.message : validation.messageEn);
+            alert(useAppStore().appLanguage == 'hu' ? validation.message : validation.messageEn);
         }
     };
 
@@ -41,25 +41,25 @@
     };
 
     const recipeTypeChanged = (): void => {
-        sessionStorage.setItem("selectedRecipeType", selectedType.value)
-        if (selectedType.value != "0"){
+        sessionStorage.setItem("selectedRecipeType", selectedType.value);
+        if (selectedType.value != "0") {
             emit("typeChangedDisablePagi", false);
             useRecipeStore().getRecipesByType(selectedType.value);
         }
         else {
             emit("typeChangedDisablePagi", true);
-        }   
+        };
     };
 
     const showNewPopUp = (): void => {
         emit("showNew");
     };
 
-    const changeScoreBgColour = computed(() => {
+    const changeScoreBgColour = computed((): string => {
         const myPercentage =  (storedItemsAllLength.value / itemsAllLength.value) * 100;
         if (myPercentage == 100)
             return "#FFDD43";
-        return myPercentage > 60 ? "greenyellow" : myPercentage > 40 ? "orange" : "red";
+        return myPercentage > 60 ? "greenyellow" : myPercentage > 30 ? "orange" : "red";
     });
 </script>
 
@@ -72,15 +72,15 @@
                 <span class="my-score-span" :style="{backgroundColor: changeScoreBgColour}">
                     {{ itemsAllLength }}/{{ storedItemsAllLength }}
                 </span> 
-                <button class="btn w-100" id="newItemBtn" v-on:click="showNewPopUp" :disabled="searchStorageInAction">
+                <button class="btn w-100" id="new-item-btn" v-on:click="showNewPopUp" :disabled="searchStorageInAction">
                     <span style="font-size: 1.2rem;">{{ t("add_new") }}</span>
                 </button>
             </div>
             <div class="col-5 col-md-2 form-floating p-1 ms-1" v-if="props.headerTitle == 'recipesTitle'">
                     <select class="form-control input-area" id="typeselect" v-on:change="recipeTypeChanged()" v-model="selectedType">
                         <option value="0">{{ t("all") }}</option>
-                        <option v-for="type in useRecipeStore().recipe_types" :value="type.short">
-                            {{ app_language == 'hu' ? type.hu : type.en }}
+                        <option v-for="type in useRecipeStore().recipeTypes" :value="type.short">
+                            {{ appLanguage == 'hu' ? type.hu : type.en }}
                         </option>
                     </select>
                     <label for="typeselect">{{t("type")}}</label>
@@ -93,12 +93,12 @@
             <div class="col-12 col-md-6">
                 <Searchbar v-on:search="search"/>
             </div>
-            </div>
-        </header>
+        </div>
+    </header>
 </template>
 
 <style lang="css">
-    .my-score-span{
+    .my-score-span {
         color: black;
         border-radius: 10rem;
         padding-top: 5%;

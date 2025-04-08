@@ -8,25 +8,26 @@
     import { storeToRefs } from 'pinia';
     const { storageLoading } = storeToRefs(useUserStore());
     import { onMounted, ref } from 'vue';
-
     const recipe_id: number = Number(router.currentRoute.value.query.id);
-    let recipe = ref<IRecipe | undefined>();
-    if(isNaN(recipe_id))
-        router.push('/incorrect-id')
+    const recipe = ref<IRecipe | undefined>();
 
-    onMounted(()=> {
-        useUserStore().getRecipeById(recipe_id).then(()=>{
-            recipe.value = useUserStore().viewedRecipe;
-        })
-    })
+    if (isNaN(recipe_id))
+      router.push('/incorrect-id');
+
+    onMounted((): void => {
+      useUserStore().getRecipeById(recipe_id)
+      .then((): void => {
+        recipe.value = useUserStore().viewedRecipe;
+      });
+    });
 </script>
 
 <template>
-  <div class="recipe-content-box">
+  <main class="recipe-content-box px-3">
     <div class="container d-flex justify-content-center mt-5" v-if="storageLoading || useUserStore().status.message">
         <span v-if="storageLoading" class="spinner-border spinner-border-bg text-center"></span>
         <span v-if="useUserStore().status.message" class="text-center">
-          {{ useAppStore().app_language == "hu" ? useUserStore().status!.message : useUserStore().status!.messageEn }}
+          {{ useAppStore().appLanguage == "hu" ? useUserStore().status!.message : useUserStore().status!.messageEn }}
         </span>
     </div>
     <div class="container rec-container my-3 mt-5" v-if="!storageLoading && !useUserStore().status.message">
@@ -39,18 +40,18 @@
         </div>
       </div>
     </div>
-  </div>
+  </main>
 </template>
 
 <style lang="css">
-    .recipe-content-box {
-      display: flex; 
-    }
+  .recipe-content-box {
+    display: flex; 
+  }
   .rec-container{
-      background-color: white;
-      border: 3px solid var(--ebony-clay);
-      border-radius: 5px;
-      box-shadow: 8px 12px var(--ebony-clay);
+    background-color: white;
+    border: 3px solid var(--ebony-clay);
+    border-radius: 5px;
+    box-shadow: 8px 12px var(--ebony-clay);
   }
   .left-col {
     border-right: 1px solid black;

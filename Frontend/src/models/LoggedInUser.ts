@@ -1,6 +1,6 @@
 export default interface ILoggedInUser {
     id?: number | null
-    name?: string
-    token?: string
-    role?: string
+    name?: string | undefined
+    token?: string | undefined
+    role?: string | undefined
 };

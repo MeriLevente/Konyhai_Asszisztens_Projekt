@@ -6,7 +6,7 @@
     import { onMounted, ref } from 'vue';
     import { useI18n } from 'vue-i18n';
     import { useRouter } from 'vue-router';
-    const { app_language } = storeToRefs(useAppStore());
+    const { appLanguage } = storeToRefs(useAppStore());
     const { t } = useI18n();
     const props = defineProps(["recipe"]);
     let storedIngredients = ref<IStoredItem[]>([]);
@@ -14,33 +14,33 @@
     let loadingCooking = ref<boolean>(false);
     const router = useRouter();
 
-    onMounted(()=>{
+    onMounted((): void => {
         useUserStore().getStoredItems(true)
-        .then(()=> {
-            if(props.recipe.ingredients.length > 0){
+        .then((): void => {
+            if (props.recipe.ingredients.length > 0) {
                 storedIngredients.value = useUserStore().getRecipeIngredientsInMyKitchen(props.recipe.ingredients);
-            }
+            };
             useUserStore().storageLoading = false;
         })
-        .catch((err: string)=>{
+        .catch((err: string): void => {
             console.error(err);
             useUserStore().storageLoading = false;
         }); 
     });
 
     const isEnoughQuantity = (storedQuantity: number, ingredientQuantity: number): void => {
-        if(enoughInStore.value){
+        if (enoughInStore.value) {
             if (storedQuantity < ingredientQuantity)
                 enoughInStore.value = false;
-        }
-    }
+        };
+    };
 
     const removeUsedItems = (): void => {
         loadingCooking.value = true;
         const myItems: IStoredItem[] = [...storedIngredients.value];
         for (let i = 0; i < myItems.length; i++) {
             let storedItem: IStoredItem = myItems[i];
-            useUserStore().updateQuantity({...storedItem, quantity: myItems[i].quantity - props.recipe.ingredients[i].quantity}, 'reduce')   
+            useUserStore().updateQuantity({...storedItem, quantity: myItems[i].quantity - props.recipe.ingredients[i].quantity}, 'reduce');  
         }
         loadingCooking.value = false;
         alert("Bon Appetit! :)");
@@ -59,7 +59,7 @@
         <h3 class="pt-1">{{ t("ingredients" ) + ` (${t("inmystore")})`}}</h3>
         <ul>
             <li v-for="(ingr, index) in recipe?.ingredients">
-                {{ `${app_language == 'hu' ? ingr.item.name : ingr.item.name_EN}, ${ingr.quantity} ${t(ingr.item.unit)} ` }}
+                {{ `${appLanguage == 'hu' ? ingr.item.name : ingr.item.name_EN}, ${ingr.quantity} ${t(ingr.item.unit)} ` }}
                 (
                 <span v-if="storedIngredients[index]" 
                     v-on="isEnoughQuantity(storedIngredients[index].quantity, ingr.quantity)"
@@ -68,14 +68,13 @@
                 </span>
                 )
             </li>
-            
         </ul>
         <h3>{{ t("prep" )}}</h3>
         <ol>
-            <li class="mt-2" v-if="app_language == 'hu'" v-for="step in recipe?.description.split('#')">
+            <li class="mt-2" v-if="appLanguage == 'hu'" v-for="step in recipe?.description.split('#')">
                 {{ step }}
             </li>
-            <li class="mt-2" v-if="app_language == 'en'" v-for="step in recipe?.description_EN.split('#')">
+            <li class="mt-2" v-if="appLanguage == 'en'" v-for="step in recipe?.description_EN.split('#')">
                 {{ step }}
             </li>
         </ol>

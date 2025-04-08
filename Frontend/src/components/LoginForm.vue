@@ -7,14 +7,13 @@
     import { useI18n } from 'vue-i18n';
     import { useRouter } from 'vue-router';
     const { status } = storeToRefs(useUserStore());
-    const { app_language } = storeToRefs(useAppStore());
+    const { appLanguage } = storeToRefs(useAppStore());
     const { t } = useI18n();
     const props = defineProps(["method", "role"]);
-    let loading = ref<boolean>(false);
-
-    let confirm_password = ref<string>();
-    let see_password = ref<boolean>(false);
-    let see_conf_password = ref<boolean>(false);
+    const loading = ref<boolean>(false);
+    const confirmPassword = ref<string>();
+    const seePassword = ref<boolean>(false);
+    const seeConfirmPassword = ref<boolean>(false);
 
     const router = useRouter();
 
@@ -24,18 +23,19 @@
         role: props.role
     });
 
-    const submitForm = () : void => {
+    const submitForm = (): void => {
         const userData: IUser = {
                 name: formData.value.name?.trim(),
                 email: formData.value.email.trim(),
                 password: formData.value.password.trim(),
                 role: formData.value.role,
-        }
+        };
         if(props.method == "register"){
-            status.value.confirm_password = confirm_password.value!;
+            status.value.confirmPassword = confirmPassword.value!;
             loading.value = true;
-            useUserStore().register(userData)!.then(()=>{
-                if(props.role == 'user')
+            useUserStore().register(userData)!
+            .then((): void => {
+                if (props.role == 'user')
                     router.push("/");
                 else
                 {
@@ -46,38 +46,38 @@
                         password: "",
                         role: "admin"
                     };
-                    confirm_password.value = "";
+                    confirmPassword.value = "";
                 }
                 loading.value = false;
             })
-            .catch(()=> loading.value = false);
+            .catch((): void => { loading.value = false; });
         } else {
             loading.value = true;
-            useUserStore().login(userData)!.then(()=>{
+            useUserStore().login(userData)!.then((): void => {
                 loading.value = false;
                 router.push("/");
             })
-            .catch(()=> loading.value = false);
+            .catch((): void => { loading.value = false; });
         };
     };
 
-    const toggleShowPassword = (inputField: string) : void => {
-        if(inputField == "password"){
-            if(see_password.value){
-                see_password.value = false;
+    const toggleShowPassword = (inputField: string): void => {
+        if (inputField == "password") {
+            if (seePassword.value) {
+                seePassword.value = false;
             } else {
-                see_password.value = true;
+                seePassword.value = true;
             }
         } else {
-            if(see_conf_password.value){
-                see_conf_password.value = false;
+            if (seeConfirmPassword.value) {
+                seeConfirmPassword.value = false;
             } else {
-                see_conf_password.value = true;
+                seeConfirmPassword.value = true;
             }
-        }
+        };
     };
 
-    const hideError = (): void =>{
+    const hideError = (): void => {
         useUserStore().hideError();
     };
 </script>
@@ -93,34 +93,34 @@
             <form @submit.prevent="submitForm()">
                 <div class="form-floating mb-3" v-if="method == 'register'">
                     <input type="text" class="form-control" id="name" v-model="formData.name" maxlength="50"
-                        v-on:focus="() => {if(status.message && status.messageEn) hideError()}">
+                        v-on:focus="() => { if(status.message && status.messageEn) hideError();}">
                     <label for="name">{{t("name_form")}}</label>
                 </div>
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="email" v-model="formData.email" maxlength="320" 
-                        v-on:focus="() => {if(status.message && status.messageEn) hideError()}">
+                        v-on:focus="() => { if(status.message && status.messageEn) hideError(); }">
                     <label for="email">Email</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input :type="see_password ? 'text' : 'password'" class="form-control" id="password"
+                    <input :type="seePassword ? 'text' : 'password'" class="form-control" id="password"
                         v-model="formData.password" style="z-index: 0" maxlength="30"
-                        v-on:focus="() => {if(status.message && status.messageEn) hideError()}">
+                        v-on:focus="() => { if(status.message && status.messageEn) hideError(); }">
                     <span class="toggle-password" v-on:click="toggleShowPassword('password')">
-                        <i :class="see_password ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill'"></i>
+                        <i :class="seePassword ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill'"></i>
                     </span>
                     <label for="password">{{t("password_form")}}</label>
                 </div>
                 <div class="form-floating mb-3" v-if="method == 'register'">
-                    <input :type="see_conf_password ? 'text' : 'password'" class="form-control" id="confirmpass"
-                        v-model="confirm_password" maxlength="30" v-on:focus="() => {if(status.message && status.messageEn) hideError()}">
+                    <input :type="seeConfirmPassword ? 'text' : 'password'" class="form-control" id="confirmpass"
+                        v-model="confirmPassword" maxlength="30" v-on:focus="() => { if(status.message && status.messageEn) hideError();}">
                     <span class="toggle-password" v-on:click="toggleShowPassword('confirm_password')">
-                        <i :class="see_conf_password ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill'"></i>
+                        <i :class="seeConfirmPassword ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill'"></i>
                     </span>
                     <label for="confirmpass">{{t("confirm_password_form")}}</label>
                 </div>
                 <RouterLink to="/register" v-if="method != 'register'" class="my-2">{{ t("go_register") }}</RouterLink>
                 <div v-if="status.message && status.messageEn" class="text-danger text-center" id="error-message">
-                    {{ app_language == "hu" ? status.message : status.messageEn }}
+                    {{ appLanguage == "hu" ? status.message : status.messageEn }}
                 </div>
                 <div class="mb-1">
                     <button id="submit" type="submit" class="btn btn-primary w-100 p-2 my-3">
@@ -134,7 +134,7 @@
 </template>
 
 <style lang="css">
-    #submit{
+    #submit {
         background-color: var(--ebony-clay);
         color: var(--mercury);
         font-weight: bold;

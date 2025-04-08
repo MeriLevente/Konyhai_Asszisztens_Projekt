@@ -5,20 +5,20 @@
     import { storeToRefs } from 'pinia';
     import { ref } from 'vue';
     import { useI18n } from 'vue-i18n';
-    const { type_error } = storeToRefs(useTypeStore());
+    const { typesError } = storeToRefs(useTypeStore());
     const { t } = useI18n();
     const props = defineProps(["data"]);
     const emit = defineEmits(["saveData", "closeModal"]);
 
-    const closeModal = () => {
+    const closeModal = (): void => {
         emit('closeModal');
     };
 
-    const saveChanges = () => {
+    const saveChanges = (): void => {
         emit('saveData', modalData);
     };
 
-    let modalData = ref<IType>({
+    const modalData = ref<IType>({
         id: props.data.id,
         name: props.data.name,
         name_EN: props.data.name_EN,
@@ -26,8 +26,8 @@
     });
 
     const hideError = (): void => {
-        type_error.value.en = '';
-        type_error.value.hu = '';
+        typesError.value.en = '';
+        typesError.value.hu = '';
     };
 </script>
 
@@ -42,27 +42,27 @@
             </div>
             <div class="modal-body">
                 <form @submit.prevent="saveChanges()">
-                    <div class="mb-3">
-                        <label for="nameHU" class="form-label">{{ t("name") }} (hu)</label>
-                        <input type="text" class="form-control" id="nameHU" v-model="modalData.name"
-                            v-on:focus="() => {if(type_error) hideError()}">
-                    </div>
-                    <div class="mb-3">
-                        <label for="nameEN" class="form-label">{{ t("name") }} (en)</label>
-                        <input type="text" class="form-control" id="nameEN" v-model="modalData.name_EN"
-                            v-on:focus="() => {if(type_error) hideError()}">
-                    </div>
-                    <div class="mb-3">
-                        <label for="image" class="form-label">{{ t("image") + " Url" }}</label>
-                        <input type="text" class="form-control" id="image" v-model="modalData.image"
-                            v-on:focus="() => {if(type_error) hideError()}">
-                    </div>
-                    <div v-if="type_error" class="text-danger text-center mx-5 mb-2">
-                        {{ useAppStore().app_language == "hu" ? type_error.hu : type_error.en }}
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">{{ t("save") }}</button>
-                    </div>
+                        <div class="mb-3">
+                            <label for="nameHU" class="form-label">{{ t("name") }} (hu)</label>
+                            <input type="text" class="form-control" id="nameHU" v-model="modalData.name"
+                                v-on:focus="() => {if (typesError) hideError()}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="nameEN" class="form-label">{{ t("name") }} (en)</label>
+                            <input type="text" class="form-control" id="nameEN" v-model="modalData.name_EN"
+                                v-on:focus="() => {if (typesError) hideError()}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="image" class="form-label">{{ t("image") + " Url" }}</label>
+                            <input type="text" class="form-control" id="image" v-model="modalData.image"
+                                v-on:focus="() => {if (typesError) hideError()}">
+                        </div>
+                        <div v-if="typesError" class="text-danger text-center mx-5 mb-2">
+                            {{ useAppStore().appLanguage == "hu" ? typesError.hu : typesError.en }}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">{{ t("save") }}</button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -70,6 +70,4 @@
     </div>
 </template>
 
-<style lang="css">
-    
-</style>
+<style lang="css"/>

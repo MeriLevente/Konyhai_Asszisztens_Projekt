@@ -1,7 +1,7 @@
-import type Ingredient from "./Ingredient"
+import type Ingredient from "./Ingredient";
 
 export default interface IRecipe {
-    id?: number
+    id?: number | undefined
     name: string
     name_EN: string
     description: string

@@ -15,33 +15,34 @@
     const { storedItems, showAllTrig, searchStorageInAction, storedItemsAllLength, storageLoading } = storeToRefs(useUserStore());
     const { loadingTypes } = storeToRefs(useTypeStore());
     const { t } = useI18n();
-    let selectedType = ref<number | null>(null);
-    let popupType = ref<string | null>();
-    let quantityMethod = ref<string | null>();
-    let modifyItem = ref<StoredItem | undefined>();
+    const selectedType = ref<number | null>(null);
+    const popupType = ref<string | null>();
+    const quantityMethod = ref<string | null>();
+    const modifyItem = ref<StoredItem | undefined>();
     
-    onMounted(()=> {
+    onMounted((): void => {
         DataLoader.loadTypes();
         useItemStore().getAllItemsLength();
         useUserStore().getStorageLength();
-    })
+    });
 
-    const loadItemsPaginated = (data: {from: number, to: number}) => {
+    const loadItemsPaginated = (data: {from: number, to: number}): void => {
         storageLoading.value = true;
         useUserStore().loadStoredItemsPaginated(data.from, data.to)
-            .then(()=>{
+            .then((): void => {
                 storageLoading.value = false;
             })
-            .catch((err: string)=>{
+            .catch((err: string): void =>{
                 storageLoading.value = false;
                 console.error(err);
             });
     };
 
     const search = (searchedWord: string): void => { 
-        useUserStore().getStoredItemsBySearch(selectedType.value, searchedWord)?.then(()=>{
-            showAllTrig.value = true;
-        });
+        useUserStore().getStoredItemsBySearch(selectedType.value, searchedWord)!
+            .then((): void => {
+                showAllTrig.value = true;
+            });
     };
 
     const typeClicked = (id: number): void => {
@@ -81,7 +82,7 @@
 </script>
 
 <template>
-    <div class="container p-3">
+    <main class="container p-3">
         <div class="background" v-if="popupType"></div>
         <UserSidePopup style="position: fixed; display: block; z-index: 1;" 
             v-if="popupType" :popuptype="popupType" :quantitymethod="quantityMethod" :modified-item="modifyItem" v-on:close="closePopUp"/>
@@ -111,9 +112,7 @@
         <div class="d-flex justify-content-center mt-5" v-if="storageLoading || loadingTypes">
             <span class="spinner-border spinner-border-bg text-center"></span>
         </div>
-    </div>
+    </main>
 </template>
 
-<style lang="css" src="@/assets/css/userside.css">
-    
-</style>
+<style lang="css" src="@/assets/css/userside.css"/>

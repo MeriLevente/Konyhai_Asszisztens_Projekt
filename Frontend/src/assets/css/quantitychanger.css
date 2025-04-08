@@ -1,0 +1,94 @@
+.old-qty-span{
+    background-color: white;
+    border-color: 3px var(--ebony-clay) solid;
+    border-radius: 15px;
+}
+.qty-font {
+    color: var(--ebony-clay);
+    font-size: 3.75rem;
+    font-weight: bold;
+}
+.qty-input {
+    font-family: "Tiny5", sans-serif;
+    color: var(--ebony-clay);
+    border: none;
+    width: 12rem;
+}
+.qty-input:focus {
+    outline: none;
+}
+.qty-arrow {
+    color: black;
+    font-weight: bold;
+    font-size: 3rem;
+}
+.qty-header {
+    color: black;
+}
+.unit-span-qty {
+    color: black;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+.arrow {
+    width: 5rem;
+    height: 10rem;
+}
+
+@media only screen and (max-width: 995px) {
+    .qty-font {
+        font-size: 2rem;
+    }
+    .qty-input {
+        width: 8rem;
+    }
+    .qty-arrow {
+        font-size: 2rem;
+    }
+    .unit-span-qty {
+        font-size: 1rem;
+    }
+    .old-qty-span {
+        padding: 1rem;
+    }
+}
+
+@media only screen and (max-width: 770px) {
+    .qty-font {
+        font-size: 1.5rem;
+    }
+    .qty-input {
+        width: 6rem;
+    }
+    .qty-arrow {
+        font-size: 1.5rem;
+    }
+    .unit-span-qty {
+        font-size: 1rem;
+    }
+    .old-qty-span {
+        padding: 1rem;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .qty-font {
+        font-size: 1.1rem;
+    }
+    .qty-input {
+        width: 4.5rem;
+    }
+    .qty-arrow {
+        font-size: 1rem;
+    }
+    .unit-span-qty {
+        font-size: 1rem;
+    }
+    .old-qty-span {
+        padding: 1rem;
+    }
+    .arrow {
+        width: 2rem;
+        height: 7rem;
+    }
+}

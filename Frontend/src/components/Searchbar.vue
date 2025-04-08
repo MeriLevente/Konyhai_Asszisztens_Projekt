@@ -29,7 +29,8 @@
             </div>
         </form>
         <div class="d-flex justify-content-center" v-if="searchInAction">
-            <button v-on:click="showPaginated" v-if="props.viewerRole == 'admin'" class="all-btn w-50 ms-5 mt-1 mb-5">{{ t("all") }}</button>
+            <button v-on:click="showPaginated" v-if="props.viewerRole == 'admin'" 
+                class="all-btn w-50 ms-5 mt-1 mb-5">{{ t("all") }}</button>
         </div>
     </div>
      

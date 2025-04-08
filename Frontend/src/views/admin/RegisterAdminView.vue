@@ -7,14 +7,14 @@
 </script>
 
 <template>
-    <div class="content-box m-3">
+    <main class="content-box m-3">
         <div class="container">
             <div class="row">
                 <RouterLink class="back-to-admin" to="/admin">Admin >> {{ 'Admin ' + t('register') }}</RouterLink>
             </div>
             <LoginForm :method="'register'" :role="'admin'"/>
         </div> 
-    </div>
+    </main>
 </template>
 
 <style lang="css" scoped>
@@ -25,12 +25,12 @@
         justify-content: center;
         align-items: center;
     }
-    .container{
+    .container {
         background-color: var(--mercury);
         border: 3px solid var(--ebony-clay);
         border-radius: 5px;
     }
-    body{
+    body {
         font-family: "Funnel Sans", sans-serif;
     }
 </style>

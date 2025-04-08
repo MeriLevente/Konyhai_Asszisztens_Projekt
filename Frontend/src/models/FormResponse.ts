@@ -1,5 +1,5 @@
 export default interface IFormResponse {
-    isError?: boolean
-    message?: string
-    messageEn?: string
-}
+    isError?: boolean | undefined
+    message?: string | undefined
+    messageEn?: string | undefined
+};
