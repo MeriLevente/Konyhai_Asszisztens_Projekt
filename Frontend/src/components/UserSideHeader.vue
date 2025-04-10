@@ -69,10 +69,10 @@
         <p class="text-center mt-0 p-catchphrase">{{ t(headerDescription) }}</p>
         <div class="row filtering">
             <div class="col-6 col-md-3 d-flex justify-content-center" v-if="props.headerTitle == 'mykitchen'">
-                <span class="my-score-span" :style="{backgroundColor: changeScoreBgColour}">
+                <span class="my-score-span" :style="{backgroundColor: changeScoreBgColour}" data-cy="my-score">
                     {{ itemsAllLength }}/{{ storedItemsAllLength }}
                 </span> 
-                <button class="btn w-100" id="new-item-btn" v-on:click="showNewPopUp" :disabled="searchStorageInAction">
+                <button class="btn w-100" id="new-item-btn" v-on:click="showNewPopUp" :disabled="searchStorageInAction" data-cy="new-button">
                     <span style="font-size: 1.2rem;">{{ t("add_new") }}</span>
                 </button>
             </div>
@@ -87,7 +87,7 @@
             </div>  
             <div class="col-6 col-md-3 pt-4">
                 <input v-if="props.headerTitle == 'mykitchen'" type="checkbox" class="ms-1 mt-2" 
-                    style="float: right;" v-on:change="showAll()" :checked="showAllTrig">
+                    style="float: right;" v-on:change="showAll()" :checked="showAllTrig" data-cy="show-all-checkbox">
                 <label v-if="props.headerTitle == 'mykitchen'" style="font-size: 1.2rem; float: right;">{{ t("showAll") }}</label>
             </div>
             <div class="col-12 col-md-6">

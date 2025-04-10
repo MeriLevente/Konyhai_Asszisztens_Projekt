@@ -26,13 +26,13 @@
                 <img src="@/assets/images/fridgebuddy.png" alt="Fridge logo" class="logo-img">
             </div>
             <div class="pt-5">
-                <h1 class="greeting">{{ `${t('greeting')}, ${useUserStore().user?.name ?? t("stranger")}!` }}</h1>
+                <h1 data-cy="greeting-h1" class="greeting">{{ `${t('greeting')}, ${useUserStore().user?.name ?? t("stranger")}!` }}</h1>
                 <h5 class="greeting">{{ t("greeting2") }}</h5>
             </div>
         </div>
         <div class="home-div mt-2 p-2">
             <h5 class="greeting" style="text-align: center;">{{ t('know_more') }}</h5>
-            <div class="d-flex justify-content-center" v-for="toggler in infoTogglers" v-on:click="toggleInfo(toggler)">
+            <div class="d-flex justify-content-center" v-for="toggler in infoTogglers" v-on:click="toggleInfo(toggler)" data-cy="home-togglers">
                 <div class="m-2 info-toggler">
                     <i class="toggler-inline bi me-3 ms-1" 
                         :class="!toggledData.includes(toggler) ? 'bi-caret-down-fill' : 'bi-caret-up-fill'"></i>

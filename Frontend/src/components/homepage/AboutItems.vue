@@ -15,7 +15,7 @@
             <li><p class="about-p">{{ t('about_itemsParag') }}</p></li>
             <li><p class="about-p">{{ t('about_itemsParag2') }}</p></li>
             <div class="d-flex justify-content-start">
-                <RouterLink to="/login" v-if="!useUserStore().status.loggedIn"
+                <RouterLink data-cy="login-first" to="/login" v-if="!useUserStore().status.loggedIn"
                     class="about-p btn btn-warning">{{ t('clickmeRegisterFirst') }}</RouterLink>
                 <RouterLink to="/items" v-if="useUserStore().status.loggedIn && UserValidation.isAutherizedRole('user')"
                     class="recipebook-btn">{{ t('clickmeTakeMeThere') }}</RouterLink>

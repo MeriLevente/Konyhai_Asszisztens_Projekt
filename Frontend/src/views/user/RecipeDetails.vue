@@ -26,7 +26,7 @@
   <main class="recipe-content-box px-3">
     <div class="container d-flex justify-content-center mt-5" v-if="storageLoading || useUserStore().status.message">
         <span v-if="storageLoading" class="spinner-border spinner-border-bg text-center"></span>
-        <span v-if="useUserStore().status.message" class="text-center">
+        <span v-if="useUserStore().status.message" class="text-center" data-cy="recipe-notfound">
           {{ useAppStore().appLanguage == "hu" ? useUserStore().status!.message : useUserStore().status!.messageEn }}
         </span>
     </div>

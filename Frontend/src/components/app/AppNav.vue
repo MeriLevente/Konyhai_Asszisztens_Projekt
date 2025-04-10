@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <a class="navbar-brand" href="/">
         <img src="@\assets\images\fridgebuddy.png" alt="Lógó" width="90" height="60" class="d-inline-block align-text-center">
-        <span class="navbar-title mercury-nav-element">DiKAMON</span>
+        <span class="navbar-title mercury-nav-element" data-cy="navbar-title">DiKAMON</span>
       </a>
       <button class="navbar-toggler mercury-nav-button navbar-ligth bg-light" type="button"
         data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -14,14 +14,17 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <div v-for="(menuItem, index) in menuItems" :key="index">
             <li class="nav-item">
-              <router-link class="nav-link mercury-nav-element d-flex justify-content-center"
+              <router-link class="nav-link mercury-nav-element d-flex justify-content-center" data-cy="navbar-link"
                 :to="menuItem.to" v-if="menuItem.isVisible">{{ i18n.global.locale.value == "hu" ? menuItem.title : menuItem.titleEn }}
               </router-link>
             </li>
           </div>
         </ul>
-        <a :class="i18n.global.locale.value == 'hu' ? 'bg-hu btn' : 'bg-en btn'" id="langBtn" v-on:click="changeLanguage()"></a>
-        <a v-if="useUserStore().status.loggedIn" class="btn btn-danger mx-4" v-on:click="onLogout">{{ t("logout") }}</a>
+        <a data-cy="lang-button" :class="i18n.global.locale.value == 'hu' ? 'bg-hu btn' : 'bg-en btn'" 
+          id="langBtn" v-on:click="changeLanguage()"></a>
+        <a data-cy="logout-button" v-if="useUserStore().status.loggedIn" class="btn btn-danger mx-4" v-on:click="onLogout">
+          {{ t("logout") }}
+        </a>
       </div>
     </div>
   </nav>

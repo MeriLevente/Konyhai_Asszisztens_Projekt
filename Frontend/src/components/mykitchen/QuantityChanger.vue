@@ -47,19 +47,19 @@
 
 <template>
     <h2 class="text-center qty-header mb-2">{{ t("QuantityChanger") }}</h2>
-    <h5 class="text-center mb-3 qty-header">
+    <h5 class="text-center mb-3 qty-header" data-cy="modified-item-title">
         {{ appLanguage == "hu" ? props.modifiedItem.storedItem.name : props.modifiedItem.storedItem.name_EN }}
     </h5>
     <div class="d-flex justify-content-center">
-        <img v-if="props.method == 'add'" src="@/assets/images/uparrow.png" :alt="props.method" class="arrow me-3">
-        <img v-if="props.method == 'reduce'" src="@/assets/images/downarrow.png" :alt="props.method" class="arrow me-3">
-        <span class="old-qty-span qty-font py-5 px-3">{{ props.modifiedItem.quantity }}</span>
+        <img v-if="props.method == 'add'" src="@/assets/images/uparrow.png" :alt="props.method" class="arrow me-3" data-cy="uparrow">
+        <img v-if="props.method == 'reduce'" src="@/assets/images/downarrow.png" :alt="props.method" class="arrow me-3" data-cy="downarrow">
+        <span class="old-qty-span qty-font py-5 px-3" data-cy="old-quantity">{{ props.modifiedItem.quantity }}</span>
         <i class="bi bi-arrow-right qty-arrow align-self-center"></i>
         <span class="old-qty-span qty-font py-5  px-3"><input v-model="inputQuantity" 
-            class="qty-input" type="number" min="0" max="10000"></span>
+            class="qty-input" type="number" min="0" max="10000" data-cy="quantity-input"></span>
         <i class="bi bi-arrow-right qty-arrow align-self-center"></i>
-        <span class="old-qty-span qty-font py-5  px-3">{{ newQuantity }}</span>
-        <span class="align-self-center ms-1 unit-span-qty" style="height: 3rem;">
+        <span class="old-qty-span qty-font py-5  px-3" data-cy="new-quantity">{{ newQuantity }}</span>
+        <span class="align-self-center ms-1 unit-span-qty" style="height: 3rem;" data-cy="modified-unit">
             {{ t(props.modifiedItem.storedItem.unit) }}
         </span>
     </div>
@@ -67,9 +67,9 @@
         <span v-if="useUserStore().status.message || useUserStore().status.messageEn" class="text-center text-danger">
             {{ appLanguage == "hu" ? useUserStore().status.message : useUserStore().status.messageEn}}
         </span>
-        <button class="btn" v-on:click="zerofier" v-if="props.method == 'reduce'">{{ t("delete") }}</button>
-        <button class="btn" v-on:click="save">{{ t("save") }}</button>
-        <button class="btn" v-on:click="close">{{ t("cancel") }}</button>
+        <button class="btn" v-on:click="zerofier" v-if="props.method == 'reduce'" data-cy="zerofier-button">{{ t("delete") }}</button>
+        <button class="btn" v-on:click="save" data-cy="save-button">{{ t("save") }}</button>
+        <button class="btn" v-on:click="close" data-cy="cancel-button">{{ t("cancel") }}</button>
     </div>
 </template>
 

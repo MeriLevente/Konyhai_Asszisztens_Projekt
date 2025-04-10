@@ -8,9 +8,9 @@
         <div class="py-5 mx-auto w-75">
             <img src="@/assets/images/sadfridge.png" class="notfound-img" alt="Not found!">
             <div class="notfound-div">
-                <h1>404 - {{ t("notfound_h1") }}</h1>
+                <h1 data-cy="404-h1">404 - {{ t("notfound_h1") }}</h1>
                 <p>{{ t("notfound_text") }}</p>
-                <RouterLink class="d-flex justify-content-center back-to-home mx-5" to="/">{{ t('toHome') }}</RouterLink>
+                <RouterLink data-cy="to-home-button" class="d-flex justify-content-center back-to-home mx-5" to="/">{{ t('toHome') }}</RouterLink>
             </div>
         </div>
     </div>

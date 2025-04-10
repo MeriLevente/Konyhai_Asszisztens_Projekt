@@ -92,17 +92,17 @@
         <div class="col-12 col-md-4 mx-auto">
             <form @submit.prevent="submitForm()">
                 <div class="form-floating mb-3" v-if="method == 'register'">
-                    <input type="text" class="form-control" id="name" v-model="formData.name" maxlength="50"
+                    <input data-cy="name-input" type="text" class="form-control" id="name" v-model="formData.name" maxlength="50"
                         v-on:focus="() => { if(status.message && status.messageEn) hideError();}">
                     <label for="name">{{t("name_form")}}</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="email" v-model="formData.email" maxlength="320" 
+                    <input data-cy="email-input" type="text" class="form-control" id="email" v-model="formData.email" maxlength="320" 
                         v-on:focus="() => { if(status.message && status.messageEn) hideError(); }">
                     <label for="email">Email</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input :type="seePassword ? 'text' : 'password'" class="form-control" id="password"
+                    <input data-cy="password-input" :type="seePassword ? 'text' : 'password'" class="form-control" id="password"
                         v-model="formData.password" style="z-index: 0" maxlength="30"
                         v-on:focus="() => { if(status.message && status.messageEn) hideError(); }">
                     <span class="toggle-password" v-on:click="toggleShowPassword('password')">
@@ -111,19 +111,19 @@
                     <label for="password">{{t("password_form")}}</label>
                 </div>
                 <div class="form-floating mb-3" v-if="method == 'register'">
-                    <input :type="seeConfirmPassword ? 'text' : 'password'" class="form-control" id="confirmpass"
+                    <input data-cy="confirm-password-input" :type="seeConfirmPassword ? 'text' : 'password'" class="form-control" id="confirmpass"
                         v-model="confirmPassword" maxlength="30" v-on:focus="() => { if(status.message && status.messageEn) hideError();}">
                     <span class="toggle-password" v-on:click="toggleShowPassword('confirm_password')">
                         <i :class="seeConfirmPassword ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill'"></i>
                     </span>
                     <label for="confirmpass">{{t("confirm_password_form")}}</label>
                 </div>
-                <RouterLink to="/register" v-if="method != 'register'" class="my-2">{{ t("go_register") }}</RouterLink>
-                <div v-if="status.message && status.messageEn" class="text-danger text-center" id="error-message">
+                <RouterLink data-cy="registerlink" to="/register" v-if="method != 'register'" class="my-2">{{ t("go_register") }}</RouterLink>
+                <div data-cy="error-message" v-if="status.message && status.messageEn" class="text-danger text-center" id="error-message">
                     {{ appLanguage == "hu" ? status.message : status.messageEn }}
                 </div>
                 <div class="mb-1">
-                    <button id="submit" type="submit" class="btn btn-primary w-100 p-2 my-3">
+                    <button data-cy="submit-button" id="submit" type="submit" class="btn btn-primary w-100 p-2 my-3">
                         {{ t(method) }}
                         <span v-if="loading" class="spinner-border spinner-border-sm text-center"></span>
                     </button>

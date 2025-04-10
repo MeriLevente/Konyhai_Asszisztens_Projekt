@@ -4,7 +4,7 @@
 </script>
 
 <template>
-    <h2 class="display-6 about-h2">{{ t('abouth2') }}</h2>
+    <h2 class="display-6 about-h2" data-cy="about-me-header">{{ t('abouth2') }}</h2>
     <div class="home-yellow-div p-2">
         <h6 class="about-h6">
             <i class="bi bi-question-circle-fill"></i>

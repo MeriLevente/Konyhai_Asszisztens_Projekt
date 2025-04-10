@@ -89,14 +89,14 @@
         <UserSideHeader :header-title="'mykitchen'" :header-description="'titleCatchphrase'"
                         v-on:show-all="showAllItems" v-on:search-stored-item="search" v-on:show-new="showNew"/>
         <div class="row d-flex justify-content-center mt-2" v-if="showAllTrig && !searchStorageInAction">
-            <Paginator :page="'mykitchen'" 
+            <Paginator :page="'mykitchen'" data-cy="paginator"
                 :max-length="storedItemsAllLength" v-on:paginator-triggered="loadItemsPaginated"/>
         </div>
         <main v-if="!storageLoading && !loadingTypes" id="storedItemsList" class="row d-flex justify-content-center">
-            <ItemTypesCard v-for="type in useTypeStore().types" :type="type" v-on:type-clicked="typeClicked($event)"
+            <ItemTypesCard data-cy="type-card" v-for="type in useTypeStore().types" :type="type" v-on:type-clicked="typeClicked($event)"
                 v-if="!selectedType && !showAllTrig"/>
 
-            <span v-if="selectedType || showAllTrig" v-on:click="backToTypes">
+            <span v-if="selectedType || showAllTrig" v-on:click="backToTypes" data-cy="back-to-types">
                 <i class="bi bi-arrow-left" style="font-weight: bold; font-size: 1.5rem; cursor: pointer;"></i>
             </span>
 

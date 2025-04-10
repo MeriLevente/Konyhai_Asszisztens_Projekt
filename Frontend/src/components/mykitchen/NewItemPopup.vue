@@ -55,7 +55,7 @@
 <template>
     <h2 class="text-center popup-h2 mb-3">{{ t("newitem") }}</h2>
     <div class="form-floating mb-3">
-        <select name="types" id="types" class="form-control" 
+        <select name="types" id="types" class="form-control" data-cy="types-select"
         v-model="selectedTypeId" v-on:change="selectedItem = null; itemQuantity = null" v-on:focus="errorMessage = ''">
             <option v-for="type in useTypeStore().types" :value="type.id!">
                 {{ appLanguage == "hu" ? type.name : type.name_EN }}
@@ -63,11 +63,10 @@
         </select>
         <label for="types">{{t("type")}}</label>
     </div>
-    <div class="form-floating mb-3">
-        <select id="item" class="form-control"
+    <div class="form-floating mb-3"> 
+        <select id="item" class="form-control" data-cy="item-select"
             v-model="selectedItem" v-bind:disabled="!selectedTypeId"
-            v-on:click="useItemStore().getItemsByTypeId(selectedTypeId!)"
-            v-on:focus="errorMessage = ''">
+            v-on:focus="useItemStore().getItemsByTypeId(selectedTypeId!); errorMessage = ''">
             <option v-for="item in useItemStore().items" :value="item">
                 {{appLanguage == 'hu' ? item.name : item.name_EN}}
             </option>
@@ -79,7 +78,7 @@
             <div class="row">
                 <div class="col-10">
                     <div class="form-floating mb-2">
-                        <input type="number" min="1" max="10000" class="form-control"
+                        <input type="number" min="1" max="10000" class="form-control" data-cy="new-quantity-input"
                         v-model="itemQuantity" v-bind:disabled="!selectedItem" v-on:focus="errorMessage = ''"/>
                         <label for="quantity">{{ t("quantity") }}</label>
                     </div> 
@@ -88,12 +87,12 @@
                     <span class="unit-span" v-if="selectedItem">{{ t(selectedItem!.unit) }}</span>
                 </div>
             </div>
-            <p class="text-danger d-flex justify-content-center my-2">
+            <p class="text-danger d-flex justify-content-center my-2" data-cy="new-popup-error">
                 {{ errorMessage }}
             </p>
             <div class="d-flex justify-content-center">
-                <button class="btn btn-success me-3" v-on:click="save">{{ t("save") }}</button>
-                <button class="btn btn-danger" v-on:click="closePopUp">{{ t("cancel") }}</button>
+                <button class="btn btn-success me-3" v-on:click="save" data-cy="new-save-button">{{ t("save") }}</button>
+                <button class="btn btn-danger" v-on:click="closePopUp" data-cy="new-cancel-button">{{ t("cancel") }}</button>
             </div>
         </div>
         <div class="col-4 d-flex justify-content-center">

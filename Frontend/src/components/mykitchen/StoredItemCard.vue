@@ -15,12 +15,12 @@
         <img class="card-img-top" :src="item.storedItem.image" :alt="`${item.storedItem.name_EN} image`">
         <div class="card-body d-flex justify-content-between">
             <div>
-                <h2 class="card-title">{{ appLanguage == 'hu' ? item.storedItem.name : item.storedItem.name_EN }}</h2>
-                <p class="card-text">{{ `${item.quantity} ${item.storedItem.unit}` }}</p>
+                <h2 class="card-title" data-cy="item-title">{{ appLanguage == 'hu' ? item.storedItem.name : item.storedItem.name_EN }}</h2>
+                <p class="card-text" data-cy="item-quantity">{{ `${item.quantity} ${item.storedItem.unit}` }}</p>
             </div>
             <div class="align-self-end">
-                <span class="qty-btn" v-on:click="showPopup('add')"><i class="bi bi-arrow-up"></i></span>
-                <span class="qty-btn" v-on:click="showPopup('reduce')"><i class="bi-arrow-down"></i></span>
+                <span class="qty-btn" v-on:click="showPopup('add')" data-cy="add-span"><i class="bi bi-arrow-up"></i></span>
+                <span class="qty-btn" v-on:click="showPopup('reduce')" data-cy="reduce-span"><i class="bi-arrow-down"></i></span>
             </div>
         </div>
     </div>
