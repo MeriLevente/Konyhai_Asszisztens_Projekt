@@ -77,7 +77,7 @@
                 </button>
             </div>
             <div class="col-5 col-md-2 form-floating p-1 ms-1" v-if="props.headerTitle == 'recipesTitle'">
-                    <select class="form-control input-area" id="typeselect" v-on:change="recipeTypeChanged()" v-model="selectedType">
+                    <select class="form-control input-area" id="typeselect" v-on:change="recipeTypeChanged()" v-model="selectedType" data-cy="recipetype-select">
                         <option value="0">{{ t("all") }}</option>
                         <option v-for="type in useRecipeStore().recipeTypes" :value="type.short">
                             {{ appLanguage == 'hu' ? type.hu : type.en }}

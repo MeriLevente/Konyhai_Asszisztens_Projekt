@@ -21,7 +21,7 @@
         <form @submit.prevent="search()">
             <div class="form-floating input-area">
                     <input type="text" name="search" id="search" class="form-control" v-model="searchedWord" data-cy="searchbar">
-                        <button type="submit" class="search-icon" style="display: inline;">
+                        <button type="submit" class="search-icon" style="display: inline;" data-cy="search-button">
                             <span class="bi bi-search"></span>
                         </button>
                     </input>

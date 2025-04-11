@@ -37,16 +37,16 @@
     <div class="stored-card card" style="cursor: pointer;" v-on:click="navigateToRecipe(recipe.id)">
         <img class="card-img-top" :src="recipe.image" :alt="`${recipe.name_EN} image`">
         <div class="card-body">
-          <h2 class="card-title" style="font-size: 1.1rem;">{{ appLanguage == 'hu' ? recipe.name : recipe.name_EN }}</h2>
+          <h2 class="card-title" style="font-size: 1.1rem;" data-cy="recipe-card-title">{{ appLanguage == 'hu' ? recipe.name : recipe.name_EN }}</h2>
           <div style="position: relative;">
             <div style="float: left;">
-              <p class="card-text">{{ convertRecipeTime(recipe.time) }}</p>
+              <p class="card-text" data-cy="recipe-card-time">{{ convertRecipeTime(recipe.time) }}</p>
             </div>
             <div style="float: right;">
-              <span class="recipe-rounded-span" :class="setDiffColour(recipe.difficulty)">{{recipe.difficulty}}/10</span>
+              <span class="recipe-rounded-span" data-cy="recipe-card-diff" :class="setDiffColour(recipe.difficulty)">{{recipe.difficulty}}/10</span>
 
               <span class="recipe-rounded-span"
-                data-toggle="tooltip" data-placement="top"
+                data-toggle="tooltip" data-placement="top" data-cy="recipe-card-type"
                 :title="appLanguage == 'hu' ? setTypeTooltip(recipe.type).hu : setTypeTooltip(recipe.type).en">
                 {{ recipe.type }}
               </span>

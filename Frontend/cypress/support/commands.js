@@ -13,7 +13,7 @@ Cypress.Commands.add('loginWithRole', (role) => {
         emailInput.type("admin@gmail.com");
         passwordInput.type("AdminJelszo123");
         submitBtn.click({force: true});
-        cy.wait(1000);
+        cy.wait(500);
     }
 });
 

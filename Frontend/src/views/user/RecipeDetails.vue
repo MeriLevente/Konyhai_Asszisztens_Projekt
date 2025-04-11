@@ -30,7 +30,7 @@
           {{ useAppStore().appLanguage == "hu" ? useUserStore().status!.message : useUserStore().status!.messageEn }}
         </span>
     </div>
-    <div class="container rec-container my-3 mt-5" v-if="!storageLoading && !useUserStore().status.message">
+    <div class="container rec-container my-3 mt-5" v-if="!storageLoading && !useUserStore().status.message" data-cy="recipe-book-div">
       <div class="row">
         <div class="col-12 col-lg-6 left-col pt-3">
           <RecipeBookLeftPage :recipe="recipe" v-if="recipe"/>

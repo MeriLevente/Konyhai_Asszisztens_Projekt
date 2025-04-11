@@ -106,7 +106,7 @@
 
             <div v-if="storedItems.length == 0 && (selectedType || showAllTrig)" class="d-flex row justify-content-center">
                 <img class="no-items" src="@/assets/images/poorfridge.png" alt="Image not loaded!">
-                <h3 class="text-center" v-on:load="showAllTrig = false">{{ t("noitems") }}</h3>
+                <h3 class="text-center" v-on:load="showAllTrig = false" data-cy="no-items-text">{{ t("noitems") }}</h3>
             </div>
         </main>
         <div class="d-flex justify-content-center mt-5" v-if="storageLoading || loadingTypes">

@@ -47,8 +47,17 @@ async function main() {
   });
 
   await prisma.items.createMany({
-    data: [{
-      id: 1,
+    data: [
+      {
+        id: 1,
+        name: "Burgonya",
+        name_EN: "Potato",
+        typeId: 1,
+        unit: "darab",
+        image: "https://bgs.jedlik.eu/ml/Images/Items/potato.jfif"
+      },
+      {
+      id: 2,
       name: "Paradicsom",
       name_EN: "Tomato",
       typeId: 1,
@@ -56,7 +65,7 @@ async function main() {
       image: "https://bgs.jedlik.eu/ml/Images/Items/tomato.jfif"
     },
     {
-      id: 2,
+      id: 3,
       name: "Alma",
       name_EN: "Apple",
       typeId: 2,
@@ -94,13 +103,13 @@ async function main() {
     data: [{
       id: 1,
       recipeId: 1,
-      itemId: 1,
+      itemId: 2,
       quantity: 2
     },
     {
       id: 2,
       recipeId: 2,
-      itemId: 2,
+      itemId: 3,
       quantity: 20
     }]
   }),
@@ -108,13 +117,13 @@ async function main() {
     data: [{
       id: 1,
       userId: 2,
-      itemId: 1,
+      itemId: 2,
       quantity: 2
     }, 
     {
       id: 2,
       userId: 2,
-      itemId: 2,
+      itemId: 3,
       quantity: 5
     }]
   });

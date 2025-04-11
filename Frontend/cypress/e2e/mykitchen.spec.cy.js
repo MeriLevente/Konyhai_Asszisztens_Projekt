@@ -25,7 +25,7 @@ describe('A konyhám oldal tesztelése', () => {
 
     it('Az élelmiszerek száma/az én dolgaim száma kör létezik és háttérszíne megfelelő!', () => {
         cy.get("[data-cy='my-score']").should("be.visible", true);
-        cy.get("[data-cy='my-score']").should('have.css', 'background-color').and('eq', 'rgb(255, 221, 67)')
+        cy.get("[data-cy='my-score']").should('have.css', 'background-color').and('eq', 'rgb(173, 255, 47)')
     });
 
     it('Az első típusra kattintva megjelenik a hozzája tartozó adat (Paradicsom)!', () => {
@@ -47,10 +47,45 @@ describe('A konyhám oldal tesztelése', () => {
         cy.get("[data-cy='back-to-types']").should("be.visible", true);
     });
 
-    it.only('A paginátor gombjai le vannak tiltva, mivel visszafelé mínuszba nem tudsz lépni és előre sem, mert kevés adat van!', () => {
+    it('A paginátor gombjai le vannak tiltva, mivel visszafelé mínuszba nem tudsz lépni és előre sem, mert kevés adat van!', () => {
         cy.get("[data-cy='show-all-checkbox']").click({force: true});
         cy.get("[data-cy='paginator-back']").should("be.disabled", true);
         cy.get("[data-cy='paginator-forward']").should("be.disabled", true);
     });
 
+    it('Élelmiszerre kereséskor megjelenik, amire kerestünk!', () => {
+        cy.get("[data-cy='searchbar']").type("apple");
+        cy.get("[data-cy='search-button']").click({force: true});
+        cy.get("[data-cy='stored-item']").should("have.length", 1);
+        cy.get("[data-cy='item-title']").should("contain", "Alma");
+    });
+
+    it('Élelmiszerre kereséskor, ha a keresett termék nem található, akkor megjelenik egy figyelmeztető felirat!', () => {
+        cy.get("[data-cy='searchbar']").type("nincs");
+        cy.get("[data-cy='search-button']").click({force: true});
+        cy.get("[data-cy='no-items-text']").should("be.visible", true);
+    });
+
+    it('Nem lehet számra keresni!', () => {
+        cy.get("[data-cy='searchbar']").type(2);
+        cy.get("[data-cy='search-button']").click({force: true});
+        cy.on('window:alert', (text) => {
+            expect(text).to.eq('A keresett szó csak betűket tartalmazhat!')   
+        })
+    });
+
+    it('Nem lehet 3 betűnél kisebb szóra keresni!', () => {
+        cy.get("[data-cy='searchbar']").type("ab");
+        cy.get("[data-cy='search-button']").click({force: true});
+        cy.on('window:alert', (text) => {
+            expect(text).to.eq('A keresett szó túl rövid!')   
+        })
+    });
+
+    it('Ha keresni szeretnénk ki kell tölteni a keresőmezőt!', () => {
+        cy.get("[data-cy='search-button']").click({force: true});
+        cy.on('window:alert', (text) => {
+            expect(text).to.eq('Töltse ki a mezőt!')   
+        })
+    });
 });

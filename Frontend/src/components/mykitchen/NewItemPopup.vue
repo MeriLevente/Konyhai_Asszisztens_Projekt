@@ -66,7 +66,8 @@
     <div class="form-floating mb-3"> 
         <select id="item" class="form-control" data-cy="item-select"
             v-model="selectedItem" v-bind:disabled="!selectedTypeId"
-            v-on:focus="useItemStore().getItemsByTypeId(selectedTypeId!); errorMessage = ''">
+            v-on:click="useItemStore().getItemsByTypeId(selectedTypeId!)"
+            v-on:focus="errorMessage = ''">
             <option v-for="item in useItemStore().items" :value="item">
                 {{appLanguage == 'hu' ? item.name : item.name_EN}}
             </option>

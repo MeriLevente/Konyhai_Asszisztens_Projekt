@@ -54,12 +54,12 @@
             <i class="bi bi-arrow-left" style="font-weight: bold; font-size: 1.5rem; cursor: pointer;"></i>
           </span>
           <div v-if="useRecipeStore().recipes.length > 0" class="col-12 col-sm-6 col-md-5 col-xl-4 mt-2" 
-            v-for="recipe in useRecipeStore().recipes">
-            <RecipeCard :recipe="recipe"/>
+            v-for="recipe in useRecipeStore().recipes" data-cy="recipe-card">
+            <RecipeCard :recipe="recipe" data-cy="recipe"/>
           </div>
         </div>
         <div v-if="useRecipeStore().recipes.length == 0 && !recipesLoading" class="nodata-div w-75 mx-auto mt-5 p-3">
-            <h3 class="text-center">{{ t("no_data") }}</h3>
+            <h3 class="text-center" data-cy="no-recipes-text">{{ t("no_data") }}</h3>
         </div>
         <div class="d-flex justify-content-center mt-5" v-if="recipesLoading">
             <span class="spinner-border spinner-border-bg text-center"></span>
