@@ -35,9 +35,9 @@ describe('Az Új felvétel és Mennyiségváltó (Konyhám oldal) tesztelése', 
     });
 
     it('Az élelmiszerem mennyisége negatív lenne akkor az új mennyiség 0 lesz, egyébként meg helyesen von ki!', () => {
-        cy.get("[data-cy='type-card']").each(($card, index) => {
+        cy.get("[data-cy='type-card']").each((card, index) => {
             if (index == 0) {
-                cy.wrap($card).click({force: true});
+                cy.wrap(card).click({force: true});
                 cy.get("[data-cy='reduce-span']").click({force: true});
                 const qtyInput = cy.get("[data-cy='quantity-input']");
                 
@@ -52,9 +52,9 @@ describe('Az Új felvétel és Mennyiségváltó (Konyhám oldal) tesztelése', 
     });
 
     it('Az élelmiszerem mennyisége növelni tudom és jól számol!', () => {
-        cy.get("[data-cy='type-card']").each(($card, index) => {
+        cy.get("[data-cy='type-card']").each((card, index) => {
             if (index == 0) {
-                cy.wrap($card).click({force: true});
+                cy.wrap(card).click({force: true});
                 cy.get("[data-cy='add-span']").click({force: true});
                 const qtyInput = cy.get("[data-cy='quantity-input']");
                 
@@ -82,9 +82,9 @@ describe('Az Új felvétel és Mennyiségváltó (Konyhám oldal) tesztelése', 
     });
 
     it('Az élelmiszerem mennyiségét akarom csökkenteni, a lenullázó gomb megnyomására az új mennyiség 0 lesz!', () => {
-        cy.get("[data-cy='type-card']").each(($card, index) => {
+        cy.get("[data-cy='type-card']").each((card, index) => {
             if (index == 0) {
-                cy.wrap($card).click({force: true});
+                cy.wrap(card).click({force: true});
                 cy.get("[data-cy='reduce-span']").click({force: true});
                 cy.get("[data-cy='zerofier-button']").click({force: true});
                 cy.get("[data-cy='new-quantity']").should("contain", "0");

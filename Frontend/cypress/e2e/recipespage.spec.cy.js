@@ -58,6 +58,7 @@ describe('A receptek oldal tesztelése', () => {
 
     it('A receptkártyára kattintva megnyílik a recept adait tartalmazó oldal!', () => {
         cy.get("[data-cy='recipetype-select']").select("ITA");
+        cy.wait(1000);
         cy.get("[data-cy='recipe']").click({force: true});
         cy.get("[data-cy='recipe-book-div']").should("be.visible");
     });

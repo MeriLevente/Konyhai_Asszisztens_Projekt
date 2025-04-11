@@ -54,7 +54,7 @@ describe('A konyhám oldal tesztelése', () => {
     });
 
     it('Élelmiszerre kereséskor megjelenik, amire kerestünk!', () => {
-        cy.get("[data-cy='searchbar']").type("apple");
+        cy.get("[data-cy='searchbar']").type("alma");
         cy.get("[data-cy='search-button']").click({force: true});
         cy.get("[data-cy='stored-item']").should("have.length", 1);
         cy.get("[data-cy='item-title']").should("contain", "Alma");

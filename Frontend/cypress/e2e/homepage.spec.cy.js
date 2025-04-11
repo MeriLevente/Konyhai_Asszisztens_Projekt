@@ -55,9 +55,9 @@ describe('Főoldal tesztelése', () => {
     it('Bejelentkezés után a navbarban a Konyhám és Receptek találhatóak!', () => {
         cy.loginWithRole("user");
         const links = ["Konyhám", "Receptek"];
-        cy.get("[data-cy='navbar-link']").each(($link, index) => {
+        cy.get("[data-cy='navbar-link']").each((link, index) => {
             if (index != 0)
-                cy.wrap($link).should("contain", links[index - 1]);
+                cy.wrap(link).should("contain", links[index - 1]);
         });
     });
 
