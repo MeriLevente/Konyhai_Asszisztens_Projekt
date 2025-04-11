@@ -24,4 +24,4 @@ describe('Az oldal nem található oldal tesztelése', () => {
         cy.visit(`/recipe?id=${recipeId}`);
         cy.get("[data-cy='recipe-notfound']").should('contain', `${recipeId} azonosítójú recept nem található!`);
     });
-})
+});

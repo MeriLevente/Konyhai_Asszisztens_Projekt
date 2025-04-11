@@ -46,6 +46,6 @@ describe('A admin oldal tesztelése', () => {
             cy.get("[data-cy='admin-block']").eq(i).click({force: true});
             cy.get("[data-cy='back-button']").click({force: true});
             cy.location('pathname').should('eq', '/admin');
-        }
+        };
     });
 });

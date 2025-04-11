@@ -39,7 +39,7 @@ const goToRouteByRole = (visitorRole) => {
 
         cy.visit("/recipe?id=1");
         cy.location('pathname').should('eq', '/');
-    } 
+    };
     if (visitorRole == "user") {
         cy.visit("/admin");
         cy.location('pathname').should('eq', '/');
@@ -55,5 +55,5 @@ const goToRouteByRole = (visitorRole) => {
 
         cy.visit("/register-admin");
         cy.location('pathname').should('eq', '/');
-    }
+    };
 };

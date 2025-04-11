@@ -18,7 +18,7 @@ describe('A admin recept oldal tesztelése', () => {
     it('Az törlés gomb nyomásra hibát dob, mivel az elemre az adatbázisban másik táblában hivatkoznak!', () => {
         cy.get("[data-cy='data-tr']").eq(0).find("[data-cy='delete-button']").click({force: true});
         cy.on('window:alert', (text) => {
-            expect(text).to.eq('Receptet nem lehet törölni, mert 1 hozzávaló hivatkozik rá!')
+            expect(text).to.eq('Receptet nem lehet törölni, mert 1 hozzávaló hivatkozik rá!');
         });
     });
 
@@ -77,7 +77,7 @@ describe('A admin recept oldal tesztelése', () => {
     it('Kereséskor, ha a keresett szó nem található, akkor megjelenik egy figyelmeztető felirat!', () => {
         cy.get("[data-cy='searchbar']").type("nincs");
         cy.get("[data-cy='search-button']").click({force: true});
-        cy.get("[data-cy='no-data']").should("be.visible", true);
+        cy.get("[data-cy='no-data']").should("be.visible");
     });
 
     it('Hibát dob, ha nem töltünk ki minden mezőt!', () => {
@@ -89,7 +89,7 @@ describe('A admin recept oldal tesztelése', () => {
     });
 
     it('Helyes kitöltés esetén bezáródik a receptíró!', () => {
-        cy.intercept("POST", "recipes", {status: 201}).as("saving")
+        cy.intercept("POST", "recipes", {status: 201}).as("saving");
         cy.get("[data-cy='add-button']").click({force: true});
         fillOutData();
         cy.get("[data-cy='save-button']").click({force: true});

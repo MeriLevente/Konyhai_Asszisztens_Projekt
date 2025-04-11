@@ -14,15 +14,15 @@ describe('A receptek oldal tesztelése', () => {
     });
 
     it('A fejlécben megjelenik az recept típusok kiválasztómező, kereső input mező!', () => {
-        cy.get("[data-cy='recipetype-select']").should("be.visible", true);
-        cy.get("[data-cy='searchbar']").should("be.visible", true);
+        cy.get("[data-cy='recipetype-select']").should("be.visible");
+        cy.get("[data-cy='searchbar']").should("be.visible");
     });
 
     it('Az oldal betöltésekor a kiválasztott típus "Mind", megjelenik az összes adat és a paginátor!', () => {
         cy.get("[data-cy='recipetype-select']").find('option:selected').should('have.text', 'Mind');
-        cy.get("[data-cy='paginator-back']").should("be.visible", true);
-        cy.get("[data-cy='paginator-forward']").should("be.visible", true);
-        cy.get("[data-cy='paginator-select']").should("be.visible", true);
+        cy.get("[data-cy='paginator-back']").should("be.visible");
+        cy.get("[data-cy='paginator-forward']").should("be.visible");
+        cy.get("[data-cy='paginator-select']").should("be.visible");
         cy.get("[data-cy='recipe-card']").should("have.length", 2);
     });
 
@@ -53,12 +53,12 @@ describe('A receptek oldal tesztelése', () => {
     it('Recept kereséskor, ha a keresett recept nem található, akkor megjelenik egy figyelmeztető felirat!', () => {
         cy.get("[data-cy='searchbar']").type("nincs");
         cy.get("[data-cy='search-button']").click({force: true});
-        cy.get("[data-cy='no-recipes-text']").should("be.visible", true);
+        cy.get("[data-cy='no-recipes-text']").should("be.visible");
     });
 
     it('A receptkártyára kattintva megnyílik a recept adait tartalmazó oldal!', () => {
         cy.get("[data-cy='recipetype-select']").select("ITA");
         cy.get("[data-cy='recipe']").click({force: true});
-        cy.get("[data-cy='recipe-book-div']").should("be.visible", true);
+        cy.get("[data-cy='recipe-book-div']").should("be.visible");
     });
 });

@@ -6,7 +6,6 @@ describe('A receptadatok oldal tesztelése', () => {
     beforeEach(()=>{
         cy.task("seedDatabase");
         cy.loginWithRole("user");
-        
     });
 
     it('A Teszt Bolognai recept adatai megjelennek helyesen az oldalon!', () => {
@@ -32,8 +31,8 @@ describe('A receptadatok oldal tesztelése', () => {
         const steps = ["Teszt lépés", "Teszt lépés 2", "Teszt lépés 3", "Teszt lépés 4"];
         cy.visit(`/recipe?id=1`);
         cy.get("[data-cy='recipe-steps-hu']").should("have.length", 4);
-        cy.get("[data-cy='recipe-steps-hu']").each(($step, $index) => {
-            cy.wrap($step).should("have.text", steps[$index]);
+        cy.get("[data-cy='recipe-steps-hu']").each((step, index) => {
+            cy.wrap(step).should("have.text", steps[index]);
         });
     });
 
@@ -46,7 +45,7 @@ describe('A receptadatok oldal tesztelése', () => {
         cy.visit(`/recipe?id=1`);
         cy.get("[data-cy='cooking-button']").click({force: true});
         cy.on('window:alert', (text) => {
-            expect(text).to.eq('Bon Appetit! :)')
+            expect(text).to.eq('Bon Appetit! :)');
         });
         cy.intercept("DELETE", "2", {status: 200});
         cy.wait(1000);

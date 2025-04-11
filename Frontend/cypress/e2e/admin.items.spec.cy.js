@@ -38,7 +38,7 @@ describe('A admin élelmiszerek oldal tesztelése', () => {
     it('Kereséskor, ha a keresett szó nem található, akkor megjelenik egy figyelmeztető felirat!', () => {
         cy.get("[data-cy='searchbar']").type("nincs");
         cy.get("[data-cy='search-button']").click({force: true});
-        cy.get("[data-cy='no-data']").should("be.visible", true);
+        cy.get("[data-cy='no-data']").should("be.visible");
     });
 
     it('Hibát dob, ha nem töltünk ki minden mezőt!', () => {

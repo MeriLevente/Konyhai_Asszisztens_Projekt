@@ -21,14 +21,14 @@ describe('Főoldal tesztelése', () => {
     });
 
     it('Az oldal betöltésekor az első ismertető divnek kell "kinyitott" állapotban lennie!', () => {
-        cy.get("[data-cy='about-me-header']").should("be.visible", true);
+        cy.get("[data-cy='about-me-header']").should("be.visible");
     });
 
     it('A 2., 3. és 4. ismertető divben kell lennie egy regisztrál először gombnak vagy linknek, ha nem vagyunk bejelentkezve!', () => {
-        cy.get("[data-cy='home-togglers']").each(($toggler, index)=> {
-            cy.wrap($toggler).click({force: true});
+        cy.get("[data-cy='home-togglers']").each((toggler, index) => {
+            cy.wrap(toggler).click({force: true});
             if (index != 0)
-                cy.wrap($toggler).find("[data-cy='login-first']").should("be.visible", true);
+                cy.wrap(toggler).find("[data-cy='login-first']").should("be.visible");
         });
     });
 
@@ -45,17 +45,17 @@ describe('Főoldal tesztelése', () => {
     });
 
     it('Az oldal nyelvét váltó gomb megjelenik és kattintásra nyelvet vált!', () => {
-        cy.get("[data-cy='lang-button']").should("be.visible", true);
+        cy.get("[data-cy='lang-button']").should("be.visible");
         cy.get("[data-cy='lang-button']").click({force: true});
         cy.window().then((win) => {
-            expect(win.localStorage.getItem('lang'), 'App language').to.equal('en')
-        })
+            expect(win.localStorage.getItem('lang'), 'App language').to.equal('en');
+        });
     });
 
     it('Bejelentkezés után a navbarban a Konyhám és Receptek találhatóak!', () => {
         cy.loginWithRole("user");
         const links = ["Konyhám", "Receptek"];
-        cy.get("[data-cy='navbar-link']").each(($link, index)=> {
+        cy.get("[data-cy='navbar-link']").each(($link, index) => {
             if (index != 0)
                 cy.wrap($link).should("contain", links[index - 1]);
         });
@@ -73,23 +73,23 @@ describe('Főoldal tesztelése', () => {
 
     it('A 3. ismertető divben bejelentkezés után kell lennie egy gombnak, ami elvisz a Konyhám oldalra!', () => {
         cy.loginWithRole("user");
-        cy.get("[data-cy='home-togglers']").each(($toggler, index)=> {
+        cy.get("[data-cy='home-togglers']").each((toggler, index)=> {
             if (index == 2) {
-                cy.wrap($toggler).click({force: true});
-                cy.wrap($toggler).find(".recipebook-btn").click({force: true});
+                cy.wrap(toggler).click({force: true});
+                cy.wrap(toggler).find(".recipebook-btn").click({force: true});
                 cy.location('pathname').should('eq', '/items');
-            }
+            };
         });
     });
 
     it('A 4. ismertető divben bejelentkezés után kell lennie egy gombnak, ami elvisz a Receptek oldalra!', () => {
         cy.loginWithRole("user");
-        cy.get("[data-cy='home-togglers']").each(($toggler, index)=> {
+        cy.get("[data-cy='home-togglers']").each((toggler, index) => {
             if (index == 3) {
-                cy.wrap($toggler).click({force: true});
-                cy.wrap($toggler).find(".recipebook-btn").click({force: true});
+                cy.wrap(toggler).click({force: true});
+                cy.wrap(toggler).find(".recipebook-btn").click({force: true});
                 cy.location('pathname').should('eq', '/recipes');
-            }
+            };
         });
     });
 })

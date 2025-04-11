@@ -25,7 +25,7 @@ describe('A admin típusok oldal tesztelése', () => {
     it('Az törlés gomb nyomásra hibát dob, mivel az elemre az adatbázisban másik táblában hivatkoznak!', () => {
         cy.get("[data-cy='data-tr']").eq(0).find("[data-cy='delete-button']").click({force: true});
         cy.on('window:alert', (text) => {
-            expect(text).to.eq('Típust nem lehet törölni, mert 2 rekord hivatkozik rá!')
+            expect(text).to.eq('Típust nem lehet törölni, mert 2 rekord hivatkozik rá!');
         });
     });
 
@@ -38,7 +38,7 @@ describe('A admin típusok oldal tesztelése', () => {
     it('Kereséskor, ha a keresett szó nem található, akkor megjelenik egy figyelmeztető felirat!', () => {
         cy.get("[data-cy='searchbar']").type("nincs");
         cy.get("[data-cy='search-button']").click({force: true});
-        cy.get("[data-cy='no-data']").should("be.visible", true);
+        cy.get("[data-cy='no-data']").should("be.visible");
     });
 
     it('Hibát dob, ha nem töltünk ki minden mezőt!', () => {
