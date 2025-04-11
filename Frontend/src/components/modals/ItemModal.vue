@@ -42,28 +42,28 @@
 
 <template>
     <div class="background" v-if="data"></div>
-    <div class="modal" tabindex="-1" v-if="data">
+    <div class="modal" tabindex="-1" v-if="data" data-cy="modal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">{{ t("edit_items") }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" v-on:click="closeModal"></button>
+                <button data-cy="close-button" type="button" class="btn-close" data-bs-dismiss="modal" v-on:click="closeModal"></button>
             </div>
             <div class="modal-body">
                 <form @submit.prevent="saveChanges()">
                         <div class="mb-3">
                             <label for="nameHU" class="form-label">{{ t("name") }} (hu)</label>
                             <input type="text" class="form-control" id="nameHU" v-model="modalData.name" 
-                                v-on:focus="() => {if (itemsError) hideError()}">
+                                v-on:focus="() => {if (itemsError) hideError()}" data-cy="name-input">
                         </div>
                         <div class="mb-3">
                             <label for="nameEN" class="form-label">{{ t("name") }} (en)</label>
                             <input type="text" class="form-control" id="nameEN" v-model="modalData.name_EN" 
-                                v-on:focus="() => {if (itemsError) hideError()}">
+                                v-on:focus="() => {if (itemsError) hideError()}" data-cy="name-en-input">
                         </div>
                         <div class="mb-3">
                             <label for="types" class="form-label">{{ t("type") }}</label>
-                            <select name="type" id="types" required v-model="modalData.typeId" class="form-control">
+                            <select data-cy="type-select" name="type" id="types" required v-model="modalData.typeId" class="form-control">
                                 <option v-for="(type,index) in types" :value="type.id" :selected="index+1 == modalData.typeId">
                                     {{ appLanguage == 'hu' ? type.name : type.name_EN }}
                                 </option>
@@ -71,7 +71,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="units" class="form-label">{{ t("unit") }}</label>
-                            <select name="unit" id="units" required v-model="modalData.unit" class="form-control">
+                            <select data-cy="unit-select" name="unit" id="units" required v-model="modalData.unit" class="form-control">
                                 <option v-for="(unit,index) in units" :value="unit" :selected="index == units.indexOf(modalData.unit)">
                                     {{ unit }}
                                 </option>
@@ -79,14 +79,14 @@
                         </div>
                         <div class="mb-3">
                             <label for="image" class="form-label">{{ t("image")+ " Url" }}</label>
-                            <input type="text" class="form-control" id="image" v-model="modalData.image"
+                            <input data-cy="image-input" type="text" class="form-control" id="image" v-model="modalData.image"
                                 v-on:focus="() => {if (itemsError) hideError()}">
                         </div>
-                        <div v-if="itemsError" class="text-danger text-center mx-5 mb-2">
+                        <div v-if="itemsError" class="text-danger text-center mx-5 mb-2" data-cy="error-message">
                             {{ appLanguage == "hu" ? itemsError.hu : itemsError.en }}
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-success">{{ t("save") }}</button>
+                            <button type="submit" class="btn btn-success" data-cy="save-button">{{ t("save") }}</button>
                         </div>
                     </form>
                 </div>

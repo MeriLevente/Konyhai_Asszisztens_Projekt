@@ -10,7 +10,7 @@
     <main class="content-box m-3">
         <div class="container">
             <div class="row">
-                <RouterLink class="back-to-admin" to="/admin">Admin >> {{ 'Admin ' + t('register') }}</RouterLink>
+                <RouterLink class="back-to-admin" to="/admin" data-cy="back-button">Admin >> {{ 'Admin ' + t('register') }}</RouterLink>
             </div>
             <LoginForm :method="'register'" :role="'admin'"/>
         </div> 

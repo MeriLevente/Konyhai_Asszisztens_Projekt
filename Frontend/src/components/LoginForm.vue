@@ -90,7 +90,7 @@
     </div>
     <div class="row my-3">
         <div class="col-12 col-md-4 mx-auto">
-            <form @submit.prevent="submitForm()">
+            <form @submit.prevent="submitForm()" data-cy="user-form">
                 <div class="form-floating mb-3" v-if="method == 'register'">
                     <input data-cy="name-input" type="text" class="form-control" id="name" v-model="formData.name" maxlength="50"
                         v-on:focus="() => { if(status.message && status.messageEn) hideError();}">

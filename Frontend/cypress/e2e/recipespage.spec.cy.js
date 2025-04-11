@@ -2,7 +2,7 @@ Cypress.on('uncaught:exception', (err, runnable) => {
     return false;
 });
 
-describe('A konyhám oldal tesztelése', () => {
+describe('A receptek oldal tesztelése', () => {
     beforeEach(()=>{
         cy.task("seedDatabase");
         cy.loginWithRole("user");
@@ -26,7 +26,7 @@ describe('A konyhám oldal tesztelése', () => {
         cy.get("[data-cy='recipe-card']").should("have.length", 2);
     });
 
-    it('A fejlécben megjelenik az recept típusok kiválasztómező, kereső input mező!', () => {
+    it('Ha az típusra szűrűnk megjelenik a hozzátartozó adat!', () => {
         cy.get("[data-cy='recipetype-select']").select("ITA");
         cy.get("[data-cy='recipe-card']").should("have.length", 1);
         cy.get("[data-cy='recipe-card-title']").should("contain", "Teszt Bolognai");
@@ -40,14 +40,14 @@ describe('A konyhám oldal tesztelése', () => {
     it('A Bolognai recept nehézsége helyesen jelenik meg, és háttérszíne helyesen, sárga!', () => {
         cy.get("[data-cy='recipetype-select']").select("ITA");
         cy.get("[data-cy='recipe-card-diff']").should("have.text", "5/10");
-        cy.get("[data-cy='recipe-card-diff']").should('have.css', 'background-color').and('eq', 'rgb(255, 165, 0)')
+        cy.get("[data-cy='recipe-card-diff']").should('have.css', 'background-color').and('eq', 'rgb(255, 165, 0)');
     });
 
     it('A Teszt Almák recept nehézsége helyesen jelenik meg, és háttérszíne helyesen, zöld!', () => {
         cy.get("[data-cy='recipetype-select']").select("HUN");
         cy.get("[data-cy='recipe-card-time']").should("have.text", "10 perc");
         cy.get("[data-cy='recipe-card-diff']").should("have.text", "1/10");
-        cy.get("[data-cy='recipe-card-diff']").should('have.css', 'background-color').and('eq', 'rgb(0, 128, 0)')
+        cy.get("[data-cy='recipe-card-diff']").should('have.css', 'background-color').and('eq', 'rgb(0, 128, 0)');
     });
 
     it('Recept kereséskor, ha a keresett recept nem található, akkor megjelenik egy figyelmeztető felirat!', () => {

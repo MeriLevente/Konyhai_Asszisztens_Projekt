@@ -96,7 +96,7 @@
     <div class="background" v-if="data"></div>
     <main class="container my-5">
         <div class="row">
-            <RouterLink class="back-to-admin" to="/admin">Admin >> {{ t('edit_type') }}</RouterLink>
+            <RouterLink class="back-to-admin" to="/admin" data-cy="back-button">Admin >> {{ t('edit_type') }}</RouterLink>
         </div>
         <div class="row">
             <h1 class="display-3 text-center">{{t('edit_type')}}</h1>
@@ -111,7 +111,7 @@
         <div class="row my-2" v-if="!loading">  
             <div class="col-12">
                 <TypeModal :data="data" v-if="data" v-on:save-data="saveData" v-on:close-modal="closeModal"/>
-                <div v-if="store.types.length == 0" class="nodata-div w-50 mx-auto p-3">
+                <div v-if="store.types.length == 0" class="nodata-div w-50 mx-auto p-3" data-cy="no-data">
                     <h3 class="text-center">{{ t("no_data") }}</h3>
                 </div>
 
@@ -120,7 +120,7 @@
                         <thead>
                             <tr>
                                 <th style="width: 10%;">
-                                    <span class="btn btn-success m-1" v-on:click="addType">
+                                    <span class="btn btn-success m-1" v-on:click="addType" data-cy="add-button">
                                         {{ t("add_new") }}
                                     </span>
                                 </th>
@@ -131,12 +131,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(type,index) in store.types" :key="index">
+                            <tr v-for="(type,index) in store.types" :key="index" data-cy="data-tr">
                                 <td>
-                                    <span class="btn btn-primary p-2 m-1 table-btn"  v-on:click="editType(type)">
+                                    <span class="btn btn-primary p-2 m-1 table-btn"  v-on:click="editType(type)" data-cy="edit-button">
                                         <i class="bi bi-pencil d-flex justify-content-center"></i>
                                     </span>
-                                    <span class="btn btn-danger p-2 table-btn" v-on:click="deleteType(type)">
+                                    <span class="btn btn-danger p-2 table-btn" v-on:click="deleteType(type)" data-cy="delete-button">
                                         <i class="bi bi-trash d-flex justify-content-center"></i>
                                     </span>
                                 </td>

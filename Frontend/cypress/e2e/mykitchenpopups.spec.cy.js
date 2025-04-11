@@ -2,7 +2,7 @@ Cypress.on('uncaught:exception', (err, runnable) => {
     return false;
 });
 
-describe('A konyhám oldal tesztelése', () => {
+describe('Az Új felvétel és Mennyiségváltó (Konyhám oldal) tesztelése', () => {
     beforeEach(()=>{
         cy.task("seedDatabase");
         cy.loginWithRole("user");

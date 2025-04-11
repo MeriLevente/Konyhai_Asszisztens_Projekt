@@ -50,18 +50,18 @@
 
 <template>
     <div class="my-3 page-content">
-        <div style="float: left;">
+        <div style="float: left;"  data-cy="recipe-diff">
             {{ `${t("difficulty")}: ${recipe.difficulty} / 10`}}
         </div>
-        <div style="float: right;">
+        <div style="float: right;"  data-cy="recipe-time">
             {{ `${t("time")}: ${recipe.time} `}}
         </div>
         <h3 class="pt-1">{{ t("ingredients" ) + ` (${t("inmystore")})`}}</h3>
         <ul>
-            <li v-for="(ingr, index) in recipe?.ingredients">
+            <li v-for="(ingr, index) in recipe?.ingredients"  data-cy="ingredients-text">
                 {{ `${appLanguage == 'hu' ? ingr.item.name : ingr.item.name_EN}, ${ingr.quantity} ${t(ingr.item.unit)} ` }}
                 (
-                <span v-if="storedIngredients[index]" 
+                <span v-if="storedIngredients[index]" data-cy="my-ingredient"
                     v-on="isEnoughQuantity(storedIngredients[index].quantity, ingr.quantity)"
                     :class="storedIngredients[index].quantity < ingr.quantity ? 'text-danger' : ''">
                     {{`${storedIngredients[index].quantity} ${t(ingr.item.unit)}`}}
@@ -71,14 +71,14 @@
         </ul>
         <h3>{{ t("prep" )}}</h3>
         <ol>
-            <li class="mt-2" v-if="appLanguage == 'hu'" v-for="step in recipe?.description.split('#')">
+            <li class="mt-2" v-if="appLanguage == 'hu'" v-for="step in recipe?.description.split('#')" data-cy="recipe-steps-hu">
                 {{ step }}
             </li>
-            <li class="mt-2" v-if="appLanguage == 'en'" v-for="step in recipe?.description_EN.split('#')">
+            <li class="mt-2" v-if="appLanguage == 'en'" v-for="step in recipe?.description_EN.split('#')"  data-cy="recipe-steps-en">
                 {{ step }}
             </li>
         </ol>
-        <button class="cook-btn" :disabled="!enoughInStore || props.recipe.ingredients.length == 0" v-on:click="removeUsedItems">
+        <button class="cook-btn" :disabled="!enoughInStore || props.recipe.ingredients.length == 0" v-on:click="removeUsedItems"  data-cy="cooking-button">
             {{ t("letmecook") }}
             <span v-if="loadingCooking" class="spinner-border spinner-border-sm text-center"></span>
         </button>

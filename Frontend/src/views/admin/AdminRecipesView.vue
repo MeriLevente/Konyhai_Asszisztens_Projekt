@@ -102,7 +102,7 @@
 <template>
     <main class="container my-5" v-if="openEditor == false">
         <div class="row">
-            <RouterLink class="back-to-admin" to="/admin">Admin >> {{t('edit_recipes')}}</RouterLink>
+            <RouterLink class="back-to-admin" to="/admin" data-cy="back-button">Admin >> {{t('edit_recipes')}}</RouterLink>
         </div>
         <div class="row">
             <h1 class="display-3 text-center">{{t('edit_recipes')}}</h1>
@@ -116,7 +116,7 @@
         </div>
         <div class="row my-2" v-if="!loading">  
             <div class="col-12">
-                <div v-if="store.recipes.length == 0" class="nodata-div w-50 mx-auto p-3">
+                <div v-if="store.recipes.length == 0" class="nodata-div w-50 mx-auto p-3" data-cy="no-data">
                     <h3 class="text-center">{{ t("no_data") }}</h3>
                 </div>
                 <div class="table-responsive">
@@ -124,7 +124,7 @@
                         <thead>
                             <tr>
                                 <th style="width: 10%;">
-                                    <span class="btn btn-success m-1" v-on:click="addRecipe">
+                                    <span class="btn btn-success m-1" v-on:click="addRecipe" data-cy="add-button">
                                         {{ t("add_new") }}
                                     </span>
                                 </th>
@@ -136,12 +136,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(recipe,index) in useRecipeStore().recipes" :key="index">
+                            <tr v-for="(recipe,index) in useRecipeStore().recipes" :key="index" data-cy="data-tr">
                                 <td>
-                                    <span class="btn btn-primary table-btn p-2 m-1"  v-on:click="editRecipe(recipe)">
+                                    <span class="btn btn-primary table-btn p-2 m-1"  v-on:click="editRecipe(recipe)" data-cy="edit-button">
                                         <i class="bi bi-pencil d-flex justify-content-center"></i>
                                     </span>
-                                    <span class="btn btn-danger table-btn p-2" v-on:click="deleteRecipe(recipe)">
+                                    <span class="btn btn-danger table-btn p-2" v-on:click="deleteRecipe(recipe)" data-cy="delete-button">
                                         <i class="bi bi-trash d-flex justify-content-center"></i>
                                     </span>
                                 </td>

@@ -20,15 +20,15 @@
         <span v-on:click="goBack()">
             <i class="bi bi-arrow-left" style="font-weight: bold; font-size: 1.5rem; cursor: pointer;"></i>
         </span>
-        <h2 class="text-center">{{ appLanguage == 'hu' ? recipe?.name : recipe?.name_EN }}</h2>
-        <h6 class="text-center" v-if="type">
+        <h2 class="text-center" data-cy="recipe-title">{{ appLanguage == 'hu' ? recipe?.name : recipe?.name_EN }}</h2>
+        <h6 class="text-center" v-if="type" data-cy="recipe-type">
             {{ appLanguage == "hu" ? type.hu : type.en }}
         </h6>
         <div class="d-flex justify-content-center mt-1">
             <img :src="recipe.image" :alt="recipe?.name_EN + ' image'" class="recipebook-img">
         </div>
         <p class="text-center">{{ t("recipeimgtext") }}</p>
-        <p class="text-center mt-5">{{ recipe.id }}</p>
+        <p class="text-center mt-5"  data-cy="recipe-id">{{ recipe.id }}</p>
     </div>
 </template>
 

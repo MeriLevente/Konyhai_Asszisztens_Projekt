@@ -97,7 +97,7 @@
 <template>
     <main class="container my-5">
         <div class="row">
-            <RouterLink class="back-to-admin" to="/admin">Admin >> {{ t('edit_items') }}</RouterLink>
+            <RouterLink class="back-to-admin" to="/admin" data-cy="back-button">Admin >> {{ t('edit_items') }}</RouterLink>
         </div>
         <div class="row">
             <h1 class="display-3 text-center">{{t('edit_items')}}</h1>
@@ -114,7 +114,7 @@
                 <ItemModal :data="data" v-if="data" v-on:save-data="saveData" v-on:close-modal="closeModal"/>
                 
                 <div v-if="store.items.length == 0" class="nodata-div w-50 mx-auto p-3">
-                    <h3 class="text-center">{{ t("no_data") }}</h3>
+                    <h3 class="text-center" data-cy="no-data">{{ t("no_data") }}</h3>
                 </div>
 
                 <div class="table-responsive">
@@ -122,7 +122,7 @@
                         <thead>
                             <tr>
                                 <th style="width: 10%;">
-                                    <span class="btn btn-success m-1" v-on:click="addItem">
+                                    <span class="btn btn-success m-1" v-on:click="addItem" data-cy="add-button">
                                         {{ t("add_new") }}
                                     </span>
                                 </th>
@@ -134,12 +134,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(item,index) in items" :key="index">
+                            <tr v-for="(item,index) in items" :key="index" data-cy="data-tr">
                                 <td>
-                                    <span class="btn btn-primary table-btn p-2 m-1"  v-on:click="editItem(item)">
+                                    <span class="btn btn-primary table-btn p-2 m-1"  v-on:click="editItem(item)" data-cy="edit-button">
                                         <i class="bi bi-pencil d-flex justify-content-center"></i>
                                     </span>
-                                    <span class="btn btn-danger table-btn p-2" v-on:click="deleteItem(item)">
+                                    <span class="btn btn-danger table-btn p-2" v-on:click="deleteItem(item)" data-cy="delete-button">
                                         <i class="bi bi-trash d-flex justify-content-center"></i>
                                     </span>
                                 </td>

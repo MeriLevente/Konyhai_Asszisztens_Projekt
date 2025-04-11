@@ -33,35 +33,35 @@
 
 <template>
     <div class="background" v-if="data"></div>
-   <div class="modal" tabindex="-1" style="display: block;" v-if="data">
+   <div class="modal" tabindex="-1" style="display: block;" v-if="data" data-cy="modal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">{{ t("edit_type") }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" v-on:click="closeModal"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" v-on:click="closeModal" data-cy="close-button"></button>
             </div>
             <div class="modal-body">
                 <form @submit.prevent="saveChanges()">
                         <div class="mb-3">
                             <label for="nameHU" class="form-label">{{ t("name") }} (hu)</label>
                             <input type="text" class="form-control" id="nameHU" v-model="modalData.name"
-                                v-on:focus="() => {if (typesError) hideError()}">
+                                v-on:focus="() => {if (typesError) hideError()}" data-cy="name-input">
                         </div>
                         <div class="mb-3">
                             <label for="nameEN" class="form-label">{{ t("name") }} (en)</label>
                             <input type="text" class="form-control" id="nameEN" v-model="modalData.name_EN"
-                                v-on:focus="() => {if (typesError) hideError()}">
+                                v-on:focus="() => {if (typesError) hideError()}" data-cy="name-en-input">
                         </div>
                         <div class="mb-3">
                             <label for="image" class="form-label">{{ t("image") + " Url" }}</label>
                             <input type="text" class="form-control" id="image" v-model="modalData.image"
-                                v-on:focus="() => {if (typesError) hideError()}">
+                                v-on:focus="() => {if (typesError) hideError()}" data-cy="image-input">
                         </div>
-                        <div v-if="typesError" class="text-danger text-center mx-5 mb-2">
+                        <div v-if="typesError" class="text-danger text-center mx-5 mb-2" data-cy="error-message">
                             {{ useAppStore().appLanguage == "hu" ? typesError.hu : typesError.en }}
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-success">{{ t("save") }}</button>
+                            <button type="submit" class="btn btn-success" data-cy="save-button">{{ t("save") }}</button>
                         </div>
                     </form>
                 </div>

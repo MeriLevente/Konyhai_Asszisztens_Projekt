@@ -130,28 +130,28 @@
 
 <template>
     <main class="content-box my-5 mx-3">
-        <div class="container">
+        <div class="container" data-cy="recipe-editor">
         <form @submit.prevent="submitRecipe()">
             <h1 class="text-center">{{ t("recipe_editor") }}</h1>
             <div class="row mb-2">
                 <div class="col-12 col-md-6">
                     <label for="nameHU" class="form-label">{{ t("name") }} (hu)</label>
-                    <input type="text" class="form-control m-1" id="nameHU" v-model="recipe.name" v-on:focus="resetRecipeError()">
+                    <input type="text" class="form-control m-1" id="nameHU" v-model="recipe.name" v-on:focus="resetRecipeError()" data-cy='name-input'>
                     <label for="difficulty" class="form-label">{{ t("difficulty") }}</label>
                     <input type="number" class="form-control m-1" id="difficulty" v-model="recipe.difficulty" min="1" max="10"
-                        placeholder="min: 1, max: 10" v-on:focus="resetRecipeError()">
+                        placeholder="min: 1, max: 10" v-on:focus="resetRecipeError()" data-cy='diff-input'>
                     <label for="image" class="form-label">{{ t("image") + " Url" }}</label>
                     <input type="text" class="form-control" id="image" v-model="recipe.image"
-                            v-on:focus="() => {if(recipesError) resetRecipeError()}">
+                            v-on:focus="() => {if(recipesError) resetRecipeError()}" data-cy='image-input'>
                 </div>
                 <div class="col-12 col-md-6 mb">
                     <label for="nameEN" class="form-label">{{ t("name") }} (en)</label>
-                    <input type="text" class="form-control m-1" id="nameEN" v-model="recipe.name_EN" v-on:focus="resetRecipeError()">
+                    <input type="text" class="form-control m-1" id="nameEN" v-model="recipe.name_EN" v-on:focus="resetRecipeError()" data-cy='name-en-input'>
                     <label for="time" class="form-label">{{ t("time") }}</label>
                     <input type="number" class="form-control m-1" id="time" min="1" max="10080"
-                        v-model="recipe.time" placeholder="min: 1, max: 10080" v-on:focus="resetRecipeError()">
+                        v-model="recipe.time" placeholder="min: 1, max: 10080" v-on:focus="resetRecipeError()" data-cy='time-input'>
                     <label for="type" class="form-label">{{ t("type") }}</label>
-                    <select name="type" id="type" class="form-control m-1" v-model="recipe.type">
+                    <select name="type" id="type" class="form-control m-1" v-model="recipe.type" data-cy='type-select'>
                         <option v-for="type in recipeTypes" :value="type.short"
                             :selected="recipe.type == type.short">{{ appLanguage == "hu" ? type.hu : type.en  }}
                         </option>
@@ -164,7 +164,7 @@
                 <div class="col-12 col-md-6 input-div mb-2 p-2">
                     <label for="itemtype">{{ t('type') }}</label>
                     <select id="itemtype" name="itemtype" v-model="selectedTypeId" class="form-control" 
-                        v-on:change="selectedIngredient = null" v-on:focus="hideIngredientError()">
+                        v-on:change="selectedIngredient = null" v-on:focus="hideIngredientError()" data-cy='itemtype-select'>
                         <option v-for="type in useTypeStore().types" :value="type.id">
                             {{ appLanguage == 'hu' ? type.name : type.name_EN }}
                         </option>
@@ -172,7 +172,7 @@
                      <label for="ingredient">{{ t('ingredients') }}</label>
                      <select id="ingredient" class="form-control"
                         v-model="selectedIngredient" v-bind:disabled="selectedTypeId == null" v-on:focus="hideIngredientError()"
-                        v-on:click="useItemStore().getItemsByTypeId(selectedTypeId!)">
+                        v-on:click="useItemStore().getItemsByTypeId(selectedTypeId!)" data-cy='item-select'>
                         <option v-for="ingr in useItemStore().items" :value="ingr">
                             {{appLanguage == 'hu' ? ingr.name : ingr.name_EN}}
                         </option>
@@ -182,23 +182,23 @@
                         <div class="col-8">
                             <label for="quantity">{{ t("quantity") }}</label>
                             <input type="number" min="1" max="10000" class="form-control" v-model="ingredientQuantity"
-                                v-on:focus="hideIngredientError()"/>
+                                v-on:focus="hideIngredientError()" data-cy='quantity-input'/>
                         </div>
                         <div class="col-4 py-4">
                             <span class="unit-span" v-if="selectedIngredient">{{ t(selectedIngredient!.unit) }}</span>
                         </div>
                      </div>
-                     <p class="text-danger d-flex justify-content-center my-2">
+                     <p class="text-danger d-flex justify-content-center my-2" data-cy='ingredient-error'>
                         {{ appLanguage == "hu" ? ingrInputError?.message : ingrInputError?.messageEn }}
                     </p>
                      <div class="d-flex justify-content-center" v-on:click="saveIngredient">
-                        <button class="btn btn-success" type="button">{{ t("save") }}</button>
+                        <button class="btn btn-success" type="button" data-cy='save-ingredient'>{{ t("save") }}</button>
                      </div>
                 </div>
                 <div class="col-12 col-md-6" style="display: flex; float: left; flex-wrap: wrap;">
                     <div v-for="(ingr,index) in ingredients" :key="index" class="ingredient-div d-flex align-items-start">
-                        <i class="bi bi-trash" v-on:click="deleteIngredient(ingr.item.id!)"></i>
-                        <div>
+                        <i class="bi bi-trash" v-on:click="deleteIngredient(ingr.item.id!)" data-cy='delete-ingredient'></i>
+                        <div data-cy='ingredient-div'>
                             {{ `${appLanguage == 'hu' ? ingr.item.name : ingr.item.name_EN}`}}
                             <br>
                             {{ `${ingr.quantity} ${ingr.item.unit}` }}
@@ -220,7 +220,7 @@
                                     v-on:change="{
                                         selectedStep = '1';
                                         stepInputError = '';
-                                    }">
+                                    }" data-cy='language-select'>
                                     <option value="hu">{{ t("hu") }}</option>
                                     <option value="en">{{ t("en") }}</option>
                                 </select>
@@ -228,9 +228,9 @@
                             <div class="col-4">
                                 <label for="step" class="form-label">{{ t("step") }}</label>
                                 <input v-if="selectedLanguage == 'hu'" type="number" name="step" id="step"
-                                   class="form-control" min="1" :max="descHU.length == 4 ? '4' : descHU.length+1" v-model="selectedStep">
+                                   class="form-control" min="1" :max="descHU.length == 4 ? '4' : descHU.length+1" v-model="selectedStep" data-cy='stephu-input'>
                                 <input v-if="selectedLanguage == 'en'" type="number" name="step" id="stepEn"
-                                    class="form-control" min="1" :max="descEN.length == 4 ? '4' : descEN.length+1" v-model="selectedStep">
+                                    class="form-control" min="1" :max="descEN.length == 4 ? '4' : descEN.length+1" v-model="selectedStep" data-cy='stepen-input'>
                             </div>
                         </div>
 
@@ -239,16 +239,16 @@
                                 <label for="desc" class="form-label">{{ t("step") }}</label>
                                 <textarea id="desc" class="form-control"
                                 v-model="stepInput"
-                                maxlength="90" :placeholder="appLanguage == 'hu' ? 'max 90 karakter' : 'max 90 charachter'"
+                                maxlength="90" :placeholder="appLanguage == 'hu' ? 'max 90 karakter' : 'max 90 charachter'" data-cy='step-textarea'
                                 ></textarea>
                             </div>
                         </div>
                         <div class="row mt-2">
-                            <span class="text-danger d-flex justify-content-center my-2" v-if="stepInputError">
+                            <span class="text-danger d-flex justify-content-center my-2" v-if="stepInputError" data-cy='step-error'>
                                 {{ stepInputError }}
                             </span>
                             <div class="col-4 offset-5">
-                                <button type="button" class="btn btn-success" v-on:click="saveStep">{{ t("save") }}</button>
+                                <button type="button" class="btn btn-success" v-on:click="saveStep" data-cy='save-step'>{{ t("save") }}</button>
                             </div>
                         </div>
                     </div>
@@ -256,23 +256,23 @@
                 <div class="col-12 col-md-6">
                     <h5>{{ t("steps") }}</h5>
                     <p>-- {{ selectedLanguage == 'hu' ? t("hu") : t("en") }} --</p>
-                    <p v-if="descHU[0] != '' && selectedLanguage == 'hu'" v-for="(step, index) in descHU">
+                    <p v-if="descHU[0] != '' && selectedLanguage == 'hu'" v-for="(step, index) in descHU" data-cy='stephu'>
                         {{ `${index+1}. ${step}` }}
                     </p>
-                    <p v-if="descEN[0] != '' && selectedLanguage == 'en'" v-for="(step, index) in descEN">
+                    <p v-if="descEN[0] != '' && selectedLanguage == 'en'" v-for="(step, index) in descEN" data-cy='stepen'>
                         {{ `${index+1}. ${step}` }}
                     </p>
                 </div>
             </div>
-            <div v-if="recipesError.en != '' || recipesError.hu != ''" class="text-danger text-center mx-5 mb-2">
+            <div v-if="recipesError.en != '' || recipesError.hu != ''" class="text-danger text-center mx-5 mb-2" data-cy='recipe-error'>
                 {{ appLanguage == "hu" ? recipesError.hu : recipesError.en }}
             </div>
             <div class="row m-3">
                 <div class="col d-flex justify-content-end">
-                    <button type="button" class="btn btn-danger" v-on:click="closeEditor">{{ t("cancel") }}</button>
+                    <button type="button" class="btn btn-danger" v-on:click="closeEditor" data-cy='close-button'>{{ t("cancel") }}</button>
                 </div>
                 <div class="col">
-                    <button type="submit" class="btn btn-success">{{ t("save") }}</button>
+                    <button type="submit" class="btn btn-success" data-cy='save-button'>{{ t("save") }}</button>
                 </div>
             </div>
         </form>
