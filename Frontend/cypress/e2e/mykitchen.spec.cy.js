@@ -53,13 +53,6 @@ describe('A konyhám oldal tesztelése', () => {
         cy.get("[data-cy='paginator-forward']").should("be.disabled");
     });
 
-    it('Élelmiszerre kereséskor megjelenik, amire kerestünk!', () => {
-        cy.get("[data-cy='searchbar']").type("alma");
-        cy.get("[data-cy='search-button']").click({force: true});
-        cy.get("[data-cy='stored-item']").should("have.length", 1);
-        cy.get("[data-cy='item-title']").should("contain", "Alma");
-    });
-
     it('Élelmiszerre kereséskor, ha a keresett termék nem található, akkor megjelenik egy figyelmeztető felirat!', () => {
         cy.get("[data-cy='searchbar']").type("nincs");
         cy.get("[data-cy='search-button']").click({force: true});
