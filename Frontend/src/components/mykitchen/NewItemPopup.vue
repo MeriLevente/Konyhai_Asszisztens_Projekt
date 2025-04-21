@@ -36,7 +36,7 @@
             quantity: itemQuantity.value!
         };
         if (!usersItems.find(x=> x.itemId == request.itemId)) {
-            if (request.quantity > 0 && request.quantity <= 10000) {
+            if (request.quantity > 0 && request.quantity <= 10000 && Number.isInteger(request.quantity)) {
                 useUserStore().updateQuantity(request, "add").then((): void => {
                     useUserStore().storedItemsAllLength++;
                     sessionStorage.setItem("storageMaxLength", `${useUserStore().storedItemsAllLength}`);
