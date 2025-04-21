@@ -112,7 +112,11 @@
 
     const stepNumberIsCorrect = (): IFormResponse => {
         const maxStepNmb = selectedLanguage.value == 'hu' ? descHU.value.length + 1 : descEN.value.length + 1;
-        if (Number(selectedStep.value) <= 0 || Number(selectedStep.value) > Number(maxStepNmb) || Number(selectedStep.value) > 4) {
+        if (Number(selectedStep.value) <= 0 ||
+            Number(selectedStep.value) > Number(maxStepNmb) ||
+            Number(selectedStep.value) > 4 ||
+            !Number.isInteger(selectedStep.value)
+        ) {
             return {message: "Érvénytelen lépés szám!", messageEn: "Invalid step number!", isError: true};
         } else {
             return {isError: false};

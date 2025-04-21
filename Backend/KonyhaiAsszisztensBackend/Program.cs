@@ -64,7 +64,6 @@ namespace KonyhaiAsszisztensBackend
                 app.UseSwaggerUI();
             }
 
-            //app.UseCors(builder=> builder.AllowAnyHeader().AllowAnyMethod().WithOrigins(["http://localhost:5173", "http://localhost:5098"]));
             app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
             app.UseAuthentication();

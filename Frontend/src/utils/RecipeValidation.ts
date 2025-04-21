@@ -14,7 +14,7 @@ export default class RecipeValidation {
     };
 
     private static difficultyIsCorrect(difficulty: number): IFormResponse {
-        if(Number(difficulty) <= 0 || Number(difficulty) > 10)
+        if(Number(difficulty) <= 0 || Number(difficulty) > 10 || !Number.isInteger(difficulty))
             return {
                 isError: true,
                 message: "A nehézség 1 és 10 között legyen!",
@@ -24,7 +24,7 @@ export default class RecipeValidation {
     };
 
     private static timeIsCorrect(time: number): IFormResponse {
-        if (Number(time) <= 0 || Number(time) > 10080)
+        if (Number(time) <= 0 || Number(time) > 10080 || !Number.isInteger(time))
             return {
                 isError: true,
                 message: "Az elkészítési idő túl hosszú vagy helytelen!",
@@ -73,7 +73,7 @@ export default class RecipeValidation {
                 message: "Töltsön ki a minden mezőt!",
                 messageEn: "Fill out all fields!"
             };
-        if (Number(quantity) <= 0 || Number(quantity) > 10000)
+        if (Number(quantity) <= 0 || Number(quantity) > 10000 || !Number.isInteger(quantity))
             return {
                 isError: true,
                 message: "Helytelen mennyiséget adott meg!",

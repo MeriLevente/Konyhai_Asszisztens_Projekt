@@ -16,6 +16,8 @@
             inputQuantity.value = 10000;
         if (inputQuantity.value < 0)
             inputQuantity.value = 0;
+        if (!Number.isInteger(inputQuantity.value))
+            inputQuantity.value = Math.floor(inputQuantity.value);
         if (props.method == "reduce") {
             if (inputQuantity.value > props.modifiedItem.quantity)
                 return 0;
