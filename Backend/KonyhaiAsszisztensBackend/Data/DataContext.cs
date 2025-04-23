@@ -11,12 +11,12 @@ namespace KonyhaiAsszisztensBackend.Data
         {
         }
 
-        public DbSet<Items> Items { get; set; }
-        public DbSet<Contains> Contains { get; set; }
-        public DbSet<ItemTypes> ItemTypes { get; set; }
-        public DbSet<Stores> Stores { get; set; }
-        public DbSet<Recipes> Recipes { get; set; }
-        public DbSet<Users> Users { get; set; }
+        public virtual DbSet<Items> Items { get; set; }
+        public virtual DbSet<Contains> Contains { get; set; }
+        public virtual DbSet<ItemTypes> ItemTypes { get; set; }
+        public virtual DbSet<Stores> Stores { get; set; }
+        public virtual DbSet<Recipes> Recipes { get; set; }
+        public virtual DbSet<Users> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

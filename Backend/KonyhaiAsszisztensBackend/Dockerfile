@@ -2,7 +2,7 @@
 
 # This stage is used when running from VS in fast mode (Default for Debug configuration)
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER app
+USER $APP_UID
 WORKDIR /app
 EXPOSE 8080
 
@@ -11,7 +11,7 @@ EXPOSE 8080
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Backend/KonyhaiAsszisztensBackend/KonyhaiAsszisztensBackend.csproj", "KonyhaiAsszisztensBackend/"]
+COPY ["KonyhaiAsszisztensBackend/KonyhaiAsszisztensBackend.csproj", "KonyhaiAsszisztensBackend/"]
 RUN dotnet restore "./KonyhaiAsszisztensBackend/KonyhaiAsszisztensBackend.csproj"
 COPY . .
 WORKDIR "/src/KonyhaiAsszisztensBackend"
