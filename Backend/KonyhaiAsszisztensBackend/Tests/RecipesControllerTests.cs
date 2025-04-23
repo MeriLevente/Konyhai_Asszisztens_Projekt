@@ -37,7 +37,6 @@ namespace KonyhaiAsszisztensBackend.Tests
         [Fact]
         public async Task GetAllRecipes_ReturnsAllRecipes()
         {
-            // Arrange: beszúrunk két receptet a kötelező mezőkkel
             var recipe1 = new Recipes
             {
                 Id = 1,
@@ -46,8 +45,6 @@ namespace KonyhaiAsszisztensBackend.Tests
                 Description = "Recipe1 description",
                 Description_EN = "Recipe1 description EN",
                 Type = "Main Course"
-                // Egyéb property-k (ha vannak) itt állíthatóak, és a kapcsolódó Ingredients,
-                // Ha nincs hozzárendelve, a controllerban lehet, hogy rendelünk üres listát.
             };
             var recipe2 = new Recipes
             {
@@ -61,16 +58,14 @@ namespace KonyhaiAsszisztensBackend.Tests
             _context.Recipes.AddRange(recipe1, recipe2);
             await _context.SaveChangesAsync();
 
-            // Act
+
             var result = await _controller.GetAllRecipes();
 
-            // Assert
+
             var actionResult = Assert.IsType<ActionResult<IEnumerable<Recipes>>>(result);
             var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
             var recipes = Assert.IsAssignableFrom<IEnumerable<Recipes>>(okResult.Value).ToList();
             Assert.Equal(2, recipes.Count);
-
-            // Ellenőrizzük, hogy az Ingredients property nem null (üres listát várunk, ha nem töltöttük be)
             Assert.All(recipes, r => Assert.NotNull(r.Ingredients));
         }
 
@@ -78,14 +73,12 @@ namespace KonyhaiAsszisztensBackend.Tests
         [Fact]
         public async Task GetRecipeBySearchLengthReturnsCorrectLength()
         {
-            // Arrange: beállítjuk a ControllerContext-et, hogy elérhető legyen a Request.Headers
             _controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
             };
             _controller.ControllerContext.HttpContext.Request.Headers["Accept-Language"] = "hu";
 
-            // Beszúrunk három receptet, minden kötelező tulajdonsággal feltöltve:
             var recipe1 = new Recipes
             {
                 Id = 1,
@@ -118,13 +111,7 @@ namespace KonyhaiAsszisztensBackend.Tests
 
             _context.Recipes.AddRange(recipe1, recipe2, recipe3);
             await _context.SaveChangesAsync();
-
-            // Act: keresünk "p" karakterláncot.
-            // A keresés során a controller a Name-t vizsgálja az aktuális nyelv alapján.
             var result = await _controller.GetRecipeBySearchLength("p");
-
-            // Assert: az eredménynek OkObjectResult-nek kell lennie,
-            // valamint a DataLength objektumban a countnak 2-nak kell lennie (mivel a "Pasta" és a "Pizza" nevek megfelelnek a keresésnek).
             var actionResult = Assert.IsType<ActionResult<DataLength>>(result);
             var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
             var dataLength = Assert.IsType<DataLength>(okResult.Value);
@@ -135,7 +122,6 @@ namespace KonyhaiAsszisztensBackend.Tests
         [Fact]
         public async Task GetRecipesPaginated_WithValidRange_ReturnsPartialRecipes()
         {
-            // Arrange: beszúrunk 5 receptet, minden kötelező mezővel feltöltve
             for (int i = 1; i <= 5; i++)
             {
                 _context.Recipes.Add(new Recipes
@@ -143,32 +129,25 @@ namespace KonyhaiAsszisztensBackend.Tests
                     Id = i,
                     Name = $"Recipe{i}",
                     Name_EN = $"Recipe{i}_EN",
-                    Description = $"Recipe{i} description",      // Kötelező tulajdonság
-                    Description_EN = $"Recipe{i} description EN", // Kötelező tulajdonság
-                    Type = "Main Course"                          // Kötelező tulajdonság
+                    Description = $"Recipe{i} description",    
+                    Description_EN = $"Recipe{i} description EN", 
+                    Type = "Main Course"                          
                 });
             }
             await _context.SaveChangesAsync();
 
-            // Act: Például ha from = 1, to = 4, akkor a 2., 3. és 4. receptet várjuk
             var result = await _controller.GetRecipesPaginated(1, 4);
 
-            // Assert
             var actionResult = Assert.IsType<ActionResult<IEnumerable<Recipes>>>(result);
             var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
             var returnedRecipes = Assert.IsAssignableFrom<IEnumerable<Recipes>>(okResult.Value).ToList();
-
-            // Mivel from = 1 és to = 4, akkor a skip(from) és take(to - from) alapján 3 receptet várunk,
-            // a beszúrt receptek sorrendje alapján a 2., 3. és 4. elem.
             Assert.Equal(3, returnedRecipes.Count);
-            // További ellenőrzések, ha szükséges, pl. sorrend, Name-ének megegyezése, stb.
         }
 
 
         [Fact]
         public async Task GetRecipesPaginated_WithInvalidRange_ReturnsBadRequest()
         {
-            // Arrange
             _context.Recipes.Add(new Recipes
             {
                 Id = 1,
@@ -180,10 +159,7 @@ namespace KonyhaiAsszisztensBackend.Tests
             });
             await _context.SaveChangesAsync();
 
-            // Act: hibás intervallumot adunk meg (például from=1, to=0, ami érvénytelen)
             var result = await _controller.GetRecipesPaginated(1, 0);
-
-            // Assert: elvárjuk, hogy a hibás intervallum miatt a BadRequest ágat kapjuk
             var actionResult = Assert.IsType<ActionResult<IEnumerable<Recipes>>>(result);
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(actionResult.Result);
             var error = Assert.IsType<ErrorMessage>(badRequestResult.Value);
@@ -194,7 +170,7 @@ namespace KonyhaiAsszisztensBackend.Tests
         [Fact]
         public async Task GetRecipeBySearch_ReturnsMatchingRecipes()
         {
-            // Arrange
+
             _controller.ControllerContext = new ControllerContext
             {
                 HttpContext = new DefaultHttpContext()
@@ -206,9 +182,9 @@ namespace KonyhaiAsszisztensBackend.Tests
                 Id = 1,
                 Name = "Pasta",
                 Name_EN = "Pasta_EN",
-                Description = "Delicious pasta recipe",      // Kötelező
-                Description_EN = "Delicious pasta recipe EN",   // Kötelező
-                Type = "Main Course"                              // Kötelező
+                Description = "Delicious pasta recipe",      
+                Description_EN = "Delicious pasta recipe EN",   
+                Type = "Main Course"                              
             };
 
             var recipe2 = new Recipes
@@ -216,9 +192,9 @@ namespace KonyhaiAsszisztensBackend.Tests
                 Id = 2,
                 Name = "Pizza",
                 Name_EN = "Pizza_EN",
-                Description = "Cheesy pizza recipe",           // Kötelező
-                Description_EN = "Cheesy pizza recipe EN",        // Kötelező
-                Type = "Main Course"                              // Kötelező
+                Description = "Cheesy pizza recipe",          
+                Description_EN = "Cheesy pizza recipe EN",        
+                Type = "Main Course"                              
             };
 
             var recipe3 = new Recipes
@@ -226,23 +202,17 @@ namespace KonyhaiAsszisztensBackend.Tests
                 Id = 3,
                 Name = "Salad",
                 Name_EN = "Salad_EN",
-                Description = "Fresh salad recipe",             // Kötelező
-                Description_EN = "Fresh salad recipe EN",         // Kötelező
-                Type = "Starter"                                 // Kötelező
+                Description = "Fresh salad recipe",            
+                Description_EN = "Fresh salad recipe EN",         
+                Type = "Starter"                              
             };
 
             _context.Recipes.AddRange(recipe1, recipe2, recipe3);
             await _context.SaveChangesAsync();
-
-            // Act: keresés "p" karakterláncra (kisbetűs rendezéssel)
             var result = await _controller.GetRecipeBySearch("p");
-
-            // Assert
             var actionResult = Assert.IsType<ActionResult<IEnumerable<Recipes>>>(result);
             var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
             var returnedRecipes = Assert.IsAssignableFrom<IEnumerable<Recipes>>(okResult.Value).ToList();
-
-            // Elvárás: a "Pasta" és "Pizza" nevű receptek kerüljenek vissza (2 db)
             Assert.Equal(2, returnedRecipes.Count);
             Assert.All(returnedRecipes, r =>
                 Assert.Contains("p", r.Name.ToLower())

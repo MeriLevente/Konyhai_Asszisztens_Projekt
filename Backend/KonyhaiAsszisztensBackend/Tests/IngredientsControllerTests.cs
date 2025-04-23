@@ -26,7 +26,6 @@ namespace KonyhaiAsszisztensBackend.Tests
         [Fact]
         public async Task GetItemsByRecipeId_ReturnsOkResult_WithIngredients()
         {
-            // Arrange
             int recipeId = 1;
             var ingredients = new List<Contains>
                 {
@@ -35,11 +34,7 @@ namespace KonyhaiAsszisztensBackend.Tests
             var mockDbSet = new Mock<DbSet<Contains>>();
             mockDbSet.ReturnsDbSet(ingredients);
             _mockContext.Setup(c => c.Contains).Returns(mockDbSet.Object);
-
-            // Act
             var result = await _controller.GetItemsByRecipeId(recipeId);
-
-            // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var returnValue = Assert.IsType<List<Contains>>(okResult.Value);
             Assert.Single(returnValue);
@@ -48,7 +43,6 @@ namespace KonyhaiAsszisztensBackend.Tests
         [Fact]
         public async Task StoreItemInStorage_ReturnsCreatedResult_WhenNewItem()
         {
-            // Arrange
             var ingredient = new Contains { RecipeId = 1, ItemId = 1, Quantity = 100 };
             var items = new List<Items> { new Items { Id = 1, Name = "Sugar" } };
             var recipes = new List<Recipes> { new Recipes { Id = 1, Name = "Cake" } };
@@ -61,11 +55,7 @@ namespace KonyhaiAsszisztensBackend.Tests
             _mockContext.Setup(c => c.Items).Returns(mockItemsDbSet.Object);
             _mockContext.Setup(c => c.Recipes).Returns(mockRecipesDbSet.Object);
             _mockContext.Setup(c => c.Contains).Returns(mockContainsDbSet.Object);
-
-            // Act
             var result = await _controller.StoreItemInStorage(ingredient);
-
-            // Assert
             var createdResult = Assert.IsType<ObjectResult>(result.Result);
             Assert.Equal(201, createdResult.StatusCode);
         }
@@ -73,13 +63,8 @@ namespace KonyhaiAsszisztensBackend.Tests
         [Fact]
         public async Task StoreItemInStorage_ReturnsBadRequest_WhenInvalidQuantity()
         {
-            // Arrange
             var ingredient = new Contains { RecipeId = 1, ItemId = 1, Quantity = -1 };
-
-            // Act
             var result = await _controller.StoreItemInStorage(ingredient);
-
-            // Assert
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
             var errorMessage = Assert.IsType<ErrorMessage>(badRequestResult.Value);
             Assert.Equal("Incorrect quantity!", errorMessage.en);
@@ -88,7 +73,6 @@ namespace KonyhaiAsszisztensBackend.Tests
         [Fact]
         public async Task ClearAllIngredientsFromRecipe_ReturnsNoContent()
         {
-            // Arrange
             int recipeId = 1;
             var ingredients = new List<Contains>
                 {
@@ -97,11 +81,7 @@ namespace KonyhaiAsszisztensBackend.Tests
             var mockDbSet = new Mock<DbSet<Contains>>();
             mockDbSet.ReturnsDbSet(ingredients);
             _mockContext.Setup(c => c.Contains).Returns(mockDbSet.Object);
-
-            // Act
             var result = await _controller.ClearAllIngredientsFromRecipe(recipeId);
-
-            // Assert
             var noContentResult = Assert.IsType<StatusCodeResult>(result);
             Assert.Equal(204, noContentResult.StatusCode);
         }
